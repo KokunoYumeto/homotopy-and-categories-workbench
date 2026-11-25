@@ -94,7 +94,7 @@ check; the third column of Table 1 is set ragged right.
 | [3] Davis, Poincaré duality groups | definition; Theorem 7.15 | Opened by the checker (Ranicki's archive): Definitions 3.1, 3.2, Theorem 3.3 (p. 172), Theorem 7.15. Matches; pages 167-193 confirmed. |
 | [5] Di Cerbo-Hunter-Thrasher | context (degree one described as open) | Opened by the checker (arXiv:2601.08804v1): the sentence is in the introduction and again in its Section 3. Matches. |
 | [6] Hanner, [14] West, [12] Spanier | topological manifolds are finite Poincaré complexes | Opened by the checker: Hanner p. 392 (Theorems 3.2, 3.3) and West p. 13 ((5.3) Corollary) in Ranicki's archive; Spanier pp. 197-198 (Theorem 10.2, Remark 10.3) at MSP. Match, with the identifications of R3 for Spanier. |
-| [11] the r/math comment | credit | **Read from the user's paste of 25 Nov 2026** into the main session (`RECORDS_r_math_comment_20261125.md`; httppf4k77i). No agent of ours could open Reddit: automated access is blocked and the built-in browser refuses reddit.com. |
+| [11] the r/math comment | credit | **Read from the user's paste of 25 Nov 2026** into the main session (`RECORDS_r_math_comment_20261125.md`; https://www.reddit.com/r/math/comments/1x2iy00/comment/pf4k77i/). No agent of ours could open Reddit: automated access is blocked and the built-in browser refuses reddit.com. |
 
 ## Search for later work (25 Nov 2026, by the writer)
 
@@ -158,7 +158,7 @@ check; the third column of Table 1 is set ragged right.
   The clause is removed; Section 6 now says so. Lemma 1.4 of [1] does carry the torsion hypothesis (`bhb-connected.pdf`,
   Section 1), and its "parabolic on D" is Bowditch's "fixes a point" (his definition before the lemma), so the first
   bullet stands.
-- Checked: the comment [11] existed by 11 Oct 2026 02:30 UTC (the user's record of the thread), so it
+- Checked: the comment [11] existed by 11 Oct 2026 02:30 UTC (the user's record of the thread, USER_INPUTS P1135), so it
   is earlier than the run of 22-23 Oct, as Section 6 says; the thread title is from the user's paste (P1150).
 - Checked: the reproduction's rewrite of the limit argument at the end of 9.8 was compared with the manuscript's own
   argument by the referee, who calls both correct (`Q02_REFEREE_STAGE2.md`, l.19-21 and 190).
