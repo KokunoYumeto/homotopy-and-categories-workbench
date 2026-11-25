@@ -1,0 +1,824 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.15in]{geometry}
+\usepackage{longtable,booktabs,array}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+\emergencystretch=3em
+
+\newtheorem{theoremx}{Theorem}
+\renewcommand{\thetheoremx}{\Alph{theoremx}}
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{corollary}[lemma]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[lemma]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[lemma]{Remark}
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Gam}{\Gamma}
+\newcommand{\lt}{\ell^2}
+\newcommand{\bt}[1]{b^{(2)}_{#1}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Dsp}{\mathcal{D}}
+\newcommand{\Cay}{\mathcal{C}}
+
+\title{The first $L^2$-Betti number of aspherical manifolds\\ and Poincar\'e duality
+groups of dimension at least three\thanks{AI-produced. The method is that of
+OpenAI's manuscript \cite{O}, which this paper cites for the main argument and does
+not reproduce. The reductions of Section~\ref{sec:reductions} were found by GPT-6
+Astra (OpenAI, ChatGPT Pro mode), and the text was written by Claude Fable 5.2
+(Anthropic) at effort max; see Section~\ref{sec:provenance} for who proved, wrote
+and checked what. No human has checked this text. To the extent that any rights
+exist in it, they are dedicated to the public domain under CC0~1.0.}}
+\author{}
+\date{25 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The $L^2$-Betti numbers $\bt{p}$ of a finite complex measure the square-summable
+harmonic $p$-chains on its universal cover. Singer's conjecture says that for a
+closed aspherical manifold of dimension $n$, one whose universal cover is
+contractible, they vanish outside the middle degree $n/2$. A manuscript of OpenAI dated 25 September 2026,
+released on 6 October 2026, proves the conjecture in dimension four; it is not refereed.
+Its proof assumes $\bt{1}>0$, builds from functions of finite energy on the
+fundamental group $\Gam$ a compact boundary on which $\Gam$ acts, and reaches a
+contradiction; dimension four enters only in a preliminary section. We show that
+the same argument gives $\bt{1}=\bt{n-1}=0$ for every finite aspherical Poincar\'e
+complex of formal dimension $n\ge3$, hence for every closed aspherical topological
+manifold of dimension at least three (Theorem~A), and for every finitely presented
+Poincar\'e duality group of dimension $n\ge3$ (Theorem~B). To do so we state what
+Sections 3--10 of the manuscript prove as a criterion for groups (Theorem~C): a
+finitely presented torsion-free group with one end, with
+$H^2(\Gam;\F_2\Gam)=0$ and with no splitting over a finite or two-ended subgroup, has
+$\bt{1}=0$; and we prove, in every dimension $n\ge3$, the facts about $\Gam$ that the
+criterion needs. Theorems A and B depend on the manuscript's argument, which we
+cite and do not reproduce. One AI referee has followed that argument line by line
+and found no fault; no human has checked it, or this paper.
+\end{abstract}
+
+\section{Results}
+
+\subsection{Definitions}\label{sub:defs}
+Throughout, $\Gam$ is a discrete group and $k=\F_2$.
+
+\emph{$L^2$-Betti numbers.} Let $C_*$ be a chain complex of left $\Z\Gam$-modules
+that are free with a given finite basis in the degrees considered, $C_p=\Z\Gam^{r_p}$.
+Completing $\Z\Gam$ to the Hilbert space $\lt(\Gam)$ of square-summable functions makes
+each boundary map a bounded operator
+$\partial_p:\lt(\Gam)^{r_p}\to\lt(\Gam)^{r_{p-1}}$ that commutes with the action of $\Gam$
+on the other side. The space of \emph{harmonic $p$-chains} is
+$\mathcal H_p(C)=\ker\partial_p\cap\ker\partial_{p+1}^*$, a closed $\Gam$-invariant
+subspace. Its \emph{von Neumann dimension} is
+$\sum_j\langle\pi\delta_{1,j},\delta_{1,j}\rangle$, where $\pi$ is the orthogonal
+projection onto it and $\delta_{g,j}$ is the unit vector at $g$ in the
+$j$-th coordinate; it is a real number $\ge0$, it is $0$ only for the zero space,
+and it is the same for two such subspaces $V,W$ between which there is a bounded
+$\Gam$-equivariant bijection $T$. Indeed, the dimension equals
+$\sum_j\|\pi\delta_{1,j}\|^2$, and $\pi$ commutes with the action of $\Gam$, in
+which $g$ moves $\delta_{h,j}$ to $\delta_{gh,j}$, so the dimension is $0$ only if
+$\pi=0$. The polar decomposition $T=U|T|$ has a $\Gam$-equivariant unitary
+$U:V\to W$. Let $u$ be $U$ on $V$ and zero on the orthogonal complement of $V$.
+Then $u^*u$ and $uu^*$ are the projections onto $V$ and $W$, and $u$ and $u^*$
+commute with the action, so that
+\[
+ \sum_j\|u\delta_{1,j}\|^2=\sum_{i,j,g}|\langle u\delta_{1,j},\delta_{g,i}\rangle|^2
+ =\sum_{i,j,g}|\langle\delta_{g^{-1},j},u^*\delta_{1,i}\rangle|^2=\sum_i\|u^*\delta_{1,i}\|^2 ;
+\]
+the two ends are the dimensions of $V$ and of $W$. For the theory of this
+dimension see \cite[Chapter~1]{L}. We write
+$\bt{p}(C)$ for the dimension of $\mathcal H_p(C)$. The quotient $\ker\partial_p/\overline{\operatorname{im}
+\partial_{p+1}}$, the \emph{reduced homology}, is identified with
+$\mathcal H_p(C)$ by orthogonal projection.
+
+For a finite connected CW complex $Q$ with fundamental group $\Gam$ and universal
+cover $\widetilde Q$, the cellular chain complex $C_*(\widetilde Q)$ is such a
+complex, with one lift of each cell as basis, and
+$\bt{p}(\widetilde Q)=\bt{p}(C_*(\widetilde Q))$. For a finitely presented group
+$\Gam$ we put $\bt{1}(\Gam)=\bt{1}(\widetilde K)$, where $K$ is the two-dimensional
+complex of a finite presentation. By Lemma~\ref{lem:comparison} this does not depend
+on the presentation, and $\bt{1}(\widetilde Q)=\bt{1}(\Gam)$ for every finite
+connected complex $Q$ with fundamental group $\Gam$.
+
+\emph{Poincar\'e complexes.} A \emph{finite Poincar\'e complex of formal dimension
+$n$} is a finite connected CW complex $Q$ with a homomorphism $w:\Gam=\pi_1(Q)\to\{\pm1\}$
+and a class $[Q]\in H_n(Q;\Z^w)$, where $\Z^w$ is $\Z$ with $\Gam$ acting through $w$,
+such that cap product with $[Q]$ is an isomorphism
+$H^i(Q;V)\to H_{n-i}(Q;\Z^w\otimes V)$ for every integer $i$ and every left
+$\Z\Gam$-module $V$ \cite{W}. The number $n$ need not be the largest dimension of a
+cell. The complex is \emph{aspherical} if $\widetilde Q$ is contractible.
+
+\emph{Duality groups.} A group $\Gam$ is a \emph{Poincar\'e duality group of dimension
+$n$}, for short a $PD(n)$ group, if the trivial module $\Z$ has a resolution of
+finite length by finitely generated projective $\Z\Gam$-modules, $H^i(\Gam;\Z\Gam)=0$ for
+$i\ne n$, and $H^n(\Gam;\Z\Gam)$ is infinite cyclic as an abelian group \cite{Da}. Such
+a group need not be finitely presented \cite[Theorem~7.15]{Da}. Its $L^2$-Betti
+numbers are those of a finite projective resolution (Section~\ref{sub:pd}).
+
+\emph{Ends and splittings.} A finitely generated group has \emph{one end} if its
+Cayley graph is infinite and removing any finite set of vertices leaves exactly one
+infinite component. A group is \emph{two-ended} if it has an infinite cyclic
+subgroup of finite index. A \emph{splitting} of $\Gam$ over a subgroup $J$ is an
+action of $\Gam$ on a simplicial tree, without inversions of edges, with one orbit of
+edges and no fixed vertex, in which $J$ is the stabilizer of an edge. By Bass--Serre
+theory this is the same as a decomposition of $\Gam$ as a non-trivial amalgamated free
+product or HNN extension over $J$.
+
+\subsection{Statements}
+
+\begin{theoremx}\label{thm:A}
+Let $Q$ be a finite aspherical Poincar\'e complex of formal dimension $n\ge3$,
+with any orientation character $w$. Then
+\[
+ \bt{1}(\widetilde Q)=\bt{n-1}(\widetilde Q)=0 .
+\]
+Moreover $\bt{0}(\widetilde Q)=\bt{n}(\widetilde Q)=0$ and $\bt{p}(\widetilde Q)=0$
+for $p>n$. The same holds for every closed connected aspherical topological
+manifold of dimension $n\ge3$.
+\end{theoremx}
+
+\begin{theoremx}\label{thm:B}
+Let $\Gam$ be a finitely presented Poincar\'e duality group of dimension $n\ge3$.
+Then $\bt{1}(\Gam)=\bt{n-1}(\Gam)=0$.
+\end{theoremx}
+
+\begin{theoremx}[OpenAI \cite{O}, Sections 3--10]\label{thm:C}
+Let $\Gam$ be a finitely presented torsion-free group. Suppose that $\Gam$ has one
+end, that $H^2(\Gam;\F_2\Gam)=0$, and that $\Gam$ has no splitting over a finite or
+two-ended subgroup. Then $\bt{1}(\Gam)=0$.
+\end{theoremx}
+
+For $n=3$ Theorem~\ref{thm:A} gives the vanishing of all $L^2$-Betti numbers, and
+for $n=4$ of all but $\bt{2}$, which is the theorem of \cite{O}. For $n\ge5$ it says
+nothing about the degrees $2,\dots,n-2$.
+
+\subsection{What is whose}\label{sub:whose}
+\begin{itemize}
+\item The method, and the whole argument behind Theorem~\ref{thm:C}, are OpenAI's
+\cite{O}. That manuscript states its theorem for formal dimension four. Its
+Sections 3--10 are written under the assumption $\bt{1}>0$ for a complex of formal
+dimension four; Theorem~\ref{thm:C} is what they prove when they are read for their
+hypotheses. Section~\ref{sec:criterion} says exactly where they call on dimension
+four, and reports the check on which that reading rests.
+\item That the method gives every dimension $n\ge3$ was observed in public by
+the commenter \texttt{Apprehensive\_Sand951} in the \texttt{r/math} thread
+\emph{AI in mathematics, October 10, 2026} \cite{R}. The comment says that,
+should the proof of \cite{O} hold up, its method also shows that ``any closed
+aspherical manifold of dimension $\ge3$ has no $L^2$-harmonic $1$-forms'', and
+that in dimension three this would prove Singer's conjecture without
+geometrization. It is conditional on \cite{O} and gives no proof. For a smooth
+manifold, the absence of non-zero $L^2$-harmonic $1$-forms on the universal
+cover is the equation $\bt{1}=0$, by the $L^2$ Hodge--de Rham theorem of Dodziuk
+\cite[Chapter~1]{L}. This paper proves that observation, as
+Theorem~\ref{thm:A}; like the observation, the theorem rests on the argument of
+\cite{O}.
+\item New here are the reductions of Section~\ref{sec:reductions} for every
+$n\ge3$ and for $PD(n)$ groups, the statement of Theorem~\ref{thm:C} with the
+account of what Sections 3--10 of \cite{O} use, and with them the proofs of Theorems~\ref{thm:A}
+and~\ref{thm:B}.
+\item Known before: for closed aspherical three-manifolds the vanishing follows
+from the computation of Lott and L\"uck \cite[Theorem~0.1]{LL} and geometrization (stated there for
+orientable manifolds; a nonorientable closed aspherical three-manifold is
+handled by its orientation double cover, since $L^2$-Betti numbers multiply by
+the degree of a finite cover);
+for right-angled Coxeter groups whose nerve is a flag triangulation of a
+generalized homology sphere, Davis and Okun proved $\bt{1}=\bt{n-1}=0$ in every
+dimension $n\ge3$ \cite[Theorem~11.3.2]{DO}. In January 2026 the vanishing of
+$\bt{1}$ was described as unknown even for closed negatively curved manifolds of
+dimension at least four \cite{DHT}.
+\end{itemize}
+
+\subsection{Status}
+Theorem~\ref{thm:C} is as reliable as the argument of \cite{O}, which is an
+unrefereed manuscript. What has been checked, by whom,
+and what has not, is in Sections~\ref{sec:provenance} and~\ref{sec:open}. Until a human
+reader has gone through Sections 3--10 of \cite{O},
+Theorems~\ref{thm:A} and~\ref{thm:B} should be cited with that condition.
+
+\section{The reductions}\label{sec:reductions}
+
+In this section $Q$ is a finite aspherical Poincar\'e complex of formal dimension
+$n$ and $\Gam=\pi_1(Q)$. Since $\widetilde Q$ is contractible, $C_*(\widetilde Q)$ is
+a resolution of $\Z$ by finitely generated free $\Z\Gam$-modules, and homology and
+cohomology of $Q$ with coefficients in a $\Z\Gam$-module are those of $\Gam$.
+
+\begin{lemma}\label{lem:finiteness}
+If $n\ge1$, the group $\Gam$ is finitely presented, torsion-free and infinite.
+\end{lemma}
+\begin{proof}
+The two-skeleton of $Q$ gives a finite presentation. Let $m$ be the largest
+dimension of a cell of $Q$. If $\Gam$ had an element of prime order $p$, generating
+a subgroup $C$, then $C_*(\widetilde Q)$ would be a free resolution of $\Z$ over
+$\Z C$ of length $m$, so that $H^j(C;\Z)=0$ for $j>m$; but $H^{2r}(C;\Z)=\Z/p$ for
+all $r\ge1$. So $\Gam$ is torsion-free. If $\Gam$ were finite it would be trivial and
+$Q$ contractible; duality with $V=\F_2$ would give
+$H_n(Q;\F_2)\cong H^0(Q;\F_2)=\F_2$ with $n\ge1$, which is absurd.
+\end{proof}
+
+\begin{lemma}\label{lem:duality}
+For every left $k\Gam$-module $V$ and every $i$ there is an isomorphism
+$H^i(\Gam;V)\cong H_{n-i}(\Gam;V)$. For every subgroup $J$ of $\Gam$ and every $i$,
+\[
+ H^i(\Gam;k[\Gam/J])\cong H_{n-i}(J;k),
+\]
+where $k[\Gam/J]$ is the permutation module with basis the left cosets of $J$.
+\end{lemma}
+\begin{proof}
+On a vector space over $\F_2$ the sign $w$ acts trivially, so
+$\Z^w\otimes V\cong V$, and the first statement is the duality of $Q$. For the
+second, $k[\Gam/J]\cong k\Gam\otimes_{kJ}k$ as left $k\Gam$-modules. If $P_*$ is a
+resolution of $k$ by free right $k\Gam$-modules, then
+$P_*\otimes_{k\Gam}(k\Gam\otimes_{kJ}k)\cong P_*\otimes_{kJ}k$, and $P_*$ is also a
+resolution by free right $kJ$-modules. Taking homology gives
+$H_j(\Gam;k[\Gam/J])\cong H_j(J;k)$.
+\end{proof}
+
+\begin{corollary}\label{cor:vanishing}
+If $n\ge3$, then $H^1(\Gam;k\Gam)=0$ and $H^2(\Gam;k\Gam)=0$, and $H^1(\Gam;k[\Gam/J])=0$ when
+$J$ is trivial or infinite cyclic.
+\end{corollary}
+\begin{proof}
+By Lemma~\ref{lem:duality} these groups are $H_{n-1}(1;k)$, $H_{n-2}(1;k)$ and
+$H_{n-1}(J;k)$. The first two vanish because $n-1$ and $n-2$ are positive. An
+infinite cyclic group has a free resolution of length one, so its homology
+vanishes in degrees $\ge2$, and $n-1\ge2$.
+\end{proof}
+
+The next two lemmas concern an arbitrary finitely generated group.
+
+\begin{lemma}\label{lem:oneend}
+An infinite finitely generated group $\Gam$ with $H^1(\Gam;k\Gam)=0$ has one end.
+\end{lemma}
+\begin{proof}
+Let $G$ be the Cayley graph of a finite generating set, and
+$C_1\to C_0\to k\to0$ its augmented chain complex over $k$, which is exact
+because $G$ is connected; $C_0$ and $C_1$ are finitely generated free
+$k\Gam$-modules. Choose a free module $P_2$ mapping onto the kernel of
+$C_1\to C_0$ and continue to a free resolution $P_*$ of $k$ with $P_0=C_0$,
+$P_1=C_1$. For $i=0,1$, a $k$-valued cochain $a$ on the $i$-cells of $G$ with
+finite support defines the homomorphism
+$\Phi(a):C_i\to k\Gam$, $\Phi(a)(c)=\sum_{g\in\Gam}a(g^{-1}c)\,g$; every homomorphism
+$C_i\to k\Gam$ is of this form for exactly one $a$ (take the coefficient of the
+identity), and $\Phi(da)=\Phi(a)\circ\partial$.
+
+Suppose that for some finite set $A$ of vertices the graph $G-A$ has two infinite
+components, and let $f$ be the indicator function of one of them. Then $df$ has
+finite support, since an edge on which $f$ changes meets $A$. For a finite cycle
+$z$ in $C_1$ and $g\in\Gam$ we have $df(g^{-1}z)=f(\partial g^{-1}z)=0$, so
+$\Phi(df)$ vanishes on the image of $P_2$ and is a cocycle of
+$\Hom_{k\Gam}(P_*,k\Gam)$. As $H^1(\Gam;k\Gam)=0$, there is a cochain $u$ of finite
+support on the vertices with $\Phi(df)=\Phi(u)\circ\partial=\Phi(du)$, that is,
+$d(f-u)=0$. Then $f-u$ is constant, although it equals $f$ outside a finite set
+and $f$ takes each of its two values infinitely often. So $G-A$ has at most one
+infinite component; it has one, because $G$ is infinite and locally finite, so
+that $G-A$ has finitely many components.
+\end{proof}
+
+\begin{lemma}\label{lem:nosplit}
+Let $\Gam$ be a group and $J$ a subgroup with $H^1(\Gam;k[\Gam/J])=0$. Then $\Gam$ has no
+splitting over $J$.
+\end{lemma}
+\begin{proof}
+Suppose $\Gam$ acts on a tree $T$ without inversions, with one orbit $E$ of edges,
+and that $J$ is the stabilizer of an edge $e$. Then $ge\mapsto gJ$ identifies $E$
+with $\Gam/J$ as a $\Gam$-set. Fix a vertex $o$, and for $g\in\Gam$ let
+$c(g)\in k[E]$ be the sum of the edges on the geodesic from $o$ to $go$. The path
+from $o$ to $go$ followed by the $g$-translate of the path from $o$ to $ho$ ends
+at $gho$, and reducing it to the geodesic removes edges in pairs; hence
+\[
+ c(gh)=c(g)+g\,c(h),
+\]
+so $c$ is a $1$-cocycle of $\Gam$ with values in $k[E]\cong k[\Gam/J]$. By hypothesis
+there is $v\in k[E]$ with $c(g)=gv-v$ for all $g$. A geodesic contains each of its
+edges once, so the distance from $o$ to $go$ is the number of edges in $c(g)$,
+which is at most twice the number of edges in $v$. The orbit of $o$ is therefore
+bounded. A group acting on a tree with a bounded orbit fixes the centre of the
+subtree spanned by that orbit, which is a vertex or the midpoint of an edge; as
+no edge is inverted, $\Gam$ fixes a vertex. So the action is not a splitting.
+\end{proof}
+
+\begin{corollary}\label{cor:group}
+If $n\ge3$, the group $\Gam$ is finitely presented and torsion-free, it has one end,
+$H^2(\Gam;\F_2\Gam)=0$, and $\Gam$ has no splitting over a finite or two-ended subgroup.
+\end{corollary}
+\begin{proof}
+Lemma~\ref{lem:finiteness}, Corollary~\ref{cor:vanishing} and
+Lemma~\ref{lem:oneend} give all but the last statement. A finite subgroup of $\Gam$
+is trivial. A two-ended group has a finite normal subgroup with quotient infinite
+cyclic or infinite dihedral \cite[Lemma~4.1]{W}; in a torsion-free group the
+finite subgroup is trivial and the dihedral case is excluded, so a two-ended
+subgroup of $\Gam$ is infinite cyclic. Corollary~\ref{cor:vanishing} and
+Lemma~\ref{lem:nosplit} now exclude both kinds of splitting.
+\end{proof}
+
+\subsection{The first $L^2$-Betti number and functions of finite energy}
+
+\begin{lemma}\label{lem:comparison}
+Let $P_*$ and $P'_*$ be complexes of left $\Z\Gam$-modules, free with given finite
+bases in degrees $0,1,2$, each with a surjection $P_0\to\Z$ such that
+$P_2\to P_1\to P_0\to\Z\to0$ is exact. Then $\bt{1}(P)=\bt{1}(P')$. If $P_*$ and
+$P'_*$ are bounded complexes of finitely generated free modules and are chain
+homotopy equivalent, then $\bt{p}(P)=\bt{p}(P')$ for all $p$.
+\end{lemma}
+\begin{proof}
+Since the modules are free and the complexes exact in degrees $0$ and $1$, the
+identity of $\Z$ lifts to maps $f_i:P_i\to P'_i$ and $g_i:P'_i\to P_i$,
+$i=0,1,2$, commuting with the boundary maps, and there are $h_0:P_0\to P_1$ and
+$h_1:P_1\to P_2$ with $g_0f_0-1=\partial h_0$ and
+$g_1f_1-1=\partial h_1+h_0\partial$: first $g_0f_0-1$ has image in the kernel of
+the augmentation, which is the image of $\partial_1$; then
+$g_1f_1-1-h_0\partial$ has image in $\ker\partial_1=\operatorname{im}\partial_2$.
+All these maps are matrices over $\Z\Gam$ and extend to bounded $\Gam$-equivariant
+operators on the completions. So $f_1$ maps $\ker\partial_1$ to $\ker\partial'_1$
+and the closure of $\operatorname{im}\partial_2$ into that of
+$\operatorname{im}\partial'_2$, and induces a bounded equivariant map of reduced
+homology in degree one; so does $g_1$; and $g_1f_1$ induces the identity, because
+$g_1f_1-1$ maps $\ker\partial_1$ into $\operatorname{im}\partial_2$. By symmetry
+the two maps are inverse to each other, and the dimensions agree. The second
+statement is proved in the same way from a chain homotopy equivalence.
+\end{proof}
+
+In particular $\bt{1}(\Gam)$ is well defined, $\bt{1}(\widetilde Q)=\bt{1}(\Gam)$ for
+every finite connected CW complex $Q$ with fundamental group $\Gam$, since
+$C_*(\widetilde Q)$ is exact in degree one, and $\bt{p}(\widetilde Q)$ is an
+invariant of the homotopy type of $Q$, because a homotopy equivalence of finite
+complexes lifts to a chain homotopy equivalence of the cellular chain complexes of
+the universal covers.
+
+Let now $\Gam$ have a finite presentation with relators of length at most three; any
+finite presentation can be brought to this form by adding a generator for each
+proper prefix of length at least two of a longer relator. Let $\Cay$ be its Cayley
+two-complex, the universal cover of the presentation complex, and $G$ its graph,
+with set of edges $E$. For $f:\Gam\to\R$ let $df(e)$ be the difference of the values
+of $f$ at the ends of the oriented edge $e$, and put
+\[
+ \Dsp=\Bigl\{df:\ \sum_{e\in E}|df(e)|^2<\infty\Bigr\},\qquad
+ \Dsp_0=\overline{\{df:\ f\text{ of finite support}\}}\subset\lt(E;\R).
+\]
+
+\begin{lemma}\label{lem:gradient}
+The space $\Dsp$ is closed in $\lt(E;\R)$ and contains $\Dsp_0$, and $\bt{1}(\Gam)>0$ if
+and only if $\Dsp\ne\Dsp_0$.
+\end{lemma}
+\begin{proof}
+Write $d_0=\partial_1^*$ and $d_1=\partial_2^*$ for the adjoints of the completed
+boundary maps of $C_*(\Cay)$; on real cochains they are the cellular coboundary
+maps, and they are bounded because every edge lies on a bounded number of
+two-cells. A square-summable real $1$-cochain $a$ with $d_1a=0$ is a cocycle on
+the simply connected complex $\Cay$, hence $a=df$ for a function $f$, obtained by
+summing $a$ along paths from a base vertex. So $\Dsp=\ker d_1$, which is closed.
+Functions of finite support are dense in $\lt(\Gam;\R)$ and $d_0$ is bounded, so
+$\Dsp_0$ is the closure of the image of $d_0$. The orthogonal complement of $\Dsp_0$
+in $\Dsp$ is therefore $\ker d_1\cap\ker d_0^*=\ker\partial_2^*\cap\ker\partial_1$,
+the space of real harmonic $1$-chains. The boundary maps have integer matrices,
+so the space of complex harmonic $1$-chains is its complexification, and it is
+non-zero exactly when its dimension $\bt{1}(\Gam)$ is positive.
+\end{proof}
+
+\subsection{Duality for $L^2$-Betti numbers}
+
+\begin{lemma}\label{lem:l2duality}
+Let $Q$ be a finite Poincar\'e complex of formal dimension $n$. Then
+$\bt{p}(\widetilde Q)=\bt{n-p}(\widetilde Q)$ for every integer $p$, where
+$\bt{p}=0$ for $p<0$. If $\Gam$ is infinite then $\bt{0}(\widetilde Q)=0$.
+\end{lemma}
+\begin{proof}
+Let $C=C_*(\widetilde Q)$, and let $C^{n-*}$ be the complex with
+$\Hom_{\Z\Gam}(C_{n-p},\Z\Gam)$ in degree $p$, regarded as a complex of left modules
+by means of the anti-automorphism $g\mapsto w(g)g^{-1}$ of $\Z\Gam$. Cap product
+with a cycle representing $[Q]$ is defined on chains, by a cellular approximation
+of the diagonal, and gives a chain map $C^{n-*}\to C$ of $\Z\Gam$-modules which
+induces the duality isomorphisms for $V=\Z\Gam$ \cite[Section~1]{W}; so it is an
+isomorphism on homology. Both
+complexes are bounded and consist of finitely generated free modules, so the
+mapping cone of this map is a bounded exact complex of free modules, hence
+contractible, and the map is a chain homotopy equivalence. By
+Lemma~\ref{lem:comparison}, $\bt{p}(C^{n-*})=\bt{p}(C)$.
+
+In the dual bases, the boundary map of $C^{n-*}$ in degree $p$ is, up to sign,
+the adjoint $\partial_{n-p+1}^*$ conjugated by the unitary operator $U_w$ of
+$\lt(\Gam)$ that multiplies the basis vector $\delta_g$ by $w(g)$; this operator
+fixes $\delta_1$, so conjugation by it does not change von Neumann dimensions.
+Hence the harmonic $p$-chains of $C^{n-*}$ correspond to
+$\ker\partial_{n-p+1}^*\cap\ker\partial_{n-p}$, the harmonic $(n-p)$-chains of
+$C$, and $\bt{p}(C^{n-*})=\bt{n-p}(C)$.
+
+A harmonic $0$-chain is a square-summable function on the vertices of
+$\widetilde Q$ that is killed by $\partial_1^*$, that is, has equal values at the
+two ends of every edge. The one-skeleton is connected, so the function is
+constant, and it is zero when there are infinitely many vertices.
+\end{proof}
+
+\subsection{Poincar\'e duality groups}\label{sub:pd}
+Let $\Gam$ be a $PD(n)$ group, $P_*$ a resolution of $\Z$ of finite length by finitely
+generated projective left $\Z\Gam$-modules, and $w:\Gam\to\{\pm1\}$ the character
+through which $\Gam$ acts on the right on $H^n(\Gam;\Z\Gam)\cong\Z$. A finitely generated
+projective module is the image $\Z\Gam^r e$ of an idempotent matrix $e$; its
+completion is the range of $e$ on $\lt(\Gam)^r$, a closed invariant subspace, and
+the definitions of Section~\ref{sub:defs} and the second statement of
+Lemma~\ref{lem:comparison} apply to complexes
+of such modules: a homomorphism between two of them is given by a matrix over
+$\Z\Gam$, and the lifts and homotopies in the proof of that lemma exist for
+projective modules by their lifting property. We put
+$\bt{p}(\Gam)=\bt{p}(P)$; for $p=1$ and $\Gam$ finitely presented this is the number
+defined before, by the argument of Lemma~\ref{lem:comparison}.
+
+\begin{lemma}\label{lem:pd}
+Let $\Gam$ be a $PD(n)$ group with $n\ge1$. Then $\Gam$ is torsion-free and infinite;
+$H^i(\Gam;V)\cong H_{n-i}(\Gam;V)$ for every $k\Gam$-module $V$ and every $i$, so that
+the conclusion of Lemma~\ref{lem:duality} holds for $\Gam$; and
+$\bt{p}(\Gam)=\bt{n-p}(\Gam)$ for every $p$, with $\bt{0}(\Gam)=0$.
+\end{lemma}
+\begin{proof}
+Torsion is excluded as in Lemma~\ref{lem:finiteness}, since $P_*$ restricts to a
+projective resolution of finite length over a subgroup of prime order. The
+trivial group has $H^0(\Gam;\Z\Gam)=\Z$, so it is not a $PD(n)$ group for $n\ge1$.
+
+Let $D_*$ be the complex of right modules with $\Hom_{\Z\Gam}(P_{n-j},\Z\Gam)$ in
+degree $j$. Its homology in degree $j$ is $H^{n-j}(\Gam;\Z\Gam)$, which is $\Z^w$ for
+$j=0$ and zero otherwise. If $D_j\ne0$ for some $j<0$, the boundary map onto the
+lowest such module is surjective and splits, and a contractible summand can be
+removed; repeating this, $D_*$ is chain homotopy equivalent to a resolution of the
+right module $\Z^w$ by finitely generated projective modules. The complex
+$\overline P^{\,w}_*$, which is $P_*$ with the right action $x\cdot g=w(g)g^{-1}x$,
+is another such resolution. So $D_*$ and $\overline P^{\,w}_*$ are chain homotopy
+equivalent.
+
+Tensoring with a left $k\Gam$-module $V$: for finitely generated projective $L$ the
+natural map $\Hom_{\Z\Gam}(L,\Z\Gam)\otimes_{\Z\Gam}V\to\Hom_{\Z\Gam}(L,V)$ is an
+isomorphism, so the homology of $D_*\otimes_{\Z\Gam}V$ in degree $j$ is
+$H^{n-j}(\Gam;V)$; that of $\overline P^{\,w}_*\otimes_{\Z\Gam}V$ is
+$H_j(\Gam;\Z^w\otimes V)=H_j(\Gam;V)$. This is the duality.
+
+For the $L^2$-Betti numbers, the chain homotopy equivalence and
+Lemma~\ref{lem:comparison} give $\bt{j}(D)=\bt{j}(\overline P^{\,w})=\bt{j}(\Gam)$,
+the last equality as in the proof of Lemma~\ref{lem:l2duality}. For a projective
+module with idempotent $e$ and completion $H=\operatorname{im}e$, the completion
+of the dual module is $\operatorname{im}e^*$, and orthogonal projection onto $H$
+maps it isomorphically to $H$, with inverse the restriction of $e^*$; under these
+isomorphisms the boundary maps of $D_*$ become the adjoints of those of $P_*$. So
+$\bt{j}(D)=\bt{n-j}(\Gam)$. 
+
+Finally $\bt{0}(\Gam)=0$. A harmonic $0$-chain of $P_*$ is an element $\xi$ of
+the completion of $P_0$ that is orthogonal to the image of $P_1$, which is the
+kernel of the augmentation $\varepsilon:P_0\to\Z$. Choose $x\in P_0$ with
+$\varepsilon(x)=1$. For $g\in\Gam$ the element $gx-x$ lies in that kernel, so
+$\langle\xi,gx\rangle=\langle\xi,x\rangle$. As $x$ has finite support and $\xi$
+is square-summable, $\langle\xi,gx\rangle$ tends to $0$ along every sequence of
+distinct elements $g$ of the infinite group $\Gam$. Hence
+$\langle\xi,x\rangle=0$, so $\xi$ is orthogonal to $P_0=\ker\varepsilon+\Z x$,
+which spans a dense subspace of the completion, and $\xi=0$.
+\end{proof}
+
+\section{The criterion}\label{sec:criterion}
+
+\subsection{The manuscript}
+The theorem of \cite{O} is: \emph{for a finite aspherical Poincar\'e complex of
+formal dimension four, with any orientation character, $\bt{p}(\widetilde Q)=0$
+for all $p\ne2$.} Its Section~2 proves seven lemmas about $\Gam=\pi_1(Q)$ in
+dimension four, numbered 2.1 to 2.7 there: finiteness properties of $\Gam$ and a four-dimensional model of $Q$; the
+comparison of resolutions; duality for $L^2$-Betti numbers; the vanishing of
+$H^i(\Gam;\F_2\Gam)$ for $i=1,2$; one end; the absence of splittings; and the
+passage from $\bt{1}>0$ to $\Dsp\ne\Dsp_0$. Our Section~\ref{sec:reductions} replaces these for all $n\ge3$.
+
+Sections 3 to 10 of \cite{O} assume $\bt{1}(\widetilde Q)>0$ and reach a
+contradiction through 38 numbered statements, 3.1 to 10.3. In outline: from a
+function of finite energy that is not constant at infinity they build a compact
+metrizable space $X=\Gam\sqcup B$ on which $\Gam$ acts (Section~3); the action on the
+boundary $B$ is a minimal convergence action (Section~4); $B$ is a continuum of
+covering dimension at most one with vanishing first \v{C}ech cohomology over
+$\F_2$ (Section~5); if $B$ has cut points, they are fixed points of parabolic
+elements and are the vertices of a tree, and a block $L$ of $B$ without cut points
+inherits these properties (Sections 6 and 7); $L$ is locally connected (Sections 8
+and 9); and a locally connected continuum of dimension at most one with vanishing
+first \v{C}ech cohomology has a cut point (Section~10).
+
+\subsection{Where Sections 3--10 call on Section 2}\label{sub:interface}
+Consider the following statements about a group $\Gam$ with a finite presentation
+whose relators have length at most three, with Cayley two-complex $\Cay$.
+\begin{itemize}
+\item[(G0)] $\Dsp\ne\Dsp_0$. This is the assumption to be refuted.
+\item[(G1)] $\Gam$ is finitely presented: $\Cay$ is simply connected and each edge
+lies on a bounded number of two-cells.
+\item[(G2)] $\Gam$ has one end.
+\item[(G3)] $\Gam$ is torsion-free.
+\item[(G4)] $H^2(\Gam;\F_2\Gam)=0$.
+\item[(G5)] $\Gam$ has no splitting over a finite or two-ended subgroup.
+\end{itemize}
+Sections 3--10 of \cite{O} refer to its Section~2 in five places, and nowhere else
+do they use the complex $Q$, its dimension, or duality:
+\begin{enumerate}
+\item the opening of Section~3 lists its inputs: the group, the complex $\Cay$ and
+its graph, with (G1) and (G2), and the strict inclusion (G0);
+\item the proof of Proposition~4.5 uses (G2) and (G3);
+\item the proof of Proposition~5.3 cites Lemma~2.4 of \cite{O}, twice, and only
+for (G4): a $2$-cochain of finite support of the form $d\alpha$ vanishes on the
+two-cycles of $\Cay$, hence is a cocycle on a free resolution that extends the
+chains of $\Cay$, and by (G4) it is the coboundary of a cochain of finite support;
+\item the opening of Section~6 assumes (G1), (G2), (G3) and (G5), and these are
+what Sections 6 and 7 use;
+\item the last proof, after statement 10.3, uses Lemma 2.3 of \cite{O}, duality
+for $L^2$-Betti numbers, to pass from $\bt{1}=0$ to the other degrees.
+\end{enumerate}
+Read with (G0)--(G5) as hypotheses in place of items 1--4, Sections 3--10 of
+\cite{O} prove that (G1)--(G5) contradict (G0). With Lemma~\ref{lem:gradient},
+this is Theorem~\ref{thm:C}.
+
+Table~\ref{tab:audit} lists the 38 statements with the hypotheses each proof
+uses directly, besides earlier statements of the table. The statements are
+described in our words; for their exact form see \cite{O}.
+
+\begin{longtable}{@{}p{0.07\textwidth}p{0.62\textwidth}>{\raggedright\arraybackslash}p{0.23\textwidth}@{}}
+\caption{The numbered statements of Sections 3--10 of \cite{O} and what their
+proofs use.}\label{tab:audit}\\
+\toprule
+No. & Statement, in brief & Uses directly\\
+\midrule
+\endfirsthead
+\toprule
+No. & Statement, in brief & Uses directly\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+3.1 & a function $f$ of finite energy with values in $[0,1]$, not constant at infinity, whose level sets have connected sides and connected cuts & (G0), (G1)\\
+3.2 & cuts of the coordinate functions have finitely many components & 3.1\\
+3.3 & boxes with generic sides have finitely many graph components; a countable invariant basis of such boxes & (G1), 3.2\\
+3.4 & the localized coordinates have finite energy, and their cuts lie in cuts of the first coordinates & 3.3\\
+3.5 & the boundary $B$ of $X=\Gam\sqcup B$ is a continuum with more than one point & (G2), 3.1\\
+3.6 & vertices near a point of $B$ are joined by graph paths near that point & 3.3, 3.4\\
+4.1 & the total length of a translated cut tends to zero; a bound for the diameter of a connected cut & (G1)\\
+4.2 & translated cuts collapse to the limit of the translating elements & 3.2, 3.4, 4.1\\
+4.3 & if $g_j\to a$ and $g_j^{-1}\to b$ then $g_j\to a$ uniformly on compact subsets of $X\setminus\{b\}$ & 4.2\\
+4.4 & for the fixed point $p$ of a parabolic element, $g$ and $gp$ become close as $g$ leaves finite sets & 4.3\\
+4.5 & every orbit in $B$ is dense & (G2), (G3), 3.5, 4.3, 4.4, \cite{BoT}\\
+5.1 & almost every cut accumulates on a subset of $B$ of one-dimensional Hausdorff measure zero & 3.2, 3.4, 4.1\\
+5.2 & $B$ has covering dimension at most one & 3.6, 5.1\\
+5.3 & $\check H^1(B;\F_2)=0$ & (G1), (G4), 3.6\\
+6.1 & Bowditch's completed pretree of cut points and the dendritic quotient of $B$ & \cite{BoT}\\
+6.2 & the dendritic quotient is a point, and cut points have infinite stabilizers without loxodromic elements & (G1), (G2), (G3), (G5), \cite{BoC}, \cite{BoT}\\
+6.3 & the fixed points of a parabolic element in the pretree & 6.1, \cite{BoT}\\
+6.4 & an invariant class of the pretree with finite intervals & (G1), (G2), (G3), 6.1--6.3, \cite{BoT}\\
+6.5 & a simplicial tree with finite quotient containing the cut points, with infinite edge stabilizers & (G1), (G2), (G5), 6.1, 6.2, 6.4\\
+7.1 & a graph on the cut points next to a vertex of the tree that is not a cut point & (G1), 6.5\\
+7.2 & paths in that graph near a point of $B$ & 3.6, 4.4, 7.1\\
+7.3 & a retraction of $B$ onto a block $L$; $L$ has no cut point, dimension at most one, $\check H^1(L;\F_2)=0$ & 4.5, 5.2, 5.3, 6.5, 7.1, 7.2\\
+7.4 & the common setting: a subgroup $H$, the space $H\sqcup L$, a graph with finitely many orbits & (G3), 3.6, 4.3, 4.4, 6.2, 7.1--7.3\\
+8.1 & a locally constant function to $\F_2$ on a punctured neighbourhood in $L$ extends over the point & properties of $L$ in 7.3\\
+8.2 & points of $L$ away from deleted vertices have a well-defined graph component & 7.4, 8.1\\
+8.3 & an invariant system of annuli & 7.4\\
+8.4 & the annular depth & 8.3\\
+9.1 & translates of a closed set by elements of large depth shrink to a point & 8.3, 8.4\\
+9.2 & a comparison of depths, uniform away from that point & 8.3, 8.4, 9.1\\
+9.3 & component labels at each depth & 7.4, 8.2, 8.3, 8.4\\
+9.4 & few deleted vertices after translation, away from that point & 7.4, 9.1, 9.2\\
+9.5 & labels of two points agree eventually & 7.3, 8.2, 9.4\\
+9.6 & a threshold for the majority label of three points & 7.4, 9.1, 9.5\\
+9.7 & beyond the threshold, greater depth does not separate equal labels & 7.4, 9.3, 9.6\\
+9.8 & $L$ is locally connected & 7.4, 9.3, 9.7\\
+10.1 & restriction is onto in first \v{C}ech cohomology when the dimension is at most one & ---\\
+10.2 & connected open subsets of a locally connected compact metric space are path connected & ---\\
+10.3 & a locally connected continuum with more than one point, dimension at most one and $\check H^1=0$ has a cut point & 10.1, 10.2, \cite{K}\\
+\end{longtable}
+
+\subsection{The outside results used by the manuscript}
+Besides elementary analysis and topology, Sections 3--10 of \cite{O} use the
+following published results.
+\begin{itemize}
+\item Bowditch \cite[Lemma~1.4]{BoC}: if a finitely presented one-ended group with no
+infinite torsion subgroup acts as a minimal convergence group on a dendrite,
+in such a way that every two-ended subgroup over which the group splits fixes a
+point of the dendrite, then the dendrite is a single point. Under (G5) the condition on
+splittings is empty. This is the only place where splittings over two-ended
+subgroups enter.
+\item Bowditch \cite{BoT}: Theorem~6.1, that for a minimal convergence action of a
+finitely generated one-ended group on a
+continuum a cut point whose stabilizer is finite or contains a loxodromic
+element makes the dendritic quotient non-trivial; Lemma~6.2, that in a
+convergence action on a compact Hausdorff space with at least three points an
+element of infinite order is parabolic, with one fixed point, or loxodromic,
+with two, and Proposition~6.4 with the paragraph before it, that a point
+stabilizer containing a loxodromic element is virtually cyclic (both are quoted
+after statement 4.3 and used from statement 4.5 on); and, for statement 6.1 of
+the table, Theorem~3.19, Lemmas 3.13, 3.28, 3.34,
+4.2--4.4, Theorem~5.23, and Lemmas 6.5, 6.6, 6.8--6.11 and 6.13.
+\item Moore's theorem that a continuous image of an interval contains an arc
+between any two of its points, in the form of \cite{K}.
+\end{itemize}
+
+\subsection{The check}\label{sub:check}
+The reading in Section~\ref{sub:interface} rests on the following checks;
+details and dates are in Section~\ref{sec:provenance}. The text read line by
+line was a reproduction of Sections 3--10 of \cite{O}, compared with the source
+files of \cite{O}. Sections 3, 7 and 8 are identical. In Section~4 the
+reproduction adds one sentence; in Section~5 it spells out the last step of the
+proof of 5.3; in Section~9 it rewrites the limit argument at the end of 9.8; in
+Section~10 it gives statement 10.1 for the coefficients $\F_2$ only and writes
+the last proof for general $n$; the other differences, in Sections 6, 9 and 10,
+are of wording. One AI referee followed the proof of
+every one of the 38 statements to the end, those of Sections 3, 4, 5, 8 and 9
+twice, with attention to the five places of Section~\ref{sub:interface} and to
+every use of (G1)--(G5), and found no step that fails and no further use of
+Section~2. An earlier AI referee had passed Sections 3, 4, 5, 7, 8 and 10
+and the arguments of Section~6, without opening the results of Bowditch, and had
+examined Section~9 only in part. A second reader, Claude Opus~5.5 at effort
+high, then read Sections 8 and 9 line by line in the manuscript's own source
+before seeing the first referee's report, every case of every proof, and found
+that all twelve statements hold; it agrees with the first referee on each of
+them, and finds both forms of the limit argument at the end of 9.8 correct. A third AI reader compared
+Section~\ref{sub:interface} and Table~\ref{tab:audit} with the manuscript
+itself, its PDF and its source: the numbers and the descriptions of the
+statements, the five places, and, statement by statement, the references made
+in each proof. The results of Bowditch and of Kamiya were opened at the
+statements listed above and are used as stated. Their proofs were not examined,
+except that of Lemma~1.4 of \cite{BoC}, which the third reader read; what it
+rests on is in Section~\ref{sec:open}.
+
+\section{Proofs of Theorems A and B}
+
+\begin{proof}[Proof of Theorem~\ref{thm:A}]
+By Corollary~\ref{cor:group} the group $\Gam=\pi_1(Q)$ satisfies the hypotheses of
+Theorem~\ref{thm:C}, so $\bt{1}(\Gam)=0$. By Lemma~\ref{lem:comparison},
+$\bt{1}(\widetilde Q)=\bt{1}(\Gam)=0$. Lemma~\ref{lem:l2duality} gives
+$\bt{n-1}(\widetilde Q)=\bt{1}(\widetilde Q)=0$ and
+$\bt{n}(\widetilde Q)=\bt{0}(\widetilde Q)=0$, since $\Gam$ is infinite by
+Lemma~\ref{lem:finiteness}, and $\bt{p}(\widetilde Q)=\bt{n-p}(\widetilde Q)=0$ for
+$p>n$.
+
+A closed connected topological manifold $M$ of dimension $n$ has the homotopy
+type of a finite CW complex: it is a compact absolute neighbourhood retract
+\cite[Theorems 3.2 and 3.3]{Ha}, and such a space is homotopy equivalent to a
+finite complex \cite[Corollary~5.3]{We}. It satisfies Poincar\'e duality with its
+orientation character and all local coefficients
+\cite[Theorem~10.2 and Remark~10.3]{Sp}: the duality isomorphism there is
+defined from the Thom class, for \v{C}ech--Alexander cohomology; for the pair
+$(M,\emptyset)$ it corresponds to cap product with the fundamental class, and
+on a manifold \v{C}ech--Alexander and singular cohomology agree. This passes to
+the finite complex.
+If $M$ is aspherical, so is the complex, and the first part applies; the
+$L^2$-Betti numbers of $M$ are those of the complex, which by
+Lemma~\ref{lem:comparison} do not depend on its choice.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:B}]
+By Lemma~\ref{lem:pd}, $\Gam$ is torsion-free and infinite and satisfies the
+conclusion of Lemma~\ref{lem:duality}, hence that of
+Corollary~\ref{cor:vanishing}, whose proof uses nothing else. Lemmas
+\ref{lem:oneend} and \ref{lem:nosplit} then show, as in
+Corollary~\ref{cor:group}, that $\Gam$ has one end and no splitting over a finite
+or two-ended subgroup, and $H^2(\Gam;\F_2\Gam)=0$. Since $\Gam$ is finitely presented
+by hypothesis, Theorem~\ref{thm:C} gives $\bt{1}(\Gam)=0$, and Lemma~\ref{lem:pd}
+gives $\bt{n-1}(\Gam)=\bt{1}(\Gam)=0$.
+\end{proof}
+
+\section{Remarks}
+
+\begin{remark}[Dimension two]
+The bound $n\ge3$ is sharp. For a closed orientable surface of genus $g\ge2$,
+$H^2(\Gam;\F_2\Gam)\cong H_0(1;\F_2)=\F_2$ by Lemma~\ref{lem:duality}, so (G4) fails,
+and indeed $\bt{1}=2g-2$. In the proofs above the dimension is used in
+Corollary~\ref{cor:vanishing} only, through $n-2>0$ and $n-1\ge2$.
+\end{remark}
+
+\begin{remark}[Finite presentation]
+Theorem~\ref{thm:B} assumes that the group is finitely presented. The argument of
+\cite{O} uses a finite presentation from its first step, in the connectedness of
+cuts, and Bowditch's lemma assumes one.
+\end{remark}
+
+\begin{remark}[What Sections 3 and 4 use]
+Statements 3.1 to 4.5 of Table~\ref{tab:audit} use (G0)--(G3) only: neither the
+vanishing of $H^2(\Gam;\F_2\Gam)$ nor the absence of splittings. What they say about
+arbitrary finitely presented torsion-free groups with one end and $\bt{1}>0$,
+which exist, is left to a separate note.
+\end{remark}
+
+\section{Provenance and checks}\label{sec:provenance}
+
+This paper is AI-produced. No human has proved, written or checked any part of
+it.
+
+\paragraph{Sources.} The argument for Theorem~\ref{thm:C} is that of the
+manuscript \cite{O} of OpenAI, dated 25 September 2026 and released on 6 October
+2026; we cite it and do not reproduce it. That the method gives every dimension
+$n\ge3$ was observed in the comment \cite{R}, which gives no proof and is
+earlier than the run described next. The reductions of Section~2 of \cite{O} in
+every dimension $n\ge3$, with their proofs, the group criterion in the form of
+Theorem~\ref{thm:C}, and the extension to finitely presented $PD(n)$ groups are
+due to a run of GPT-6 Astra (OpenAI, ChatGPT Pro mode) of 22--23 October 2026, in
+answer to a question we had put to it after reading \cite{O}; that run also
+reproduced Sections 3--10 of \cite{O} with a table of the inputs of each
+statement.
+
+\paragraph{The text.} The present text was written by Claude Fable 5.2 at effort
+max. Section~\ref{sec:reductions} follows the mathematics of the run and is
+written afresh; it defines $L^2$-Betti numbers through harmonic chains, where the
+run used modules over the von Neumann algebra, and its Lemma~\ref{lem:comparison}
+is proved accordingly. Section~\ref{sec:criterion}, with
+Table~\ref{tab:audit}, is the writer's reading of \cite{O}.
+
+\paragraph{Checks.} The run's version of the reductions was checked in two
+passes: its Lemmas on finiteness, duality for $L^2$-Betti numbers, duality over
+$\F_2$, ends and splittings by Claude Opus 5.5 at effort high (24 November 2026),
+and its comparison lemma, its gradient lemma and its treatment of $PD(n)$ groups
+by Claude Fable 5.2 at effort max (25 November 2026). Sections 3--10 of \cite{O},
+in the run's reproduction, were read by Claude Opus 5.5 at effort max (Message
+Batches API, 23 October 2026), which passed Sections 3, 4, 5, 7, 8 and 10
+and the arguments of Section~6, left the citations of Bowditch unopened and
+examined Section~9 only in part; and by Claude
+Fable 5.2 at effort max (25 November 2026), as described in
+Section~\ref{sub:check}. The second of these readers is the writer of this text.
+The finished text was then checked independently by Claude Opus 5.5 at effort
+high (25 November 2026). It followed every proof of
+Section~\ref{sec:reductions} to the end and found no error. It compared
+Section~\ref{sec:criterion} with the manuscript's PDF and source; this
+confirmed the numbering, the descriptions of the statements and the five places
+of Section~\ref{sub:interface}, and it corrected the inputs in five rows of
+Table~\ref{tab:audit} (4.5, 6.3, 6.5, 7.4 and 9.6) and the list of outside
+results, where Lemma~6.2 and Proposition~6.4 of \cite{BoT} were missing. It read
+the proof of Lemma~1.4 of \cite{BoC}, and it opened \cite{W}, \cite{LL},
+\cite{DO}, \cite{Da}, \cite{DHT}, \cite{Ha}, \cite{We} and \cite{Sp} at the
+statements used. Its repairs were made, some of them in a different form; none changes a theorem
+or a lemma.
+Passages written or reworded after that check were read by the writer and
+then, with every page of this text, by Claude Opus~5.5 at effort max (25
+November 2026); the mathematical ones are the proof in Section~\ref{sub:defs}
+that the dimension is the same for $V$ and $W$, and the last paragraph of the
+proof of Lemma~\ref{lem:pd}. That reading also removed from the description of
+Theorem~6.1 of \cite{BoT} in Section~\ref{sec:criterion} a hypothesis on
+torsion which Bowditch's statement does not contain. Nothing
+is formalized. The record of every check, with model, effort and date, is in the
+file \texttt{CHECK\_EVENTS.tsv} that accompanies this paper in its workbench,
+reached from \url{https://github.com/KokunoYumeto/mathematics-workbenches};
+\texttt{PROVENANCE.md} lists every contributor and says in which copy each
+citation was confirmed, and which citations have not been opened by a reader of
+ours.
+
+\section{What remains open}\label{sec:open}
+\begin{enumerate}
+\item A reading of the whole of Sections 3--10 of \cite{O} by a human who knows
+convergence groups.
+\item The results on which Bowditch's Lemma~1.4 of \cite{BoC} rests. Its proof
+has been read by one AI reader. It uses the construction of an $\R$-tree from a
+minimal convergence action on a dendrite (Levitt; Bowditch) and a theorem of
+Tukia on free abelian subgroups of convergence groups, which no reader of ours
+has opened, and the theorem of Bestvina and Feighn on stable actions of
+finitely presented groups on $\R$-trees, which has been opened at its
+statement.
+\item The degrees $2,\dots,n-2$ for $n\ge5$, on which the method gives nothing.
+\item Whether Theorem~\ref{thm:B} holds for $PD(n)$ groups that are not finitely
+presented.
+\end{enumerate}
+
+\begin{thebibliography}{99}
+\bibitem{BoC} B.~H.~Bowditch, \emph{Connectedness properties of limit sets},
+Trans.\ Amer.\ Math.\ Soc.\ \textbf{351} (1999), 3673--3686; Lemma~1.4 (author's
+manuscript, p.~6).
+\bibitem{BoT} B.~H.~Bowditch, \emph{Treelike structures arising from continua and
+convergence groups}, Mem.\ Amer.\ Math.\ Soc.\ \textbf{139} (1999), no.~662;
+numbering of the author's manuscript: Lemma~3.13, Theorem~3.19, Lemmas 3.28, 3.34,
+4.2--4.4, 5.15, Theorem~5.23, Theorem~6.1, Lemma~6.2, Proposition~6.4,
+Lemmas 6.5, 6.6, 6.8--6.11, 6.13.
+\bibitem{Da} M.~W.~Davis, \emph{Poincar\'e duality groups}, in: Surveys on Surgery
+Theory, vol.~1, Ann.\ of Math.\ Stud.\ \textbf{145}, Princeton Univ.\ Press, 2000,
+167--193; Definitions 3.1 and 3.2, Theorems 3.3 and 7.15.
+\bibitem{DO} M.~W.~Davis and B.~Okun, \emph{Vanishing theorems and conjectures for
+the $\ell^2$-homology of right-angled Coxeter groups}, Geom.\ Topol.\ \textbf{5}
+(2001), 7--74; Theorem~11.3.2.
+\bibitem{DHT} L.~F.~Di Cerbo, H.~Hunter and A.~K.~Thrasher, \emph{Price inequality
+and the growth of harmonic functions on non-positively curved manifolds},
+arXiv:2601.08804; the introduction.
+\bibitem{Ha} O.~Hanner, \emph{Some theorems on absolute neighborhood retracts},
+Ark.\ Mat.\ \textbf{1} (1951), 389--408; Theorems 3.2 and 3.3.
+\bibitem{K} H.~Kamiya, \emph{An elementary proof of a theorem of L.~Moore's on
+continuous curves}, Japan.\ J.\ Math.\ \textbf{7} (1930), 301--304; the theorem on
+p.~301.
+\bibitem{LL} J.~Lott and W.~L\"uck, \emph{$L^2$-topological invariants of
+$3$-manifolds}, Invent.\ Math.\ \textbf{120} (1995), 15--60; Theorem~0.1.
+\bibitem{L} W.~L\"uck, \emph{$L^2$-Invariants: Theory and Applications to Geometry
+and $K$-Theory}, Ergeb.\ Math.\ Grenzgeb.\ (3) \textbf{44}, Springer, 2002; Chapter~1.
+\bibitem{O} OpenAI, \emph{The Singer conjecture in dimension four}, manuscript
+dated 25 September 2026, with its \TeX\ source, at
+\url{https://github.com/openai/math/tree/main/preprints/The-Singer-conjecture-in-dimension-four-September-25-2026}
+(Apache License 2.0; released there on 6 October 2026); Sections 2--10.
+\bibitem{R} \texttt{Apprehensive\_Sand951}, comment \texttt{pf4k77i} in the thread
+\emph{AI in mathematics, October 10, 2026}, \texttt{r/math},
+\url{https://www.reddit.com/r/math/comments/1x2iy00/comment/pf4k77i/}.
+\bibitem{Sp} E.~Spanier, \emph{Singular homology and cohomology with local
+coefficients and duality for manifolds}, Pacific J.\ Math.\ \textbf{160} (1993),
+165--200; Theorem~10.2 and Remark~10.3.
+\bibitem{W} C.~T.~C.~Wall, \emph{Poincar\'e complexes.~I}, Ann.\ of Math.\ (2)
+\textbf{86} (1967), 213--245; Section~1 and Lemma~4.1.
+\bibitem{We} J.~E.~West, \emph{Mapping Hilbert cube manifolds to ANR's: a solution
+of a conjecture of Borsuk}, Ann.\ of Math.\ (2) \textbf{106} (1977), 1--18;
+Corollary~5.3.
+\end{thebibliography}
+
+\end{document}

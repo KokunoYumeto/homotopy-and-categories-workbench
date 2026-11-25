@@ -1,0 +1,27 @@
+ok    closed
+ok    identity
+ok    associative
+ok    x_ij x_kl = x_il
+ok    products of non-identity elements are non-identity
+ok    e, u, a, b, c is a Z-basis (inverse substitution reproduces every element)
+ok    coordinates of e, u, a, b, c are the unit vectors
+ok    e, u idempotent, eu = ue = 0
+ok    ae = a, ea = 0, eb = b, be = 0
+ok    ab = c, ba = 0, ua = a, bu = b, cu = c, ca = 0, bb = 0
+ok    R'e lies in Ze + Za
+ok    R'e contains e and a
+ok    R'u lies in Zu + Zb + Zc
+ok    R'u contains u, b and c
+ok    d_1 on the basis u, b, c of R'u: u -> a, b -> 0, c -> 0 (kernel Zb + Zc, image Za)
+ok    d_2 on the basis e, a of R'e: e -> b, a -> c (injective, image Zb + Zc)
+ok    kernel of the augmentation on R'e is Za
+ok    augmentation of e is 1, of u is 0
+ok    z_2 is a cycle
+ok    z_2 lies in BM5 (its cells are pairs of elements x_ij)
+ok    f_2 is a cocycle on BM5
+ok    f_2(z_2) = 1
+ranks of the bar differentials d_2, d_3, d_4: 4 11 53
+ok    H_1 = 0 (d_1 = 0, rank d_2 = 4, elementary divisors 1)
+ok    H_2 = Z (kernel of d_2 has rank 12, rank d_3 = 11, elementary divisors 1)
+ok    H_3 = 0 (kernel of d_3 has rank 53, rank d_4 = 53, elementary divisors 1)
+ALL CHECKS PASSED

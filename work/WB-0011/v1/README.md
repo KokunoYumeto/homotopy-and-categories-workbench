@@ -1,0 +1,7 @@
+# Exact, total and filtered small categories
+
+WB-0011, version 1: [hexagon:2611.01026](https://hexagonmath.org/2611.01026), deposited 25 November 2026.
+
+For a non-empty connected small category we compare four properties: being filtered; exactness of colimits of abelian groups; Grothendieck's total asphericity, which says that colimits of simplicial sets over the category are homotopy colimits; and being quasi-filtered, which means that two arrows with a common source can be completed to a commutative square and that two parallel arrows are equalized by an integral combination of arrows whose coefficients sum to 1. Each implies the next. We give a category of finite ordered hypergraphs that is totally aspherical and whose colimits are exact over no non-zero ring, and we show that the category of finite ordered two-graphs (sets of triples that meet every four-element set in an even number of triples) is quasi-filtered and not totally aspherical. With the example of Isbell and Mitchell, the three implications are strict. A conjecture in Grothendieck's *Les Dérivateurs*, that totally aspherical categories are filtered, is therefore false; it holds for sifted categories, those over which colimits of sets commute with finite products.
+
+Files: the paper (`exact_total_filtered_small_categories.tex` and its PDF); `STATEMENTS.tsv`, `CHECK_EVENTS.tsv` (every check, with model, effort and date), `SOURCES.tsv`; `PROVENANCE.md` (every contributor and the state of every citation); the programs of the checks in `checks/`, with their outputs.

@@ -1,0 +1,1056 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.15in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\emergencystretch=3em
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\Po}{\mathcal{P}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\colim}{\operatorname{colim}}
+\newcommand{\aug}{\operatorname{aug}}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\id}{\mathrm{id}}
+
+\title{Exactness of colimits and amenability are independent for categories
+of finite substructures\thanks{AI-produced. The results are due to a run of
+GPT-6 Astra (OpenAI, ChatGPT Pro mode); the text was written, and every proof
+derived again, by Claude Fable~5.2 (Anthropic) at effort max; see
+Section~\ref{sec:provenance} for who proved, wrote and checked what. No human
+has checked this text. To the extent that any rights exist in it, they are
+dedicated to the public domain under CC0~1.0.}}
+\author{}
+\date{25 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $M$ be a countable homogeneous structure, $G$ its automorphism group and
+$\A$ the category of its finite substructures and embeddings. The colimit
+functor on diagrams of $R$-modules indexed by $\A$ is exact if and only if
+the functor of coinvariants $N\mapsto N_G$ is exact on the $R[G]$-modules in
+which every element has an open stabilizer; this is a property of the topos
+of continuous $G$-sets. We compare it with amenability of $G$, the existence
+of invariant probability measures on compact spaces on which $G$ acts, and
+show that neither implies the other. For the generic partially ordered set
+with an independent linear order, colimits are exact over every ring, while
+the group is not amenable by a result of Kechris and Soki\'c. For the vector
+space of countable dimension over the field with two elements, with a generic
+linear order on its non-zero vectors, the group is amenable and colimits are
+exact over the rational numbers, but they are exact over no ring in which
+$2$ is not invertible. The first statement rests on a transfer theorem: if a
+subgroup $H$ has exact coinvariants and finitely many orbits on each
+$G/G_B$, then exactness for $G$ over a field $k$ is equivalent to the
+existence of a $G$-invariant, finitely additive, $k$-valued function of total
+mass $1$ on the expansions that $H$ defines; positivity is not required. For
+posets this function has integer values, given by Euler characteristics of
+cells of order cones, which are values of the measure of Harman and Snowden
+for the automorphism group of the ordered real line. A consequence is that
+the separation property proved by Evans for Ramsey structures holds for a
+structure that is not a Ramsey structure but is obtained from one by
+forgetting a relation.
+\end{abstract}
+
+\section{Introduction and results}\label{sec:intro}
+
+\paragraph{The setting.} We use the setting of \cite[\S3.1]{D1}. Let $M$ be a non-empty countable set and $G$ a group of permutations of $M$. For $B\subseteq M$ let
+$G_B$ be the pointwise stabilizer of $B$. A subgroup of $G$ is \emph{open} if
+it contains $G_B$ for some finite $B$; this is the topology of pointwise
+convergence on $G$. Let $\K$ be a set of finite subsets of $M$ such that
+\begin{enumerate}
+\item[\textup{(K1)}] $\varnothing\in\K$; $gB\in\K$ for $B\in\K$ and $g\in G$;
+every finite subset of $M$ is contained in a member of $\K$.
+\end{enumerate}
+The category $\A=\A(M,G,\K)$ has the non-empty members of $\K$ as objects,
+and its arrows $B\to C$ are the maps $g|_B$ with $g\in G$ and $gB\subseteq C$.
+If $M$ is the Fra\"iss\'e limit of a class of finite structures, $G=\Aut(M)$
+and $\K$ is the set of all finite subsets, then every embedding between
+finite substructures of $M$ extends to an automorphism, so $\A$ is the
+category of non-empty finite substructures of $M$ and embeddings, and it is
+equivalent to the category of all non-empty structures of the class with
+embeddings. In Section~\ref{sec:vector} the members of $\K$ are the finite
+subspaces of a vector space, without the zero vector.
+
+All rings are commutative with $1$. For a ring $R$, an $R[G]$-module $N$ is
+\emph{smooth} if every element of $N$ is fixed by an open subgroup. Its
+\emph{coinvariants} are $N_G=N/I_GN$, where $I_GN$ is the submodule generated
+by the elements $gn-n$; the functor $N\mapsto N_G$ is right exact.
+
+\begin{definition}\label{def:exact}
+The category $\A$ is \emph{exact over $R$} if the functor
+$\colim_{\A}$ from functors $\A\to R\text{-Mod}$ to $R$-modules is exact.
+\end{definition}
+
+Colimits of modules are computed on the underlying abelian groups, so a
+category that is exact over $\Z$ is exact over every ring; and exactness is
+invariant under equivalence of categories.
+
+The group $G$ is \emph{amenable} if every continuous action of $G$ on a
+non-empty compact Hausdorff space has an invariant regular Borel probability measure, and \emph{extremely amenable} if every such action has a fixed
+point.
+
+\begin{theorem}\label{thm:dict}
+Assume \textup{(K1)}. The category $\A(M,G,\K)$ is exact over $R$ if and only
+if the functor of coinvariants preserves monomorphisms of smooth
+$R[G]$-modules. Equivalently: in the topos of continuous $G$-sets, the left
+adjoint of the functor that gives an $R$-module the trivial action of $G$ is
+exact on $R$-module objects. In particular exactness over $R$ depends only
+on this topos.
+\end{theorem}
+
+The first sentence is due to the run described in
+Section~\ref{sec:provenance}; the functors in its proof are those of Artin's
+theorem as written out for modules by Di, Li, Liang and Xu
+\cite[Theorem~5.1]{DLLX}. Section~\ref{sec:dict} also proves a criterion in
+terms of the category alone: $\A$ is exact over $R$ if and only if every
+finite family of parallel arrows is equalized by a combination of arrows
+with coefficients in $R$ of sum $1$ (Proposition~\ref{prop:affine}); this is
+the criterion of Isbell and Mitchell \cite{IM} in the present setting.
+
+\begin{theorem}\label{thm:transfer}
+Assume \textup{(K1)}. Let $H$ be a subgroup of $G$ with finitely many orbits
+on $G/G_B$ for every $B\in\K$, and let $k$ be a ring such that coinvariants
+preserve monomorphisms of smooth $k[H]$-modules (smooth for $H$: every element is fixed by $H\cap G_B$ for some finite $B$). For $B\in\K$ let
+$E(B)=G_B\backslash G/H$.
+\begin{itemize}
+\item[\textup{(a)}] If there are functions $\mu_B\colon E(B)\to k$, $B\in\K$,
+of total sum $1$, compatible with the restriction maps $E(C)\to E(B)$ for
+$B\subseteq C$ and with the action of $G$ \textup{(}a \emph{normalized
+invariant measure}, Definition~\textup{\ref{def:measure})}, then
+$\A(M,G,\K)$ is exact over every $k$-algebra.
+\item[\textup{(b)}] If $k$ is a field and $\A(M,G,\K)$ is exact over $k$,
+there is such a family.
+\item[\textup{(c)}] If $G$ is amenable and $k\supseteq\Q$, there is such a
+family; so $\A(M,G,\K)$ is then exact over every $\Q$-algebra.
+\end{itemize}
+\end{theorem}
+
+When $H$ is the automorphism group of an expansion $M^*$ of $M$, the set
+$E(B)$ is the set of expansions of $B$ that occur in $M^*$, and a normalized
+invariant measure with values in $[0,1]$ is what is called a consistent
+random expansion; for excellent pairs of classes its existence is the
+starting point of Zucker's criterion for amenability
+\cite[\S3 and Theorem~3.1]{Zu}. Theorem
+\ref{thm:transfer} says that exactness is the same linear condition without
+positivity (Remark~\ref{rem:zucker}).
+
+\begin{theorem}\label{thm:posets}
+Let $\Po$ be the class of finite structures $(P,\prec,<)$, where $\prec$ is a
+strict partial order and $<$ a linear order on $P$, let $M_{\Po}$ be its
+Fra\"iss\'e limit and $G=\Aut(M_{\Po})$. The category of non-empty members of
+$\Po$ and embeddings is exact over every ring. The group $G$ is not amenable
+\textup{(}Kechris and Soki\'c \cite[Remark~3.2]{KS}\textup{)}.
+\end{theorem}
+
+\begin{theorem}\label{thm:vector}
+Let $\V$ be the category of finite-dimensional non-zero vector spaces over
+$\F_2$ with a linear order on the set of their non-zero vectors, and of
+injective linear maps that preserve the order. Let $(V_\infty,<)$ be its
+Fra\"iss\'e limit and $G$ the group of linear automorphisms of $V_\infty$ that
+preserve the order.
+\begin{itemize}
+\item[\textup{(a)}] $G$ is amenable.
+\item[\textup{(b)}] $\V$ is exact over every $\Q$-algebra.
+\item[\textup{(c)}] $\V$ is not exact over any ring in which $2$ is not
+invertible; in particular not over $\F_2$ and not over $\Z$.
+\end{itemize}
+\end{theorem}
+
+So exactness over $\Z$ does not imply amenability, and amenability does not
+imply exactness over $\Z$ or over a field of characteristic $2$. Extreme
+amenability does imply exactness over $\Z$: this is Lemma~3.7\,(i) of Evans
+\cite{Ev}, in dual form (Remark~\ref{rem:evans}).
+
+The second statement alone has an elementary witness with non-rigid objects.
+For the category of finite non-empty sets and injections the group is the
+symmetric group of a countably infinite set. It is amenable by
+Lemma~\ref{lem:Re}: the uniform distribution $\nu$ on the bijections of $Q$
+satisfies $\nu a=\nu a'$ for all arrows $a,a'\colon P\to Q$. The average of
+the bijections of $Q$ is an affine equalizer over $\Q$ of all arrows
+$P\to Q$, and an affine equalizer of the automorphisms of an $n$-element set
+has augmentation in $n!R$; so this category is exact over $R$ exactly when
+$R$ is a $\Q$-algebra (Proposition~\ref{prop:affine}). In
+Theorem~\ref{thm:vector} every object is rigid and the category is exact
+over $\Q$. We do not know whether $\V$ is exact over a ring in which $2$ is
+invertible and which is not a $\Q$-algebra. Amenability does not imply
+exactness over $\Q$ in general: for the group of translations of $M=\Z$,
+with $\K$ the set of finite subsets, the group is discrete and amenable,
+the objects are rigid, and the inclusion of $\{0\}$ in $\{0,1\}$ and the
+arrow $0\mapsto1$ have no affine equalizer over any non-zero ring, because
+the coefficients of an equalizer would form a finitely supported function
+on $\Z$ that is invariant under translation. By
+Theorem~\ref{thm:transfer}\,(c) amenability does imply exactness over $\Q$
+when $G$ has a subgroup $H$ as in that theorem.
+
+\begin{corollary}\label{cor:evans}
+Let $M=M_{\Po}$, $G=\Aut(M)$, let $W$ be a set with an action of $G$ in which
+every point has an open stabilizer, $R$ a ring, $Y$ an $R[G]$-submodule of
+the free module $R[W]$, and $x\in R[W]$. Let $U$ be an open subgroup of $G$
+fixing $x$, and $\Omega_U\colon R[W]\to R[U\backslash W]$ the map that sends
+a point to its $U$-orbit. Then $x\in Y$ if and only if
+$\Omega_U(x)\in\Omega_U(Y)$. If $R$ is a field and $x\notin Y$, there is a
+$U$-invariant function $f\colon W\to R$ whose linear extension vanishes on
+$Y$ and not on $x$.
+\end{corollary}
+
+For $\omega$-categorical Ramsey structures, $W$ a sort of $M^{\mathrm{eq}}$ and $U$ the pointwise stabilizer of the support of $x$, these are Theorem~1.4 and Corollary~1.5 of \cite{Ev}. In Remarks~2.12 of \cite{Ev} Evans asks whether
+the separation property holds for reducts of Ramsey structures. The
+structure $M_{\Po}$ is a reduct of a Ramsey structure and is not one itself
+(its group is not amenable); Corollary~\ref{cor:evans} gives the property for
+it over every field, and Theorem~\ref{thm:transfer}\,(c) gives it in
+characteristic $0$ for every reduct with an amenable automorphism group
+(Remark~\ref{rem:reducts}).
+
+\paragraph{What is known and what is new.} Known: the non-amenability in
+Theorem~\ref{thm:posets} \cite{KS}; the implication from extreme amenability
+to exactness \cite{Ev}; Artin's dictionary between continuous $G$-sets and
+sheaves on orbit categories, in the form of \cite{DLLX} and, for Fra\"iss\'e
+classes, of Caramello \cite[Theorem~2.9, Proposition~2.10]{Ca}; the criterion
+of Isbell and Mitchell \cite{IM}; the Euler-characteristic measure of Harman
+and Snowden \cite{HS}, of which the weights of Lemma~\ref{lem:weights} are
+values (Remark~\ref{rem:HS}). New, to our knowledge after the search
+described in Section~\ref{sec:provenance}: Theorems~\ref{thm:transfer},
+\ref{thm:vector}, the exactness in Theorem~\ref{thm:posets} and
+Corollary~\ref{cor:evans}. The theory of \cite{HS} does not give these
+statements: its exactness results concern modules over a completed group
+algebra, and smoothness of a $k[G]$-module in the sense above is weaker than smoothness over that algebra \cite[Remark~10.10]{HS}; and by Snowden \cite[Proposition~8.2]{Sn} the
+class of finite posets has no regular measure in their sense.
+
+\section{Coinvariants, the topos and affine equalizers}\label{sec:dict}
+
+Throughout, $(M,G,\K)$ satisfies (K1) and $\A=\A(M,G,\K)$. By (K1) the
+non-empty members of $\K$ form a directed set under inclusion, inclusions
+are arrows of $\A$, and every arrow $f\colon B\to C$ factors as
+$B\xrightarrow{\,g|_B\,}gB\subseteq C$ for any $g\in G$ with $g|_B=f$.
+
+\begin{proof}[Proof of Theorem~\ref{thm:dict}]
+For $V\colon\A\to R\text{-Mod}$ let $S(V)=\colim_{B}V(B)$, the colimit over
+the directed set of non-empty members of $\K$ and inclusions. Write $[B,v]$
+for the class of $v\in V(B)$. The rule $g[B,v]=[gB,V(g|_B)v]$ is well defined,
+because $g|_C$ restricts to $g|_B$ for $B\subseteq C$, and it makes $S(V)$ an
+$R[G]$-module in which $[B,v]$ is fixed by $G_B$; so $S(V)$ is smooth. The
+functor $S$ is exact, because directed colimits of modules are exact.
+
+\emph{Claim: $\colim_{\A}V\cong S(V)_G$, naturally in $V$.} The module
+$\colim_{\A}V$ is the quotient of $\bigoplus_BV(B)$ by the relations
+$v\sim V(f)v$ for arrows $f$. By the factorization above these relations are
+generated by those for inclusions, whose quotient is $S(V)$, and those for
+the bijections $g|_B\colon B\to gB$, which identify $[B,v]$ with $g[B,v]$.
+
+For a smooth $R[G]$-module $N$ define $T(N)\colon\A\to R\text{-Mod}$ by
+$T(N)(B)=N^{G_B}$ and $T(N)(g|_B)n=gn$. This is well defined: another
+element of $G$ with the same restriction to $B$ is $gu$ with $u\in G_B$; and
+$gn$ is fixed by $G_C$ when $gB\subseteq C$, since
+$g^{-1}G_Cg=G_{g^{-1}C}\subseteq G_B$. Since $N$ is smooth,
+$S(T(N))=\bigcup_BN^{G_B}=N$ as $R[G]$-modules, and a monomorphism
+$N'\to N$ gives a monomorphism $T(N')\to T(N)$.
+
+If coinvariants preserve monomorphisms of smooth modules, then
+$\colim_{\A}=(-)_G\circ S$ preserves monomorphisms, and it is right exact;
+so $\A$ is exact over $R$. Conversely, if $\A$ is exact over $R$ and
+$N'\subseteq N$ are smooth, then
+$N'_G=\colim_{\A}T(N')\to\colim_{\A}T(N)=N_G$ is injective.
+
+A continuous $G$-set is a set with an action of $G$ in which every point
+has an open stabilizer, so an $R$-module object of the topos of continuous
+$G$-sets is a smooth $R[G]$-module. The functor $\gamma^*$ from sets to this
+topos gives a set the trivial action, and for a smooth $N$ and an
+$R$-module $B$ we have $\Hom_{R[G]}(N,\gamma^*B)=\Hom_R(N_G,B)$. So the left
+adjoint of $\gamma^*$ on $R$-module objects is $N\mapsto N_G$. An equivalence
+of toposes commutes with $\gamma^*$ up to isomorphism, which is unique, and
+induces an equivalence of the categories of $R$-module objects; hence the
+last assertion.
+\end{proof}
+
+\begin{remark}\label{rem:topos}
+Under the equivalence of Artin between continuous $G$-sets and sheaves for
+the atomic topology on an orbit category of $G$, the functor $T$ is the
+inclusion of sheaves into presheaves and $S$ is the associated sheaf (when the set of fixed points of $G_B$ in $M$ is $B$ for all $B\in\K$, as in the examples of this paper, so that $\A$ is the opposite of the orbit category on the $G/G_B$; in general $S$ is exact and left adjoint to the fully faithful $T$) \cite[Theorem~5.1 and the equivalence displayed after it]{DLLX}. When $M$ is
+the Fra\"iss\'e limit of the finitely presentable models of a theory of
+presheaf type, the topos of continuous $\Aut(M)$-sets is the classifying
+topos of the theory of homogeneous models
+\cite[Theorem~2.9, Proposition~2.10]{Ca}. By Theorem~\ref{thm:dict},
+exactness of colimits over the category of finite models is then an
+invariant of that theory up to Morita equivalence.
+\end{remark}
+
+\begin{lemma}\label{lem:open}
+If coinvariants preserve monomorphisms of smooth $R[G]$-modules, the same
+holds for every open subgroup $U$ of $G$. Then for every smooth
+$R[U]$-module $N$ the map $N^U\to N_U$ is injective.
+\end{lemma}
+
+\begin{proof}
+For a smooth $R[U]$-module $N$ the induced module $R[G]\otimes_{R[U]}N$ is
+smooth, because $g\otimes n$ is fixed by $gU_ng^{-1}$ and the stabilizer
+$U_n$ of $n$ is open in $G$. Induction is exact, since $R[G]$ is free as a
+right $R[U]$-module, and
+$(R[G]\otimes_{R[U]}N)_G=R\otimes_{R[U]}N=N_U$. So a monomorphism
+$N'\to N$ of smooth $R[U]$-modules gives a monomorphism $N'_U\to N_U$. For
+$n\in N^U$ the submodule $Rn$ has trivial action, so $Rn=(Rn)_U\to N_U$ is
+injective.
+\end{proof}
+
+For objects $P,C$ of $\A$ write $\A(P,C)$ for the set of arrows, which is
+finite, and $R[\A(P,C)]$ for the free module on it. An arrow
+$a\colon P\to Q$ induces $t\mapsto ta$ from $R[\A(Q,C)]$ to $R[\A(P,C)]$,
+and $\aug$ denotes the sum of the coefficients.
+
+\begin{definition}\label{def:affine}
+An \emph{affine equalizer over $R$} of arrows $a_0,\dots,a_k\colon P\to Q$ is
+an element $t\in R[\A(Q,C)]$, for some object $C$, with $\aug(t)=1$ and
+$ta_i=ta_0$ for all $i$.
+\end{definition}
+
+\begin{proposition}\label{prop:affine}
+The category $\A$ is exact over $R$ if and only if every finite family of
+arrows $a_0,\dots,a_k\colon P\to Q$ of $\A$ has an affine equalizer over $R$.
+\end{proposition}
+
+For arbitrary small categories with common successors this is the criterion
+of Isbell and Mitchell \cite[Theorem~3.1, Proposition~3.3 and the remark after it, for a commutative ring in place of $\Z$]{IM}. We give a
+direct proof in the present setting.
+
+\begin{proof}
+For an object $P$ let $E_P$ be the free $R$-module on the set of maps
+$g|_P$, $g\in G$, with $G$ acting by composition; it is the permutation
+module on $G/G_P$, it is smooth, and $(E_P)_G=R$ by the augmentation.
+
+Suppose $\A$ is exact over $R$ and let $a_0,\dots,a_k\colon P\to Q$. Let
+$\phi\colon E_Q\to E_P^k$ have the components $t\mapsto ta_i-ta_0$; it is
+$G$-linear. Put $I=\phi(E_Q)$. Coinvariants are right exact, so
+$I_G=R/\aug(\ker\phi)$. The composite $E_Q\to I\to E_P^k\to(E_P^k)_G=R^k$
+is zero, because $\aug(ta_i)=\aug(ta_0)$; so $I_G\to(E_P^k)_G$ is zero. By
+Theorem~\ref{thm:dict} it is injective. Hence $I_G=0$, and there is
+$t\in\ker\phi$ with $\aug(t)=1$. Its support is a finite set of maps
+$Q\to M$, whose images lie in some $C\in\K$; so $t$ is an affine equalizer.
+
+Conversely suppose every finite family has an affine equalizer. Let
+$N'\subseteq N$ be smooth and $n'\in N'\cap I_GN$, say
+$n'=\sum_{i=1}^k(g_i-1)n_i$ with $g_i\in G$, $n_i\in N$. Choose $P\in\K$
+such that $G_P$ fixes $n_1,\dots,n_k$, and $Q\in\K$ containing $P$ and all
+$g_iP$. Let $a_0\colon P\to Q$ be the inclusion and $a_i=g_i|_P$, and let
+$t=\sum_ht_h[h]\in R[\A(Q,C)]$ be an affine equalizer. For each $h$ choose
+$\hat h\in G$ with $\hat h|_Q=h$. For $n\in N^{G_P}$ the rule
+$\Phi_n([g|_P])=gn$ defines an $R$-linear map $\Phi_n\colon R[\A(P,C)]\to N$,
+and $\Phi_n([ha_i])=\hat hg_in$, because $\hat hg_i$ restricts to $ha_i$ on
+$P$. Therefore
+\[
+ \sum_ht_h\hat hg_in_i=\Phi_{n_i}(ta_i)=\Phi_{n_i}(ta_0)=\sum_ht_h\hat hn_i ,
+\]
+and summing over $i$ gives $\sum_ht_h\hat hn'=0$. As $\sum_ht_h=1$,
+\[
+ n'=\sum_ht_hn'-\sum_ht_h\hat hn'=-\sum_ht_h(\hat h-1)n'\in I_GN'.
+\]
+So $N'_G\to N_G$ is injective, and $\A$ is exact over $R$ by
+Theorem~\ref{thm:dict}.
+\end{proof}
+
+\section{Ramsey categories, amenability and the transfer}\label{sec:transfer}
+
+\subsection{Ramsey categories}
+
+\begin{definition}\label{def:RP}
+A category $\C$ with finite sets of arrows has the \emph{Ramsey property}
+if for all objects $P,Q$ and every $r\ge1$ there is an object $C$ such that
+for every map $\chi\colon\C(P,C)\to\{1,\dots,r\}$ there is $g\in\C(Q,C)$
+with $\chi$ constant on $\{ga:a\in\C(P,Q)\}$. It has property
+\textup{(Re)} if for all arrows $a_0,\dots,a_k\colon P\to Q$ and every
+$\varepsilon>0$ there are an object $C$ and a probability vector $\nu$ on
+$\C(Q,C)$ with $\sum_{i=1}^k\|\nu a_i-\nu a_0\|_1<\varepsilon$.
+\end{definition}
+
+Definition~\ref{def:affine} makes sense in any such category.
+
+\begin{lemma}\label{lem:ramsey}
+In a category with finite sets of arrows and the Ramsey property, every
+finite family $a_0,\dots,a_k\colon P\to Q$ has an affine equalizer over $\Z$,
+and property \textup{(Re)} holds.
+\end{lemma}
+
+\begin{proof}
+\emph{Affine equalizers.} Let $N=3k+1$ and let $C$ be as in
+Definition~\ref{def:RP} for $P$, $Q$ and $r=N^k$. Let
+$F=\Z[\C(P,C)]^k\oplus\Z$ and let $L\subseteq F$ be the image of
+$t\mapsto((ta_i-ta_0)_i,\aug t)$ on $\Z[\C(Q,C)]$. An affine equalizer with
+target $C$ exists if and only if $(0,1)\in L$. Suppose not, and let $x\ne0$
+be the class of $(0,1)$ in $F/L$. There is a homomorphism
+$\psi\colon F/L\to\R/\Z$ such that $c=\psi(x)$ has distance at least $1/3$
+from $0$: on the cyclic group generated by $x$ send $x$ to $1/2$ if $x$ has
+infinite order and to $\lfloor m/2\rfloor/m$ if $x$ has order $m\ge2$, and
+extend to $F/L$, which is possible because $\R/\Z$ is divisible. The
+homomorphism $\psi$ is given by functions
+$\theta_1,\dots,\theta_k\colon\C(P,C)\to\R/\Z$ and the value $c$ on $(0,1)$,
+and it vanishes on $L$:
+\[
+ \sum_{i=1}^k\bigl(\theta_i(ga_i)-\theta_i(ga_0)\bigr)+c=0
+ \qquad\text{for every }g\in\C(Q,C).
+\]
+Divide $\R/\Z$ into $N$ arcs of length $1/N$ and colour $e\in\C(P,C)$ by the
+$k$-tuple of the arcs containing $\theta_1(e),\dots,\theta_k(e)$. For a $g$
+as in the Ramsey property each difference $\theta_i(ga_i)-\theta_i(ga_0)$
+has distance less than $1/N$ from $0$, so $c$ has distance less than
+$k/N<1/3$ from $0$, a contradiction.
+
+\emph{Property \textup{(Re)}.} Let $N>2k/\varepsilon$ and let $C$ be as in
+Definition~\ref{def:RP} for $r=N^k$. Let $\Delta$ be the simplex of
+probability vectors on $\C(Q,C)$ and
+$\Lambda=([-1,1]^{\C(P,C)})^k$. The function
+$\Phi(\nu,\lambda)=\sum_i\langle\lambda_i,\nu a_i-\nu a_0\rangle$ is bilinear
+on the compact convex sets $\Delta$ and $\Lambda$, so by the minimax theorem \cite{vN} (applied to the matrix game whose columns are the vertices of the cube $\Lambda$; a linear function on $\Lambda$ takes its maximum at a vertex) $\min_\nu\max_\lambda\Phi=\max_\lambda\min_\nu\Phi$. Here
+$\max_\lambda\Phi(\nu,\lambda)=\sum_i\|\nu a_i-\nu a_0\|_1$, and
+$\min_\nu\Phi(\nu,\lambda)$ is the minimum over $g\in\C(Q,C)$ of
+$\sum_i(\lambda_i(ga_i)-\lambda_i(ga_0))$. Given $\lambda$, colour
+$e\in\C(P,C)$ by the $k$-tuple of the intervals of length $2/N$ of $[-1,1]$
+containing $\lambda_i(e)$; a $g$ as in the Ramsey property gives a sum of
+absolute value at most $2k/N<\varepsilon$. So the common value is less than
+$\varepsilon$.
+\end{proof}
+
+\begin{remark}\label{rem:evans}
+For the category of finite substructures of the Fra\"iss\'e limit $M^*$ of a Fra\"iss\'e class of finite structures that have a linear order among their relations, the Ramsey property is equivalent to extreme amenability of $\Aut(M^*)$, by the theorem of Kechris, Pestov and Todorcevic \cite[Theorem~4.8]{KPT}, which is stated for such order classes and for colourings of substructures; for ordered structures these are the embeddings; and for an extremely amenable group Evans proves
+that invariants are exact on compact continuous modules
+\cite[Lemma~3.7\,(i)]{Ev}, which by Pontryagin duality is the statement that
+coinvariants are exact on smooth $\Z[G]$-modules. With
+Proposition~\ref{prop:affine} this gives the first assertion of
+Lemma~\ref{lem:ramsey} for such categories. The finite proof above, which
+comes from the runs, is included because Section~\ref{sec:vector} applies
+the lemma to a category for which we want no limit object, and because it
+is short.
+\end{remark}
+
+\begin{lemma}\label{lem:Re}
+Assume \textup{(K1)}. If $\A(M,G,\K)$ has property \textup{(Re)}, then $G$
+is amenable.
+\end{lemma}
+
+\begin{proof}
+Let $G$ act continuously on a non-empty compact Hausdorff space $X$. The
+invariant probability measures are the intersection, in the compact space
+of all regular Borel probability measures with the weak* topology, of the closed
+sets $\{\lambda:|\lambda(f\circ g)-\lambda(f)|\le\eta\}$ for continuous
+$f\colon X\to[0,1]$, $g\in G$ and $\eta>0$. So it is enough to find, for
+continuous $f_1,\dots,f_r\colon X\to[0,1]$, elements $g_1,\dots,g_s\in G$ and
+$\eta>0$, a probability measure $\lambda$ with
+$|\lambda(f_i\circ g_j)-\lambda(f_i)|\le3\eta$ for all $i,j$.
+
+By continuity of the action and compactness of $X$ there is $P\in\K$ with
+$|f_i(ux)-f_i(x)|<\eta$ for all $x\in X$, $u\in G_P$ and all $i$. Fix
+$x_0\in X$. For each map $e=g|_P$, $g\in G$, choose one such $g$ and put
+$c_i(e)=f_i(g^{-1}x_0)$; for any other $g'$ with $g'|_P=e$ we have
+$g'=gu$ with $u\in G_P$, so $|f_i(g'^{-1}x_0)-c_i(e)|<\eta$. Let $Q\in\K$
+contain $P$ and all $g_j^{-1}P$, let $a_0\colon P\to Q$ be the inclusion and
+$a_j=g_j^{-1}|_P$. By \textup{(Re)} there are $C$ and a probability vector
+$\nu$ on $\A(Q,C)$ with $\sum_j\|\nu a_j-\nu a_0\|_1<\eta$. Choose
+$\hat h\in G$ extending each $h\in\A(Q,C)$ and let
+$\lambda=\sum_h\nu(h)\delta_{\hat h^{-1}x_0}$. Since $\hat h$ extends $ha_0$
+and $\hat hg_j^{-1}$ extends $ha_j$,
+\[
+ \bigl|\lambda(f_i)-\textstyle\sum_h\nu(h)c_i(ha_0)\bigr|<\eta,\qquad
+ \bigl|\lambda(f_i\circ g_j)-\textstyle\sum_h\nu(h)c_i(ha_j)\bigr|<\eta ,
+\]
+and $|\sum_h\nu(h)(c_i(ha_j)-c_i(ha_0))|=|\langle c_i,\nu a_j-\nu
+a_0\rangle|\le\|\nu a_j-\nu a_0\|_1<\eta$.
+\end{proof}
+
+\subsection{Measures on expansions and the transfer theorem}
+
+Let $H$ be a subgroup of $G$ and $E(B)=G_B\backslash G/H$ for $B\in\K$. For
+$B\subseteq C$ there is the surjection $E(C)\to E(B)$,
+$\zeta\mapsto\zeta|_B$, induced by $G_C\subseteq G_B$, and for $a\in G$ the
+bijection $a_*\colon E(B)\to E(aB)$, $G_BgH\mapsto G_{aB}agH$.
+
+\begin{definition}\label{def:measure}
+A \emph{normalized invariant measure} with values in a ring $k$ is a family
+of functions $\mu_B\colon E(B)\to k$, $B\in\K$, each $E(B)$ being finite,
+such that
+\begin{itemize}
+\item[\textup{(i)}] $\sum_{\xi\in E(B)}\mu_B(\xi)=1$;
+\item[\textup{(ii)}] $\mu_B(\xi)=\sum_{\zeta|_B=\xi}\mu_C(\zeta)$ for
+$B\subseteq C$ and $\xi\in E(B)$;
+\item[\textup{(iii)}] $\mu_{aB}(a_*\xi)=\mu_B(\xi)$ for $a\in G$.
+\end{itemize}
+\end{definition}
+
+Equivalently, it is a $G$-invariant finitely additive function of total
+mass $1$ on the closed and open subsets of the compact space
+$X=\varprojlim_BE(B)$, on which $G$ acts continuously by
+$(ax)_{aB}=a_*(x_B)$.
+
+\begin{proof}[Proof of Theorem~\ref{thm:transfer}]
+(a) Let $R$ be a $k$-algebra and $N$ a smooth $R[G]$-module. For $n\in N$
+choose $B\in\K$ with $G_B$ fixing $n$, and for $\xi=G_BgH\in E(B)$ let
+$f_n(\xi)$ be the class of $g^{-1}n$ in $N_H$. It is well defined:
+$(ugh)^{-1}n=h^{-1}g^{-1}n$ for $u\in G_B$, $h\in H$, and this has the same
+class as $g^{-1}n$. Put
+\[
+ s_N(n)=\sum_{\xi\in E(B)}\mu_B(\xi)f_n(\xi)\in N_H .
+\]
+By (ii) this does not depend on $B$: for $B\subseteq C$ the function $f_n$
+on $E(C)$ is the composite of $E(C)\to E(B)$ with $f_n$ on $E(B)$, and any
+two choices are contained in a third. So $s_N$ is $R$-linear, and it is
+natural in $N$. For $a\in G$ the element $an$ is fixed by $G_{aB}$ and
+$f_{an}(a_*\xi)=f_n(\xi)$, so $s_N(an)=s_N(n)$ by (iii). Hence $s_N$ induces
+$\bar s_N\colon N_G\to N_H$. If $q_N\colon N_H\to N_G$ is the quotient map,
+then $q_N(f_n(\xi))$ is the class of $n$, and $q_N\bar s_N=\id$ by (i). Now
+let $N'\subseteq N$ be smooth and let $x\in N'_G$ go to zero in $N_G$. Then
+$\bar s_{N'}(x)$ goes to zero in $N_H$; as $N'_H\to N_H$ is injective for
+$R[H]$-modules that are smooth for $H$ (the hypothesis on $H$ over $k$
+gives it over $R$, since coinvariants do not depend on the ring),
+$\bar s_{N'}(x)=0$ and $x=q_{N'}\bar s_{N'}(x)=0$. By Theorem~\ref{thm:dict},
+$\A$ is exact over $R$.
+
+(b) Let $F$ be the $k$-vector space of the functions $G/H\to k$ that are
+invariant under $G_B$ for some $B\in\K$, with $(a\varphi)(x)=\varphi(a^{-1}x)$.
+It is a smooth $k[G]$-module containing the constants. By exactness and
+Theorem~\ref{thm:dict}, $k=k_G\to F_G$ is injective, so there is a linear
+form $\ell$ on $F_G$ with value $1$ on the class of the constant function
+$1$. Let $\mu_B(\xi)$ be the value of $\ell$ on the class of the indicator
+function $1_\xi$ of $\xi\subseteq G/H$. Then (i) and (ii) hold because
+$\sum_\xi1_\xi=1$ and $1_\xi=\sum_{\zeta|_B=\xi}1_\zeta$, and (iii) because
+$a1_\xi=1_{a_*\xi}$.
+
+(c) The space $X$ is non-empty and compact, so there is a $G$-invariant
+Borel probability measure $\lambda$ on it. The measures of the sets
+$\{x:x_B=\xi\}$ satisfy (i)--(iii) with real values. Composing with a
+$\Q$-linear map $\R\to\Q$ that sends $1$ to $1$ gives a normalized invariant
+measure with values in $\Q$, hence in $k$, and by (a) the category $\A$ is exact over $k$. By Proposition~\ref{prop:affine} every finite family of arrows then has an affine equalizer $t$ over $k$. If $\rho\colon k\to\Q$ is $\Q$-linear with $\rho(1)=1$, applying $\rho$ to the coefficients of $t$ gives an affine equalizer over $\Q$, because the conditions $\aug(t)=1$ and $ta_i=ta_0$ are linear with integer coefficients. So $\A$ is exact over $\Q$, hence over every $\Q$-algebra.
+\end{proof}
+
+\begin{remark}\label{rem:zucker}
+Let $H=\Aut(M^*)$ for an expansion $M^*$ of a homogeneous structure $M$, as
+in Section~\ref{sec:posets}. Zucker \cite[\S3]{Zu} considers the rational
+vector space on the set $\Omega$ of expansions of finite substructures and
+its subspace $V$ spanned by the vectors ``an expansion minus the sum of its
+extensions along an embedding''. His Theorem~3.1 states, for an excellent
+pair, that $\Aut(M)$ is amenable if and only if every non-zero vector of $V$
+has coefficients of both signs. A normalized invariant measure with values
+in a field $k$ is a linear form on $k\Omega$ that vanishes on $V$ and takes
+the value $1$ on the expansion of the empty structure. So, for $H$ as in
+Theorem~\ref{thm:transfer}, the category is exact over $k$ if and only if
+that vector does not lie in $V\otimes k$.
+\end{remark}
+
+\section{Posets with an independent linear order}\label{sec:posets}
+
+\subsection{Integer weights on linear extensions}
+
+Let $(P,\prec,<)$ be in $\Po$; we call $<$ the reference order. A
+\emph{cell} of $P$ is a sequence $(B_1,\dots,B_b)$ of non-empty pairwise
+disjoint subsets with union $P$ such that $y\prec z$ implies that the block
+of $y$ comes before the block of $z$. A cell \emph{sorts to} the linear
+order on $P$ that lists $B_1,\dots,B_b$ in this order and each block in the
+reference order; this is a linear extension of $\prec$. For a linear
+extension $\pi$ of $\prec$ put
+\[
+ w_P(\pi)=(-1)^{|P|}\sum_{\text{cells sorting to }\pi}(-1)^{b},
+\]
+where $b$ is the number of blocks. The empty structure has one cell, with
+$b=0$, and $w_\varnothing=1$.
+
+\begin{lemma}\label{lem:weights}
+The integers $w_P(\pi)$ are invariant under isomorphisms of structures
+$(P,\prec,<)$, their sum over the linear extensions of $P$ is $1$, and for
+every subset $Q\subseteq P$, with the induced relations, and every linear
+extension $\tau$ of $Q$,
+\[
+ \sum_{\pi|_Q=\tau}w_P(\pi)=w_Q(\tau).
+\]
+\end{lemma}
+
+\begin{proof}
+Invariance is clear. By induction it is enough to prove the identity for
+$P=Q\cup\{x\}$; the case $Q=\varnothing$ of the general identity is the
+statement on the sum. Deleting $x$ from a cell of $P$, and its block if it
+becomes empty, gives a cell of $Q$, and the sorting of the new cell is the
+restriction of the sorting of the old one. Fix a cell $(B_1,\dots,B_b)$ of
+$Q$. Let $l$ be the largest index of a block containing an element below
+$x$ in $\prec$, or $0$, and $u$ the smallest index of a block containing an
+element above $x$, or $b+1$. Then $l<u$, since $y\prec x\prec z$ implies
+$y\prec z$. The cells of $P$ over the given one are obtained by adding $x$
+to a block $B_j$ with $l<j<u$, which gives $m=u-l-1$ cells with $b$ blocks,
+or by inserting $\{x\}$ as a new block after $B_j$ for some $l\le j<u$,
+which gives $m+1$ cells with $b+1$ blocks. Their signed number is
+$m(-1)^b+(m+1)(-1)^{b+1}=(-1)^{b+1}$, and
+$(-1)^{|P|}(-1)^{b+1}=(-1)^{|Q|}(-1)^b$. Summing over the cells of $Q$ that
+sort to $\tau$ gives the identity.
+\end{proof}
+
+\begin{remark}\label{rem:HS}
+The weights are values of a measure of Harman and Snowden. Let $O(P)$ be
+the set of maps $t\colon P\to\R$ with $t_y<t_z$ for $y\prec z$, an open
+convex cone in $\R^P$, and $O_\pi(P)$ the set of those $t$ for which
+ordering $P$ by the values of $t$, ties broken by the reference order,
+gives $\pi$. The cells above are the orbits of $\Aut(\R,<)$ on $O(P)$; a
+cell with $b$ blocks is the set of strictly increasing $b$-tuples of reals.
+The compactly supported Euler characteristic is a $\Z$-valued measure
+$\mu$ for $\Aut(\R,<)$ in the sense of \cite{HS} (Example~3.5,
+Theorem~16.7 and Remark~16.8 there), with value $(-1)^b$ on such a cell. So
+\[
+ w_P(\pi)=\mu(O_\pi(P))/\mu(O(P)),\qquad\mu(O(P))=(-1)^{|P|},
+\]
+and the identity of Lemma~\ref{lem:weights} is the transitivity of
+push-forward \cite[Proposition~4.8]{HS} for the projections $O(P)\to O(P\setminus\{x\})$, whose fibres are open intervals. The family
+$(w_P)$ is not itself a measure in the sense of \cite{HS} on the class of
+expanded structures, because it is not multiplicative along embeddings: for
+the antichain $\{x,y\}$ with $x<y$ one finds $w(x,y)=0$ and $w(y,x)=1$,
+while after adding a point $z$ with $x\prec z$, incomparable to $y$, and
+$y<z$, the three linear extensions have weights $w(x,y,z)=-1$,
+$w(x,z,y)=1$, $w(y,x,z)=1$.
+\end{remark}
+
+\subsection{Proof of Theorem~\ref{thm:posets}}
+
+Let $\Po^*$ be the class of finite structures $(P,\prec,<,\lhd)$ with
+$(P,\prec,<)\in\Po$ and $\lhd$ a linear extension of $\prec$. Both $\Po$
+and $\Po^*$ are Fra\"iss\'e classes \cite[Remark~3.2]{KS}, and $\Po^*$ has
+the Ramsey property for embeddings (Bodirsky \cite[Corollary~1.4\,(3)]{Bo}).
+Let $M^*=(M,\prec,<,\lhd_0)$ be the Fra\"iss\'e limit of $\Po^*$. Every
+linear extension of a subposet of a finite poset extends to the poset, so
+$(M,\prec,<)$ has the extension property that characterizes the Fra\"iss\'e
+limit of $\Po$; we take $M_{\Po}=(M,\prec,<)$. Let $G=\Aut(M_{\Po})$,
+$H=\Aut(M^*)\subseteq G$ and $\K$ the set of finite subsets of $M$.
+
+\emph{The group $H$.} The category $\A(M,H,\K)$ is the category of
+non-empty finite substructures of $M^*$ and embeddings; it has the Ramsey
+property because $\Po^*$ has it and every member of $\Po^*$ embeds in
+$M^*$. By Lemma~\ref{lem:ramsey} and Proposition~\ref{prop:affine} it is
+exact over $\Z$, so coinvariants preserve monomorphisms of smooth
+$R[H]$-modules for every ring $R$ (Theorem~\ref{thm:dict}).
+
+\emph{The sets $E(B)$.} For $B\in\K$ the map $gH\mapsto(g\lhd_0)|_B$
+induces a bijection from $E(B)=G_B\backslash G/H$ to the set of linear
+extensions of $(B,\prec)$; here $g\lhd_0$ is the image of $\lhd_0$ under
+$g$. Indeed, if $(g\lhd_0)|_B=(g'\lhd_0)|_B$, then $g'^{-1}g$ restricts to
+an isomorphism of the substructures $g^{-1}B$ and $g'^{-1}B$ of $M^*$, which
+extends to some $h\in H$, and $g'hg^{-1}\in G_B$. And every linear extension
+$\pi$ occurs: $(B,\prec,<,\pi)$ embeds in $M^*$ by a map $e$, and by
+homogeneity of $M_{\Po}$ there is $g\in G$ with $g^{-1}|_B=e$. In
+particular $E(B)$ is finite. Under these bijections the maps
+$E(C)\to E(B)$ and $a_*$ are restriction and transport of linear orders.
+
+\emph{Exactness.} By Lemma~\ref{lem:weights} the functions $\mu_B=w_B$ form
+a normalized invariant measure with values in $\Z$. By
+Theorem~\ref{thm:transfer}\,(a) the category $\A(M,G,\K)$, which is
+equivalent to the category of non-empty members of $\Po$, is exact over
+every ring.
+
+\emph{Non-amenability} is \cite[Remark~3.2]{KS}: the class called
+$\mathcal{OP}$ there is $\Po$. \qed
+
+\begin{proof}[Proof of Corollary~\ref{cor:evans}]
+By Theorems~\ref{thm:posets} and~\ref{thm:dict} and Lemma~\ref{lem:open},
+$N^U\to N_U$ is injective for every smooth $R[U]$-module $N$. Apply this to
+$N=R[W]/Y$: the map $\Omega_U$ identifies $R[W]_U$ with $R[U\backslash W]$,
+so $N_U=R[U\backslash W]/\Omega_U(Y)$. If $\Omega_U(x)\in\Omega_U(Y)$, the
+class of $x$ in $N$ is $U$-invariant and goes to zero in $N_U$, hence is
+zero, and $x\in Y$. If $R$ is a field and $x\notin Y$, take a linear form on
+$R[U\backslash W]$ that vanishes on $\Omega_U(Y)$ and not on $\Omega_U(x)$,
+and compose it with $\Omega_U$.
+\end{proof}
+
+\begin{remark}\label{rem:reducts}
+The proof uses only that the category is exact over $R$. So the conclusions
+of Corollary~\ref{cor:evans} hold over $R$ whenever $\A(M,G,\K)$ is exact
+over $R$; by Theorem~\ref{thm:transfer}\,(c) and Remark~\ref{rem:evans} this
+is the case over every field of characteristic $0$ when $M$ is a reduct of
+an $\omega$-categorical Ramsey structure $M^*$ and $\Aut(M)$ is amenable.
+Conversely, the first conclusion of Corollary~\ref{cor:evans}, required
+only for $U=G$, implies that $\A(M,G,\K)$ is exact over $R$. Let
+$N'\subseteq N$ be smooth and $n'\in N'\cap I_GN$. The class of $n'$ in
+$N/I_GN'$ is $G$-invariant. Write $N/I_GN'=R[W]/Y$, with $W$ a $G$-set with
+open stabilizers and that class the image of a point $w$ of $W$ fixed by
+$G$. The class goes to zero in $(N/I_GN')_G=N_G$, so
+$\Omega_G(w)\in\Omega_G(Y)$; hence $w\in Y$ and $n'\in I_GN'$. So by
+Theorem~\ref{thm:vector}\,(c) the membership test with $U=G$ fails for the
+ordered $\F_2$-space over every ring in which $2$ is not invertible. This
+does not answer the question of \cite[Remarks~2.12]{Ev}, which asks only for
+a function invariant under the pointwise stabilizer of some finite set: for
+a finite group acting faithfully that weaker property holds trivially, while
+coinvariants are not exact in the modular case.
+\end{remark}
+
+\section{Ordered vector spaces over the field with two
+elements}\label{sec:vector}
+
+The objects of $\V$ are the pairs $(W,<)$ with $W$ a finite-dimensional
+non-zero $\F_2$-vector space and $<$ a linear order on $W\setminus\{0\}$; the
+arrows are the injective linear maps that preserve the order. Two objects
+embed in a third, and two arrows $W_0\to W_1$, $W_0\to W_2$ can be completed
+to a commutative square in which $W_1\cap W_2=W_0$: take the push-out of
+vector spaces, an order on the union of $W_1$ and $W_2$ that extends both
+orders, and the remaining vectors last. There are countably many objects up
+to isomorphism. By Fra\"iss\'e's theorem for classes of finitely generated
+structures (\cite[\S7.1]{Ho}; see also \cite[Theorem~2.2]{KPT}), applied to the language with addition and the
+order, there is a countable vector space $V_\infty$ with a linear order on
+$M=V_\infty\setminus\{0\}$ such that every object of $\V$ embeds in
+$(V_\infty,<)$ and every isomorphism in $\V$ between finite-dimensional
+subspaces of $V_\infty$ extends to an element of the group $G$ of
+order-preserving linear automorphisms. Let $\K$ consist of $\varnothing$
+and the sets $W\setminus\{0\}$ for finite-dimensional subspaces $W\ne0$.
+Then \textup{(K1)} holds and $\A(M,G,\K)$ is equivalent to $\V$.
+
+\subsection{Amenability}
+
+\begin{proof}[Proof of Theorem~\ref{thm:vector}\,\textup{(a)}]
+By Lemma~\ref{lem:Re} it is enough to prove that the category $\V$ has
+property \textup{(Re)}. Let $a_0,\dots,a_t$ be arrows from $P$ to $Q$ in
+$\V$ and let $\varepsilon>0$. Let $c$ and $d$
+be the dimensions of $P$ and $Q$, and $p=2^c-1$, $q=2^d-1$ the numbers of
+their non-zero vectors. The orders identify the non-zero vectors of $P$
+with $\{1,\dots,p\}$ and those of $Q$ with $\{1,\dots,q\}$, and they
+identify $a_i$ with an increasing injection $\alpha_i$ of
+$\{1,\dots,p\}$ into $\{1,\dots,q\}$.
+
+\emph{Step 1.} The category of finite linear orders and increasing
+injections has the Ramsey property, by Ramsey's theorem, hence
+\textup{(Re)} by Lemma~\ref{lem:ramsey}. So there are $m$ and a probability
+vector $\nu$ on the increasing injections
+$\{1,\dots,q\}\to\{1,\dots,m\}$ with
+$\sum_{i=1}^t\|\nu_i-\nu_0\|_1<\varepsilon/3$, where $\nu_i$ is the image
+of $\nu$ under composition with $\alpha_i$. Extend $\nu$ and the $\nu_i$ by
+zero to all maps into $\{1,\dots,m\}$.
+
+\emph{Step 2.} Let $n\ge d$ and $V=\F_2^n$. Colour the non-zero vectors of
+$V$ independently and uniformly by $\chi(v)\in\{1,\dots,m\}$, and order
+$V\setminus\{0\}$ by colour, ties broken by a fixed order. For an injective
+linear map $g\colon Q\to V$ put $w(g)=\nu(\chi\circ g)$; it is non-zero only
+if $g$ preserves the orders. Let $e_r(n)=\prod_{j<r}(2^n-2^j)$ be the
+number of injective linear maps $\F_2^r\to V$, and $W=\sum_gw(g)$. The
+colours of the $q$ points $g(Q\setminus\{0\})$ are independent and uniform,
+so the expectation of $w(g)$ is $m^{-q}$ and
+\[
+ \mathbb{E}\,W=e_d(n)\,m^{-q}.
+\]
+For an injective linear $u\colon P\to V$ let
+$X_i(u)=\sum_{ga_i=u}w(g)$; there are $N=e_d(n)/e_c(n)$ such $g$. Given the
+colours on $u(P)$, the colours of the $q-p$ other points of $g(Q)$ are
+independent and uniform, so the conditional expectation of $X_i(u)$ is
+\[
+ H_i(u)=N\,m^{-(q-p)}\,\nu_i(\chi\circ u).
+\]
+Two maps $g,h$ with $ga_i=ha_i=u$ and $g(Q)\cap h(Q)=u(P)$ have
+conditionally independent weights. For fixed $g$ and $h$ uniform among the
+$N$ maps, each vector of $Q$ outside $a_i(P)$ has an image that is uniform
+on $V\setminus u(P)$, so the probability that $g(Q)\cap h(Q)\ne u(P)$ is at
+most $\eta_n=(2^d-2^c)^2/(2^n-2^c)$. As $0\le w\le1$, the conditional
+variance of $X_i(u)$ is at most $N^2\eta_n$, so
+$\mathbb{E}|X_i(u)-H_i(u)|\le N\sqrt{\eta_n}$, and summing over the
+$e_c(n)$ maps $u$,
+\[
+ \mathbb{E}\|X_i-H_i\|_1\le e_d(n)\sqrt{\eta_n},\qquad
+ \mathbb{E}\|H_i-H_0\|_1=e_d(n)\,m^{-q}\,\|\nu_i-\nu_0\|_1 ,
+\]
+the second because the $p$ colours on $u(P)$ are independent and uniform.
+Let $D=\sum_{i=1}^t\|X_i-X_0\|_1$. Then
+\[
+ \mathbb{E}\,D\le e_d(n)\Bigl(2t\sqrt{\eta_n}
+ +m^{-q}\sum_{i=1}^t\|\nu_i-\nu_0\|_1\Bigr).
+\]
+Choose $n$ with $2tm^q\sqrt{\eta_n}<\varepsilon/3$. Then
+$\mathbb{E}(D-\varepsilon W)<0$, so for some colouring $D<\varepsilon W$,
+and $W>0$. For this colouring $(V,<)$ is an object of $\V$, $w/W$ is a
+probability vector on $\V(Q,V)$, its images under the $a_i$ are the
+$X_i/W$, and $\sum_i\|X_i/W-X_0/W\|_1<\varepsilon$.
+\end{proof}
+
+\subsection{The obstruction in characteristic two}
+
+\begin{proof}[Proof of Theorem~\ref{thm:vector}\,\textup{(c)}]
+Let $P=\F_2^2$ with non-zero vectors $x_1<x_2<x_3$. Write the non-zero
+vectors of $\F_2^3$ as $1,\dots,7$ in binary, so that addition is bitwise
+addition without carry, and let $Q$ be $\F_2^3$ with the order
+$1<2<3<4<6<5<7$. Let $a_1,\dots,a_5\colon P\to Q$ send $(x_1,x_2,x_3)$ to
+\[
+ (1,2,3),\quad(1,6,7),\quad(2,5,7),\quad(3,4,7),\quad(3,6,5).
+\]
+Each triple is the set of non-zero vectors of a plane, listed increasingly,
+and every bijection between such sets is linear; so these are arrows of
+$\V$.
+
+Let $D$ be an object of $\V$. Choose a basis $b_1,\dots,b_n$ of $D$ and let
+$\sqsubset$ be the order on $D$ that compares two vectors at the largest
+index where their coordinates differ, with $0$ before $1$; it has nothing to
+do with the given order of $D$. For a statement $S$ let $[S]$ be $1$ if $S$
+holds and $0$ otherwise. For $v\ne0$ let $\epsilon_v$ be the linear
+form that takes the coordinate at the largest index where $v$ has
+coordinate $1$. For $x\ne y$ the vectors $x$ and $y$ differ last at that
+index of $x+y$, so, with values in $\F_2$,
+\begin{equation}\label{eq:ind}
+ [x\sqsubset y]=\epsilon_{x+y}(y).
+\end{equation}
+For distinct non-zero $u,v$,
+\begin{equation}\label{eq:between}
+ [u+v\text{ lies between }u\text{ and }v]=\epsilon_u(v)+\epsilon_v(u).
+\end{equation}
+Indeed, if the largest indices of $u$ and $v$ agree, then $u+v$ comes before
+both and the right side is $1+1$. If the largest index of $u$ exceeds that
+of $v$, then $v$ comes before $u$ and before $u+v$, the vector $u+v$ comes
+before $u$ exactly when $\epsilon_v(u)=1$, and $\epsilon_u(v)=0$.
+
+Let $g\colon Q\to D$ be linear and injective and write $i$ for $g(i)$. By
+\eqref{eq:ind}, and since $1+2=5+6=3$ and $1+6=2+5=7$,
+\[
+ [2\sqsubset1]+[1\sqsubset6]+[2\sqsubset5]+[5\sqsubset6]
+ =\epsilon_3(1)+\epsilon_7(6)+\epsilon_7(5)+\epsilon_3(6)
+ =\epsilon_3(7)+\epsilon_7(3),
+\]
+which by \eqref{eq:between} is $[4\text{ lies between }3\text{ and }7]$. For
+an arrow $e\colon P\to D$ define, with $y_j=e(x_j)$,
+\begin{gather*}
+ f_1(e)=[y_2\sqsubset y_1],\qquad f_2(e)=f_3(e)=[y_1\sqsubset y_2],\\
+ f_4(e)=[y_2\text{ lies between }y_1\text{ and }y_3],\qquad
+ f_5(e)=[y_3\sqsubset y_2].
+\end{gather*}
+The computation says $\sum_jf_j(ga_j)=0$ for every arrow $g\colon Q\to D$.
+On the other hand $\sum_jf_j(e)=1$ for every $e$: with
+$\alpha=[y_2\sqsubset y_1]$ and $\beta=[y_3\sqsubset y_2]$ one has
+$f_4=(1-\alpha)(1-\beta)+\alpha\beta=1+\alpha+\beta$ in $\F_2$.
+
+Let $R$ be a ring in which $2$ is not invertible, and suppose
+$t\in R[\V(Q,D)]$ is an affine equalizer of $a_1,\dots,a_5$. Reduce modulo
+$2$: in the non-zero $\F_2$-algebra $\bar R=R/2R$ we get $\bar t$ with
+$\aug\bar t=1$ and $\bar ta_j=\bar m$ for all $j$. Extending the $f_j$
+linearly,
+\[
+ 0=\sum_jf_j(\bar ta_j)=\sum_jf_j(\bar m)=\aug(\bar m)=\aug(\bar t)=1 ,
+\]
+a contradiction. By Proposition~\ref{prop:affine}, applied to
+$\A(M,G,\K)\simeq\V$, the category is not exact over $R$.
+\end{proof}
+
+\subsection{Exactness over the rationals}
+
+Let $\C$ be the following category. An object is a finite non-empty linearly
+ordered set $E$ with a linear order on the set of its non-empty subsets; an
+arrow is an increasing injection that preserves the order on subsets. The
+functor $u\colon\C\to\V$ sends $E$ to the vector space $\F_2^E$, whose
+non-zero vectors are the sums of non-empty sets of basis vectors, with the
+corresponding order. For a vector of $\F_2^E$, its \emph{support} is the set
+of basis vectors that occur in it.
+
+\begin{lemma}\label{lem:C}
+The category $\C$ has the Ramsey property, and it is exact over $\Z$.
+\end{lemma}
+
+\begin{proof}
+Let $A,B$ be objects and $b=|B|$; we may assume $|A|\le b$. For a set $S$
+of size at most $b$ in a linearly ordered set, with elements
+$s_1<\dots<s_j$, let $\tau(S)=(s_1,\dots,s_j,s_j,\dots,s_j)$, a $b$-tuple.
+Regard $A$ and $B$ as structures $A',B'$ with a linear order on the points,
+the $b$-ary relation consisting of the tuples $\tau(S)$, and the linear
+order on this relation given by the order on subsets. By the theorem of
+Hubi\v cka and Ne\v set\v ril on structures with linearly ordered points and
+linearly ordered relations \cite[Theorem~4.46]{HN} there is, for every $r$,
+such a structure $C_0$ with the Ramsey property for $A'$, $B'$ and $r$
+colours, embeddings preserving the relation, its complement and both
+orders. On the points of $C_0$ define an object $C$ of $\C$: order the
+subsets of size at most $b$ so that the order agrees with that of $C_0$ on
+those $S$ whose tuple $\tau(S)$ is in the relation of $C_0$, and put the
+other subsets anywhere. An embedding $A'\to C_0$ or $B'\to C_0$ maps the
+tuples $\tau(S)$ to tuples of the same form in the relation of $C_0$, hence
+is an arrow of $\C$ into $C$; and $\C(A,B)$ is the set of embeddings
+$A'\to B'$. So a colouring of $\C(A,C)$ restricts to a colouring of the
+embeddings $A'\to C_0$, and an embedding $g\colon B'\to C_0$ with all
+$g\circ\C(A,B)$ of one colour is the required arrow. This proves the Ramsey
+property.
+
+The objects of $\C$ are the finite structures in a relational language,
+with relations saying that one increasing tuple precedes another as a
+subset, and the arrows are the embeddings. This class is hereditary, has
+countably many members up to isomorphism, and has the amalgamation and
+joint embedding properties: on the union of two members over a common part,
+merge the two orders of the points, extend the two orders on subsets to a
+common order on the subsets of either member, and put the remaining
+subsets last. By Fra\"iss\'e's theorem $\C$ is equivalent to a category
+$\A(M',G',\K')$ as in Section~\ref{sec:intro}, and
+Lemma~\ref{lem:ramsey} and Proposition~\ref{prop:affine} give exactness
+over $\Z$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:vector}\,\textup{(b)}]
+Let $R$ be a $\Q$-algebra and $a_0,\dots,a_k\colon P\to Q$ arrows of $\V$.
+By Proposition~\ref{prop:affine} it is enough to find an affine equalizer
+over $\Q$. For an object $Y$ of $\V$ let $X_Y\colon\C\to\Q\text{-Mod}$ be
+the functor $C\mapsto\Q[\V(Y,uC)]$; write $[C,h]$ for the class of
+$h\in\V(Y,uC)$ in $\colim_\C X_Y$.
+
+\emph{Step 1: classes in $\colim_\C X_P$.} For $h\in\V(P,uC)$ let
+$U_h\subseteq C$ be the union of the supports of the vectors of $h(P)$,
+with the induced orders; it is an object of $\C$, the inclusion
+$U_h\subseteq C$ is an arrow, and $h$ factors through $u(U_h)$. So
+$[C,h]=[U_h,h]$, and $[U,h]=[U',h']$ whenever there is an isomorphism
+$\varphi\colon U\to U'$ in $\C$ with $u(\varphi)h=h'$. Call the isomorphism
+class of the pair $(U_h,h)$ the \emph{type} of $(C,h)$. Then a finite
+combination $\sum_jr_j[C_j,h_j]$ depends only on the sums of the
+coefficients over each type.
+
+\emph{Step 2: a class in $\colim_\C X_Q$ with equal images.} Let $Q^\vee$
+be the dual space, $E=Q^\vee\setminus\{0\}$, and
+$j\colon Q\to\F_2^E$, $j(v)=(\ell(v))_{\ell\in E}$, which is linear and
+injective. Let $\Omega$ be the finite set of pairs $\omega$ consisting of a
+linear order on $E$ and a linear order on the non-zero vectors of $\F_2^E$
+in which the vectors outside $j(Q)$ come first, in any order, followed by
+$j(Q\setminus\{0\})$ in the order of $Q$. Each $\omega$ gives an object
+$E_\omega$ of $\C$ and $j\in\V(Q,uE_\omega)$. Put
+\[
+ \mu=\frac1{|\Omega|}\sum_{\omega\in\Omega}[E_\omega,j]\in\colim_\C X_Q,
+ \qquad\aug\mu=1 .
+\]
+The image of $\mu$ under $a_i$ is the average of the classes
+$[E_\omega,ja_i]$. The union of the supports of the vectors $ja_i(x)$ is
+$E_i=\{\ell\in E:\ell a_i\ne0\}$, and
+\begin{equation}\label{eq:inter}
+ \F_2^{E_i}\cap j(Q)=ja_i(P):
+\end{equation}
+$j(v)$ has support in $E_i$ exactly when every linear form vanishing on
+$a_i(P)$ vanishes on $v$, that is, when $v\in a_i(P)$. So the type of
+$(E_\omega,ja_i)$ is that of the set $E_i$ with the order induced by
+$\omega$, the order on the non-zero vectors of $\F_2^{E_i}$ in which those
+outside $ja_i(P)$ come first, in the order induced by $\omega$, followed by
+$ja_i(P\setminus\{0\})$ in the order of $P$, and the map $ja_i$. As
+$\omega$ runs over $\Omega$, the induced order on $E_i$ and the induced
+order on the vectors of $\F_2^{E_i}$ outside $ja_i(P)$ are independent and
+uniformly distributed, because restriction of linear orders to a subset
+has fibres of equal size. Finally, for two indices $i,i'$ there is a
+bijection $\beta\colon E_i\to E_{i'}$ with $\beta(\ell)a_{i'}=\ell a_i$,
+because every non-zero linear form on $P$ is $\ell a_i$ for exactly
+$2^{\dim Q-\dim P}$ elements $\ell$ of $E_i$, and likewise for $i'$; the
+linear map defined by $\beta$ carries $ja_i$ to $ja_{i'}$. Hence the
+distribution of the type of $(E_\omega,ja_i)$ is the same for all $i$, and
+by Step~1 the images of $\mu$ under $a_0,\dots,a_k$ coincide.
+
+\emph{Step 3: an affine equalizer.} Let $D\colon X_Q\to X_P^k$ be the
+natural transformation with components $t\mapsto ta_i-ta_0$. By
+Lemma~\ref{lem:C} the functor $\colim_\C$ is exact, so it commutes with
+kernels, and $\mu$, which lies in the kernel of $\colim_\C D$, is the class
+of an element of $\colim_\C\ker D$. Such an element is a finite sum of
+classes of elements of $(\ker D)(C_j)$; any two objects of $\C$ map to a
+third, so it is the class of a single $t\in(\ker D)(C)\subseteq
+\Q[\V(Q,uC)]$. The augmentation is natural, so $\aug t=\aug\mu=1$, and
+$D(C)t=0$ says $ta_i=ta_0$.
+\end{proof}
+
+\section{Provenance and checks}\label{sec:provenance}
+
+This paper is AI-produced. No human has proved, written or checked any part
+of it.
+
+\paragraph{What is whose.} The statements and proofs of
+Theorems~\ref{thm:posets} and~\ref{thm:vector} (part~(c) over $\F_2$ and
+$\Z$), of the first sentence of
+Theorem~\ref{thm:dict}, of Theorem~\ref{thm:transfer} in the form of a
+group with a closed co-precompact subgroup and a finitely additive
+invariant function on the closed and open sets of the completion of $G/H$,
+of Lemmas~\ref{lem:Re}, \ref{lem:weights} and~\ref{lem:C} and of the three
+steps of Section~\ref{sec:vector} are due to a run of GPT-6 Astra (OpenAI,
+ChatGPT Pro mode) that ended on 18 November 2026 (run FREX; in Part~A of its text, the statements on coinvariants, on the
+convex Ramsey property, on signed averaging, on the weights for posets, on
+ordered posets, and on the amenability, the parity obstruction and the
+rational exactness of ordered vector spaces, the last with its two lemmas),
+in answer to a research prompt of this project that followed up the
+question treated in \cite{D1}. The run built on earlier runs of the same
+model, from one of which the first half of Lemma~\ref{lem:ramsey} comes.
+The run cites Kechris and Soki\'c for the non-amenability in
+Theorem~\ref{thm:posets} and adds a proof of its own, which is not
+reproduced here. Due to the writer, Claude Fable~5.2 (Anthropic) at effort
+max, on 25 November 2026: the direct proof of
+Proposition~\ref{prop:affine}, for which the run cites Isbell and Mitchell;
+the formulation of Theorem~\ref{thm:transfer} by the sets $E(B)$; the
+second sentence of Theorem~\ref{thm:dict} and Remark~\ref{rem:topos}, after
+a remark in the project's notes by Claude Opus~5.5 at effort max;
+Theorem~\ref{thm:vector}\,(c) over every ring in which $2$ is not
+invertible, by reduction to $R/2R$;
+Lemma~\ref{lem:open}, Corollary~\ref{cor:evans} and
+Remarks~\ref{rem:zucker}, \ref{rem:HS} and~\ref{rem:reducts}.
+
+\paragraph{The text.} Written by Claude Fable~5.2 at effort max on 25
+November 2026, in the setting of \cite{D1}. Every proof was derived again
+by the writer from the run's text; the proof of Lemma~\ref{lem:ramsey} was
+reconstructed from a one-sentence description in the run.
+
+\paragraph{Checks.} The run's text was followed step by step at its intake
+by Claude Opus~5.5 at effort max (19 and 24 November 2026). The writer derived
+every proof of this paper again and ran a program of its own, in exact
+integer arithmetic: it confirms Lemma~\ref{lem:weights} for all $4474$
+partial orders on at most five labelled points ($102085$ one-point
+identities, the number the run reports), the three-point example of
+Remark~\ref{rem:HS}, and the two identities of the proof of
+Theorem~\ref{thm:vector}\,(c) for all injective linear maps into $\F_2^n$,
+$n\le5$, with the order $\sqsubset$ of the standard basis. The text was checked on 25 November 2026 by an independent agent, Claude Fable~5.2 at effort max: every proof followed; Theorems~\ref{thm:dict} and~\ref{thm:transfer}, Proposition~\ref{prop:affine}, Theorem~\ref{thm:vector}\,(c) and the non-amenability in Theorem~\ref{thm:posets} proved again independently, the last two by other routes; every citation but \cite{Ho} opened; both programs run. Its repairs to Remark~\ref{rem:reducts}, to the proof of Theorem~\ref{thm:transfer}\,(c) and to Remark~\ref{rem:evans} are included. The sentence of Section~\ref{sec:intro} on the translations of $\Z$ was added by the writer after that check. Nothing is formalized.
+
+\paragraph{The search of the literature.} On 25 November 2026 the writer
+read \cite{HS} (the definitions, Sections~3, 4, 10, 11, 16 in part),
+\cite{Sn} (Sections~1--3, 8 and the statements), \cite{Ev} (Section~1,
+Remarks~2.9--2.12, Lemma~3.7), \cite{Ca} (Section~2), \cite{DLLX} (the
+passage of Theorem~5.1), \cite{KS} (Remark~3.2) and \cite{Zu} (Section~3),
+and searched the titles and abstracts of arXiv, the web and the Hexagon
+catalogue for statements relating exactness of colimits or of coinvariants
+to amenability; none was found. The search does not cover full texts.
+
+\paragraph{Citations.} Opened by the writer at the places cited: \cite{Ca}, \cite{D1}, \cite{DLLX}, \cite{Ev}, \cite{HS}, \cite{KS}, \cite{Sn}, \cite{Zu}. Opened by the run and by the independent check of 25 November 2026, at the places cited: \cite{Bo} (arXiv and journal versions), \cite{HN}, \cite{IM}, \cite{KPT}. Opened by the independent check: \cite{vN} (p.~305). Not opened: \cite{Ho}; the theorem used is \cite[Theorem~2.2]{KPT}. Artin's theorem is quoted from \cite[Theorem~5.1]{DLLX}, which takes it from Mac Lane and Moerdijk's book; the book was not opened.
+
+\paragraph{Records.} This paper is accompanied in its workbench by the file
+\texttt{CHECK\_EVENTS.tsv}, which holds every check with model, effort and
+date, the file \texttt{PROVENANCE.md}, which lists every contributor and
+the state of every citation, and the program \texttt{frex\_checks.py} in
+the folder \texttt{checks}. The workbenches are reached from
+\url{https://github.com/KokunoYumeto/mathematics-workbenches}.
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{Bo} M.~Bodirsky, New Ramsey classes from old, Electron.\ J.\
+ Combin.\ 21 (2014), no.~2, Paper~2.22.
+\bibitem{Ca} O.~Caramello, Fra\"iss\'e's construction from a topos-theoretic
+ perspective, arXiv:0805.2778v3; Log.\ Univers.\ 8 (2014), 261--281.
+\bibitem{D1} Exact, total and filtered small categories, Hexagon
+ 2611.01026, 25 November 2026 (AI-produced: runs of GPT-6 Astra, ChatGPT
+ Pro mode; text by Claude Fable~5.2 at effort max).
+\bibitem{DLLX} Z.~Di, L.~Li, L.~Liang and F.~Xu, Sheaves of modules on
+ atomic sites and discrete representations of topological groups,
+ arXiv:2108.13600v4.
+\bibitem{Ev} D.~M.~Evans, Permutation modules for Ramsey structures,
+ arXiv:2603.29606v2, 9 September 2026.
+\bibitem{HS} N.~Harman and A.~Snowden, Oligomorphic groups and tensor
+ categories, arXiv:2204.04526v2; Invent.\ Math.\ (2026),
+ doi:10.1007/s00222-026-01452-2.
+\bibitem{Ho} W.~Hodges, \emph{Model theory}, Cambridge University Press,
+ 1993.
+\bibitem{HN} J.~Hubi\v cka and J.~Ne\v set\v ril, All those Ramsey classes
+ (Ramsey classes with closures and forbidden homomorphisms), Adv.\ Math.\
+ 356 (2019), 106791; arXiv:1606.07979v4.
+\bibitem{IM} J.~Isbell and B.~Mitchell, Exact colimits and fixed points,
+ Trans.\ Amer.\ Math.\ Soc.\ 220 (1976), 289--298.
+\bibitem{KPT} A.~S.~Kechris, V.~G.~Pestov and S.~Todorcevic, Fra\"iss\'e
+ limits, Ramsey theory, and topological dynamics of automorphism groups,
+ Geom.\ Funct.\ Anal.\ 15 (2005), 106--189.
+\bibitem{KS} A.~S.~Kechris and M.~Soki\'c, Dynamical properties of the
+ automorphism groups of the random poset and random distributive lattice,
+ Fund.\ Math.\ 218 (2012), 69--94.
+\bibitem{Sn} A.~Snowden, Measures on partial orders, arXiv:2609.02021v1,
+ 2 September 2026.
+\bibitem{vN} J.~von Neumann, Zur Theorie der Gesellschaftsspiele, Math.\
+ Ann.\ 100 (1928), 295--320.
+\bibitem{Zu} A.~Zucker, Amenability and unique ergodicity of automorphism
+ groups of Fra\"iss\'e structures, Fund.\ Math.\ 226 (2014), 41--61.
+\end{thebibliography}
+\end{document}

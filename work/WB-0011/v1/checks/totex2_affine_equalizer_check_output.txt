@@ -1,0 +1,2 @@
+NMAX 7 objects 31176 objects receiving an arrow from W 1515
+targets with an affine equalizer (would refute A.1/A.3): [] count 0

@@ -1,0 +1,1438 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.15in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\emergencystretch=3em
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Cd}{\mathcal{C}_{\delta}}
+\newcommand{\cle}{\leq_{\mathrm{d}}}
+\newcommand{\El}{\operatorname{El}}
+\newcommand{\colim}{\operatorname{colim}}
+\newcommand{\Fix}{\operatorname{Fix}}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\Set}{\mathbf{Set}}
+\newcommand{\Ab}{\mathbf{Ab}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\AKRone}{Theorem~[1]}
+
+\title{Exact, total and filtered small categories\thanks{AI-produced. The
+results are due to runs of GPT-6 Astra (OpenAI, ChatGPT Pro mode), and the text
+was written by Claude Fable 5.2 (Anthropic) at effort max; see
+Section~\ref{sec:provenance} for who proved, wrote and checked what. No
+human has checked this text. To the extent that any rights exist in it, they
+are dedicated to the public domain under CC0~1.0.}}
+\author{}
+\date{25 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+For a non-empty connected small category we compare four properties: being
+filtered; exactness of colimits of abelian groups; Grothendieck's total
+asphericity, which says that colimits of simplicial sets over the category
+are homotopy colimits; and being quasi-filtered, which means that two arrows
+with a common source can be completed to a commutative square and that two
+parallel arrows are equalized by an integral combination of arrows whose
+coefficients sum to $1$. Each implies the next. We give a category of finite
+ordered hypergraphs that is totally aspherical and whose colimits are exact
+over no non-zero ring, and we show that the category of finite ordered
+two-graphs (sets of triples that meet every four-element set in an even
+number of triples) is quasi-filtered and not totally aspherical. With the
+example of Isbell and Mitchell, the three implications are strict. A
+conjecture in Grothendieck's \emph{Les D\'erivateurs}, that totally
+aspherical categories are filtered, is therefore false; it holds for sifted
+categories, those over which colimits of sets commute with finite products.
+\end{abstract}
+
+% ---- begin sec1_intro.tex (inlined for the deposit) ----
+\section{Introduction}
+
+Let $A$ be a small category, non-empty and connected. Four properties of $A$
+are compared in this paper; the definitions are in
+Section~\ref{sec:classes}.
+\begin{itemize}
+\item $A$ is \emph{filtered}.
+\item $A$ is \emph{exact}: the colimit functor from $A$-indexed diagrams of
+ abelian groups to abelian groups is exact.
+\item $A$ is \emph{total}: every category that receives a final functor from
+ $A$ is weakly contractible. This is Grothendieck's \emph{asph\'ericit\'e
+ totale} \cite{Der}; it holds if and only if every connected component of the
+ category of elements of every functor $A\to\Set$ is weakly contractible
+ (Proposition~\ref{prop:total}), and if and only if colimits over $A$ of
+ diagrams of simplicial sets are homotopy colimits (Remark~\ref{rem:hocolim}).
+\item $A$ is \emph{quasi-filtered}: pairs of arrows with a common source can be
+ completed to commutative squares, and parallel pairs have affine equalizers.
+\end{itemize}
+Each property implies the next (Propositions~\ref{prop:incl}
+and~\ref{prop:qf}). Isbell and Mitchell showed in 1973 that the first
+implication cannot be reversed. In the manuscript \emph{Les D\'erivateurs}
+Grothendieck asks whether total categories are filtered. The results of this
+paper are the following.
+
+\begin{theorem}\label{thm:A}
+Let $\Cd$ be the category of non-empty finite linearly ordered $3$-uniform
+hypergraphs
+in which every non-empty set $U$ of vertices satisfies $2|U|-3e(U)>0$, where
+$e(U)$ is the number of hyperedges contained in $U$, with the closed
+embeddings as arrows \textup{(}Definition~\ref{def:cdelta}\textup{)}. Then $\Cd$ is
+total, and for every non-zero ring $R$ the colimit functor on $\Cd$-indexed
+diagrams of $R$-modules is not exact.
+\end{theorem}
+
+\begin{theorem}\label{thm:B}
+The category $\mathcal T$ of finite ordered two-graphs and their embeddings
+is quasi-filtered and is not total.
+\end{theorem}
+
+\begin{theorem}\label{thm:C}
+Among non-empty connected small categories,
+\[
+ \{\text{filtered}\}\subsetneq\{\text{exact}\}\subsetneq\{\text{total}\}
+ \subsetneq\{\text{quasi-filtered}\}.
+\]
+The three inclusions are strict by the category $\Delta_{\mathrm{inj}}$ of
+the finite non-empty ordinals and increasing injections, by $\Cd$, and by
+$\mathcal T$. Moreover a non-empty connected category is filtered if and
+only if it is total and sifted.
+\end{theorem}
+
+Theorem~\ref{thm:A} is Theorems~\ref{thm:total} and~\ref{thm:notexact};
+Theorem~\ref{thm:B} is Theorem~\ref{thm:twographs}. For
+Theorem~\ref{thm:C}: the inclusions are Propositions~\ref{prop:incl}
+and~\ref{prop:qf}; $\Delta_{\mathrm{inj}}$ is exact by
+\cite[Theorems~1 and~3]{IM73} (their category is that of the order-preserving
+injections of finite totally ordered sets; $\Delta_{\mathrm{inj}}$ is a full
+cosieve of it, and common successors and affine equalizers pass to a
+non-empty cosieve), and it is not filtered, because no arrow
+equalizes the two arrows from the ordinal with one element to the ordinal
+with two; the last assertion is Proposition~\ref{prop:sifted}.
+
+Theorem~\ref{thm:A} separates two weakenings of filteredness that are both
+classical: exactness of colimits of modules, and the property that colimits of
+spaces are homotopy colimits. The proofs of total asphericity
+(Theorem~\ref{thm:A}) and of its failure (Theorem~\ref{thm:B}) follow one
+pattern. Both categories consist of the finite closed substructures of a
+countable homogeneous structure $M$. If every open subgroup of $\Aut(M)$ is
+the pointwise stabilizer of a finite closed set, then every component of
+every category of elements is weakly contractible or weakly equivalent to
+the category itself (Proposition~\ref{prop:reduction}). So only the
+classifying space of the category matters: it is contractible for $\Cd$, and
+simply connected with non-zero second homology for $\mathcal T$. Exactness is
+decided by a count: in a hypergraph of $\Cd$ any $r$ hyperedges span more
+than $3r/2$ vertices, so one of them has a vertex of its own.
+
+Section~\ref{sec:manuscript} relates the results to the passage of
+\emph{Les D\'erivateurs}. This paper was produced by AI models; who proved,
+wrote and checked what is recorded in Section~\ref{sec:provenance}.
+% ---- end sec1_intro.tex ----
+% ---- begin sec2_classes.tex (inlined for the deposit) ----
+\section{The four classes}\label{sec:classes}
+
+\subsection{Conventions}
+
+Categories are small unless they are categories of sets, groups or modules.
+For a category $A$ we write $NA$ for its nerve and $BA$ for its classifying
+space. A functor is a \emph{weak equivalence} if it induces a weak homotopy
+equivalence of classifying spaces, and $A$ is \emph{weakly contractible} if
+$BA$ is. A natural transformation between two functors induces a homotopy
+between the induced maps, and a category with an initial object is
+contractible \cite{Quillen}, \cite[IV.3.2 and Example~IV.3.2.2]{Kbook}. For a
+functor $u\colon A\to B$ and an object $b$ of $B$, the objects of
+$b\backslash u$ are the pairs $(a,\ b\to u(a))$. The functor $u$ is
+\emph{final} if every $b\backslash u$ is non-empty and connected
+\cite[IX.3]{CWM}. Quillen's Theorem~A \cite{Quillen}, \cite[IV.3.7]{Kbook}: if every
+$b\backslash u$ is weakly contractible, then $u$ is a weak equivalence.
+
+For a functor $L\colon A\to\Set$ the \emph{category of elements} $\El(L)$ has
+as objects the pairs $(a,l)$ with $l\in L(a)$, and as arrows
+$(a,l)\to(a',l')$ the arrows $f\colon a\to a'$ with $L(f)l=l'$. An
+\emph{action component} of $A$ is a connected component of $\El(L)$ for some
+$L$. If $D$ is an action component of $A$, a component of $\El(L)$, and
+$K\colon D\to\Set$ is a functor, then
+\begin{equation}\label{eq:composite}
+ \El(K)\cong\El(\widetilde K),\qquad
+ \widetilde K(a)=\coprod_{l\in L(a),\ (a,l)\in D}K(a,l) ;
+\end{equation}
+so every action component of $D$ is an action component of $A$. If
+$\Psi\colon D\to\Set$ sends all arrows to bijections, then
+$B\El(\Psi)\to BD$ is a covering space, and every covering space of $BD$
+arises in this way \cite{Quillen}, \cite[IV.3.5.1 and Exercise~IV.3.1]{Kbook}.
+
+For a functor $N\colon A\to\Ab$ let $C_\bullet(A;N)$ be the chain complex with
+$C_n(A;N)=\bigoplus_{a_0\to\dots\to a_n}N(a_0)$, the sum being over the
+$n$-simplices of $NA$, and with the usual alternating differential; let
+$H_n(A;N)$ be its homology. We use three properties: $H_0(A;N)=\colim_AN$; a
+short exact sequence of functors gives a long exact sequence of the groups
+$H_n$; and for $L\colon A\to\Set$ the complex $C_\bullet(A;\Z[L])$ is the
+complex of integral chains of $N\El(L)$. In particular, for
+$P_x=\Z[A(x,-)]$,
+\begin{equation}\label{eq:rep}
+ H_0(A;P_x)=\Z,\qquad H_n(A;P_x)=0\quad(n>0),
+\end{equation}
+because $\El(A(x,-))=x\backslash A$ has an initial object; the isomorphism
+$H_0(A;P_x)\cong\Z$ is induced by the augmentation
+$\sum n_if_i\mapsto\sum n_i$.
+
+\subsection{Definitions}
+
+\begin{definition}\label{def:classes}
+Let $A$ be a non-empty connected category.
+\begin{enumerate}
+\item[\textup{(a)}] $A$ is \emph{filtered} if any two objects have a common
+ successor and for every pair $f,g\colon p\to q$ there is an arrow $h$ with
+ $hf=hg$.
+\item[\textup{(b)}] $A$ is \emph{exact} if the functor $\colim_A\colon\Ab^A\to\Ab$ is
+ exact.
+\item[\textup{(c)}] $A$ is \emph{total} if for every final functor $u\colon A\to B$
+ the category $B$ is weakly contractible.
+\item[\textup{(d)}] $A$ is \emph{quasi-filtered} if \textup{(QF1)} every pair of
+ arrows $q\leftarrow p\to q'$ can be completed to a commutative square, and
+ \textup{(QF2)} for every pair $f,g\colon p\to q$ there are an object $r$ and
+ an element $t$ of $\Z[A(q,r)]$ of augmentation $1$ with $tf=tg$ in
+ $\Z[A(p,r)]$.
+\end{enumerate}
+\end{definition}
+
+Exact categories were characterized by Isbell and Mitchell
+\cite{IM73,IM76}; we call an element $t$ as in (QF2) an \emph{affine
+equalizer} of $f$ and $g$. (QF1) and (QF2) are the conditions I and IV of
+\cite[\S 2]{IM76} for the representable functors; in \cite[p.~369]{AKR} a
+category is called quasi-filtered (after Ad\'amek and Reiterman) if every
+parallel pair has a quasi-filter and any two objects have a common successor,
+and by \cite[\AKRone]{AKR} and \cite[Lemma~2.1]{IM76} a connected
+category is quasi-filtered in that sense if and only if it satisfies (QF1)
+and (QF2).
+Property (c) is Grothendieck's \emph{asph\'ericit\'e totale}, for the weak
+homotopy equivalences \cite[Chapter~II, ms.~p.~36ter; Chapter~XII,
+D\'efinition~1]{Der}. It is not the property called totally aspherical in
+the theory of test categories and in \cite[Remark~4.5(1)]{Rosicky}, which concerns the
+diagonal $A\to A\times A$; see Proposition~\ref{prop:sifted}.
+
+\subsection{Total categories}
+
+\begin{lemma}\label{lem:acyclic}
+Let $A$ be a category all of whose action components have the integral
+homology of a point. Then all action components of $A$ are weakly
+contractible.
+\end{lemma}
+
+\begin{proof}
+Let $D$ be an action component and $\gamma$ an element of the fundamental
+group of $BD$. The connected covering space of $BD$ whose fundamental group
+is the cyclic group generated by $\gamma$ is $B\El(\Psi)$ for some
+$\Psi\colon D\to\Set$, and $\El(\Psi)$ is an action component of $A$ by
+\eqref{eq:composite}. Its first homology group is that cyclic group, so
+$\gamma=1$. Thus $BD$ is simply connected with the homology of a point, and
+it is weakly contractible by the Hurewicz theorem.
+\end{proof}
+
+\begin{proposition}\label{prop:total}
+A non-empty connected category $A$ is total if and only if every action
+component of $A$ is weakly contractible.
+\end{proposition}
+
+\begin{proof}
+Suppose that all action components are weakly contractible, and let
+$u\colon A\to B$ be final. For an object $b$, the category $b\backslash u$ is
+the category of elements of the functor $a\mapsto B(b,u(a))$, and it is
+connected; so it is an action component and is weakly contractible. By
+Theorem~A, $u$ is a weak equivalence. Since $A$ is the category of elements
+of the functor with value a point, $BA$ is weakly contractible, and so is
+$BB$.
+
+Conversely let $A$ be total, and let $D$ be an action component, a component
+of $\El(L)$. Let $L_D\subseteq L$ be the subfunctor with
+$L_D(a)=\{l:(a,l)\in D\}$. Let $A_D$ be the category obtained from $A$ by
+adjoining one object $v$, with $A_D(v,a)=L_D(a)$, $A_D(a,v)=\varnothing$,
+$A_D(v,v)=\{\id\}$, and with composition given by the action. The inclusion
+$A\to A_D$ is final: for an object $a$ of $A$ the category $a\backslash A$
+has an initial object, and $v\backslash A=D$. Hence $A_D$ is weakly
+contractible, and so is $A$, because the identity of $A$ is final. A simplex
+of $NA_D$ that is not in $NA$ is a chain that begins with $v$; so $NA_D$ is
+the union of $NA$ and of the nerve of the category $D^{\triangleleft}$
+obtained from $D$ by adjoining an initial object, glued along $ND$ by the
+projection $ND\to NA$. Hence $BA_D$ is the mapping cone of $BD\to BA$, and
+the reduced integral homology of $BD$ vanishes. By Lemma~\ref{lem:acyclic}
+all action components are weakly contractible.
+\end{proof}
+
+\begin{remark}\label{rem:hocolim}
+Equivalently, $A$ is total if and only if for every functor $X$ from $A$ to
+simplicial sets the canonical map $\operatorname{hocolim}_AX\to\colim_AX$ is a
+weak equivalence. Indeed, the homotopy colimit is the diagonal of the
+bisimplicial set $(m,n)\mapsto N_n\El(X_m)$ \cite[Chapter~XII]{BK}, \cite[Sections~21 and~22]{JardineL8}, and the map
+is induced by the maps $N\El(X_m)\to\pi_0\El(X_m)=\colim_AX_m$. If the action
+components are weakly contractible these are weak equivalences, and then so is
+the map of diagonals \cite[Lemma~21.1]{JardineL8}, \cite[Chapter~IV]{GJ}. Conversely a functor
+$L\colon A\to\Set$ is a diagram of discrete simplicial sets, for which the map
+is $N\El(L)\to\pi_0\El(L)$.
+\end{remark}
+
+\subsection{The inclusions}
+
+\begin{proposition}\label{prop:incl}
+Let $A$ be a non-empty connected category. If $A$ is filtered it is exact,
+and if $A$ is exact it is total.
+\end{proposition}
+
+\begin{proof}
+Filtered colimits of abelian groups are exact
+\cite[Section~2.6]{Weibel}. Let $A$ be exact, and let $D$ be an action
+component, a component of $\El(L)$. For $N\colon D\to\Ab$ put
+$(\Sigma N)(a)=\bigoplus_{l:(a,l)\in D}N(a,l)$. The functor
+$\Sigma\colon\Ab^D\to\Ab^A$ is exact and $\colim_A\Sigma N=\colim_DN$, so
+$\colim_D$ is exact. Let $R_\bullet$ be the complex of functors $D\to\Ab$
+with $R_n=\bigoplus_{d_0\to\dots\to d_n}\Z[D(d_n,-)]$ whose value at an object
+$d$ is the complex of integral chains of the nerve of $D/d$. As $D/d$ has a
+terminal object, $R_\bullet$ is a resolution of the constant functor $\Z$.
+Its colimit over $D$ is the complex of integral chains of $ND$. Since
+$\colim_D$ is exact, $BD$ has the integral homology of a point. By
+Lemma~\ref{lem:acyclic} and Proposition~\ref{prop:total}, $A$ is total.
+\end{proof}
+
+\begin{lemma}\label{lem:succ}
+Let $D$ be a connected category such that $H_1(B\El(K);\Z)=0$ for every
+functor $K\colon D\to\Set$ with $\El(K)$ connected. Then any two objects of
+$D$ have a common successor.
+\end{lemma}
+
+\begin{proof}
+Let $x,x'$ be objects, and let $U$ and $U'$ be the full subcategories of the
+objects that receive an arrow from $x$, respectively from $x'$. They are
+cosieves. Suppose that they are disjoint and put $V=U\cup U'$. Let
+$K(d)=\{1,2\}$ for $d\notin V$ and $K(d)=\{1\}$ for $d\in V$, with the
+evident maps. Then $N\El(K)$ is the union of two copies of $ND$ that meet in
+$NV$, and $\El(K)$ is connected. In the Mayer--Vietoris sequence
+\[
+ H_1(B\El(K);\Z)\longrightarrow H_0(BV;\Z)\longrightarrow
+ H_0(BD;\Z)\oplus H_0(BD;\Z)
+\]
+the middle group has rank at least $2$, since no arrow joins $U$ and $U'$,
+and the image of the second map has rank $1$. So the first group is not
+zero, a contradiction.
+\end{proof}
+
+\begin{proposition}\label{prop:qf}
+Let $A$ be a non-empty connected category such that $H_1(BD;\Z)=0$ for every
+action component $D$ of $A$. Then $A$ is quasi-filtered. In particular every
+total category is quasi-filtered.
+\end{proposition}
+
+\begin{proof}
+By \eqref{eq:composite}, Lemma~\ref{lem:succ} applies to every action
+component of $A$.
+
+(QF1). Let $f\colon p\to q$ and $f'\colon p\to q'$. The category
+$p\backslash A$ is an action component. A common successor of its objects
+$(q,f)$ and $(q',f')$ is a commutative square $uf=u'f'$.
+
+(QF2). Let $f,g\colon p\to q$. Let $H$ be the quotient of the functor
+$A(p,-)$ by the equivalence relation generated by $kf\sim kg$ for all arrows
+$k$ with source $q$. Then $\El(H)$ is connected, because every object
+receives an arrow from $(p,[\id_p])$. There is an exact sequence
+\[
+ P_q\xrightarrow{\ \partial\ }P_p\longrightarrow\Z[H]\longrightarrow 0,
+ \qquad\partial(k)=kf-kg .
+\]
+Let $K=\ker\partial$ and $J=\operatorname{im}\partial$. The sequences
+$0\to J\to P_p\to\Z[H]\to0$ and $0\to K\to P_q\to J\to 0$ and \eqref{eq:rep}
+give
+\[
+ H_1(A;\Z[H])=\ker\bigl(\colim J\to\colim P_p\bigr),\qquad
+ \colim J=\operatorname{coker}\bigl(\colim K\to\colim P_q=\Z\bigr).
+\]
+The elements of $J$ have augmentation zero, so $\colim J\to\colim P_p=\Z$ is
+zero. Hence $H_1(B\El(H);\Z)=H_1(A;\Z[H])\cong\Z/I$, where $I$ is the subgroup
+of $\Z$ generated by the augmentations of the elements of the groups
+$K(x)=\{t\in\Z[A(q,x)]:tf=tg\}$. By hypothesis $I=\Z$: there are
+$t_j\in K(x_j)$ and integers $n_j$ with $\sum_jn_j\,\varepsilon(t_j)=1$. By
+Lemma~\ref{lem:succ}, applied to $A$, there are arrows $u_j\colon x_j\to r$
+into one object $r$, and $t=\sum_jn_ju_jt_j$ has augmentation $1$ and
+satisfies $tf=tg$.
+
+The last assertion follows from Proposition~\ref{prop:total}.
+\end{proof}
+
+\subsection{Sifted categories}
+
+A category $A$ is \emph{sifted} if it is non-empty and the diagonal
+$\Delta\colon A\to A\times A$ is final, that is, if for all objects $a,b$ the
+category $(a,b)\backslash\Delta$ of the pairs of arrows $a\to c\leftarrow b$ is
+non-empty and connected. By \cite[Theorem~1.6]{AR} this holds if and only if
+colimits over $A$ of diagrams of sets commute with finite products, which is
+the definition of sifted categories in \cite[Definition~1.1]{AR}.
+
+\begin{proposition}\label{prop:sifted}
+A non-empty connected category is filtered if and only if it is total and
+sifted.
+\end{proposition}
+
+\begin{proof}
+Let $A$ be total and sifted. For objects $a,b$ the category
+$(a,b)\backslash\Delta$ is non-empty, so $a$ and $b$ have a common successor.
+Let $f,g\colon p\to q$. The category $(p,p)\backslash\Delta$ is the category
+of elements of $A(p,-)\times A(p,-)$, and it is connected; so it is an action
+component of $A$. By Proposition~\ref{prop:total} and Lemma~\ref{lem:succ}
+its objects $(q,f,g)$ and $(q,f,f)$ have a common successor $(r,w,w')$:
+there are $h,h'\colon q\to r$ with $hf=w=h'f$ and $hg=w'=h'f$. Hence $hf=hg$,
+and $A$ is filtered.
+
+Conversely a filtered category is total by Proposition~\ref{prop:incl}, and
+it is sifted: two objects $(c,u,v)$ and $(c',u',v')$ of
+$(a,b)\backslash\Delta$ are joined through an object $(d,\cdot,\cdot)$, where
+$c\to d\leftarrow c'$ are chosen so as to equalize the two resulting arrows
+$a\to d$ and the two resulting arrows $b\to d$.
+\end{proof}
+% ---- end sec2_classes.tex ----
+% ---- begin sec3_reduction.tex (inlined for the deposit) ----
+\section{A reduction for categories of embeddings}\label{sec:reduction}
+
+Both examples of this paper are categories of finite substructures of a
+homogeneous structure. This section isolates what is used of such a category.
+
+\subsection{The setting}
+
+Let $M$ be a non-empty set and $G$ a group of permutations of $M$. For
+$X\subseteq M$ let $G_X$ be the pointwise stabilizer of $X$; so
+$G_\varnothing=G$. A subgroup of $G$ is \emph{open} if it contains $G_X$ for
+some finite $X\subseteq M$. Let $\K$ be a set of finite subsets of $M$. We
+consider the following conditions.
+\begin{enumerate}
+\item[\textup{(K1)}] $\varnothing\in\K$; $gB\in\K$ for $B\in\K$ and $g\in G$; every
+ finite subset of $M$ is contained in a member of $\K$.
+\item[\textup{(K2)}] $\Fix_M(G_B)=B$ for every $B\in\K$.
+\item[\textup{(K3)}] Every open subgroup of $G$ is of the form $G_F$ with $F\in\K$.
+\end{enumerate}
+Let $\mathcal A=\mathcal A(M,G,\K)$ be the category whose objects are the
+non-empty members of $\K$ and whose arrows $B\to C$ are the maps
+$g|_B\colon B\to C$ with $g\in G$ and $gB\subseteq C$, composed as maps.
+Inclusions between members of $\K$ are arrows. By (K1) any two objects are
+contained in a third, so $\mathcal A$ is non-empty and connected.
+
+For an object $P$ of a category $\mathcal C$, the objects of
+$P\backslash\mathcal C$ are the pairs $(X,x\colon P\to X)$, and an arrow
+$(X,x)\to(Y,y)$ is an arrow $f\colon X\to Y$ with $fx=y$. A \emph{cosieve} of a
+category is a full subcategory that contains the target of every arrow whose
+source it contains.
+\begin{enumerate}
+\item[\textup{(SC)}] For every object $P$ of $\mathcal C$, every non-empty cosieve
+ of $P\backslash\mathcal C$ is weakly contractible.
+\item[\textup{(K4)}] The category $\mathcal A(M,G,\K)$ satisfies \textup{(SC)}.
+\end{enumerate}
+Property (SC) is invariant under equivalence of categories: an equivalence
+$\Phi\colon\mathcal C\to\mathcal C'$ induces equivalences
+$P\backslash\mathcal C\to\Phi P\backslash\mathcal C'$, and the objects
+isomorphic to images of objects of a cosieve $\mathcal U$ form a cosieve
+equivalent to $\mathcal U$.
+
+\begin{lemma}\label{lem:squares}
+In a category with \textup{(SC)} every pair of arrows $f\colon a\to b$,
+$f'\colon a\to b'$ can be completed to a commutative square $uf=u'f'$.
+\end{lemma}
+
+\begin{proof}
+In $a\backslash\mathcal C$ let $\mathcal U$ be the cosieve of the objects
+$(c,h)$ such that $h$ factors through $f$, and $\mathcal U'$ the one defined by
+$f'$. Their union is a non-empty cosieve, hence connected. A path in it from
+$(b,f)$ to $(b',f')$ contains an arrow between an object of $\mathcal U$ and an
+object of $\mathcal U'$, and its target lies in $\mathcal U\cap\mathcal U'$.
+\end{proof}
+
+\subsection{The components of the categories of elements}
+
+\begin{proposition}\label{prop:reduction}
+Assume \textup{(K1)--(K4)}, and let $L\colon\mathcal A\to\Set$ be a functor. For
+every connected component $D$ of $\El(L)$, either $D$ is weakly contractible,
+or the projection $D\to\mathcal A$ is a weak equivalence.
+\end{proposition}
+
+\begin{proof}
+A functor that induces a weak equivalence of classifying spaces induces a
+bijection between the sets of connected components and weak equivalences
+between corresponding components. The two functors constructed below commute
+with the projections to $\mathcal A$.
+
+\emph{Step 1: injective transition maps.} For $l,l'\in L(a)$ write $l\sim l'$
+if $L(f)l=L(f)l'$ for some arrow $f\colon a\to b$. This is an equivalence
+relation: if $f$ and $f'$ witness $l\sim l'$ and $l'\sim l''$, and $uf=u'f'$ as
+in Lemma~\ref{lem:squares}, then $L(uf)$ takes the same value on $l$, $l'$ and
+$l''$. It is preserved by $L(v)$ for every arrow $v\colon a\to a'$: if
+$L(f)l=L(f)l'$ and $uf=u'v$, then $L(u')$ identifies $L(v)l$ and $L(v)l'$.
+So the quotients form a functor $L^{\mathrm{inj}}$, with a natural surjection
+$L\to L^{\mathrm{inj}}$. Its transition maps are injective: an arrow that
+witnesses $L(v)l\sim L(v)l'$, composed with $v$, witnesses $l\sim l'$.
+
+We claim that $q\colon\El(L)\to\El(L^{\mathrm{inj}})$ is a weak equivalence. Fix
+an object $(a,[l])$ of the target and let $\mathcal D=(a,[l])\backslash q$; its
+objects are the triples $(x,k,f)$ with $f\colon a\to x$, $k\in L(x)$ and
+$k\sim L(f)l$. Let $J\colon a\backslash\mathcal A\to\mathcal D$ send
+$f\colon a\to x$ to $(x,L(f)l,f)$. For an object $d=(x,k,f)$ of $\mathcal D$,
+the category $d\backslash J$ is the full subcategory of $x\backslash\mathcal A$
+on the arrows $g\colon x\to y$ with $L(g)k=L(gf)l$. It is a cosieve, and it is
+non-empty because $k\sim L(f)l$; by (K4) it is weakly contractible. By
+Quillen's Theorem~A (Section~\ref{sec:classes}), $J$ is a weak equivalence. As
+$a\backslash\mathcal A$ has an initial object, $\mathcal D$ is weakly
+contractible, and Theorem~A applies to $q$.
+
+\emph{Step 2: saturation.} By Step 1 we may assume that all maps $L(f)$ are
+injective. The non-empty members of $\K$ form a directed set under inclusion,
+by (K1). Let
+\[
+ S=\colim_{B}L(B)
+\]
+be the colimit over the inclusions. The canonical maps $i_B\colon L(B)\to S$
+are injective. The group $G$ acts on $S$ by
+$g\cdot i_B(l)=i_{gB}\bigl(L(g|_B)l\bigr)$, where $g|_B\colon B\to gB$; this is
+well defined because $g|_{B'}$ extends $g|_B$ when $B\subseteq B'$. The element
+$i_B(l)$ is fixed by $G_B$. So $S$ is a $G$-set all of whose point stabilizers
+are open.
+
+For any such $G$-set $S$ define a functor $T_S\colon\mathcal A\to\Set$ by
+$T_S(B)=S^{G_B}$ and $T_S(g|_B)(s)=g\cdot s$ for an arrow $g|_B\colon B\to C$.
+This does not depend on $g$, since two choices differ by an element of $G_B$;
+and $g\cdot s$ is fixed by $G_C$ because $g^{-1}G_Cg\le G_B$. In our case the
+maps $i_B$ form a natural monomorphism $i\colon L\to T_S$. For an object
+$(a,s)$ of $\El(T_S)$, the category $(a,s)\backslash\El(i)$ is the full
+subcategory of $a\backslash\mathcal A$ on the arrows $f\colon a\to b$ with
+$T_S(f)s\in i_b(L(b))$. It is a cosieve. It is non-empty: if $s=i_c(l)$,
+choose $b\in\K$ containing $a\cup c$; for the inclusion $f\colon a\to b$ we
+have $T_S(f)s=s\in i_b(L(b))$. By (K4) and Theorem~A,
+$\El(i)\colon\El(L)\to\El(T_S)$ is a weak equivalence.
+
+\emph{Step 3: orbits.} The functor $S\mapsto T_S$ takes disjoint unions of
+$G$-sets to disjoint unions of functors, so $\El(T_S)$ is the disjoint union of
+the categories $\El(T_O)$, $O$ running through the orbits of $S$. By (K3)
+every orbit is isomorphic to $G/G_F$ for some $F\in\K$.
+
+If $F\ne\varnothing$, then $T_{G/G_F}\cong\mathcal A(F,-)$. Indeed, a coset
+$gG_F$ is fixed by $G_B$ if and only if $G_B\le gG_Fg^{-1}=G_{gF}$, that is, by
+(K2), if and only if $gF\subseteq B$. The map $gG_F\mapsto g|_F$ is then a
+bijection from $(G/G_F)^{G_B}$ onto $\mathcal A(F,B)$, natural in $B$. The
+category of elements of $\mathcal A(F,-)$ is $F\backslash\mathcal A$, which has
+an initial object.
+
+If $F=\varnothing$, the orbit is a point, $T_O$ is the constant functor with
+value a point, and $\El(T_O)\to\mathcal A$ is an isomorphism.
+
+So every component of $\El(T_S)$ is contractible or is mapped isomorphically
+to $\mathcal A$ by the projection, and the statement follows from Steps 1
+and 2.
+\end{proof}
+
+\subsection{The bridge set}
+
+The following construction is used twice, to verify \textup{(K3)}. It involves
+only finite linearly ordered sets.
+
+\begin{lemma}\label{lem:bridgeset}
+Let $D$ and $E$ be finite linearly ordered sets, $B,C\subseteq D$,
+$F=B\cap C$, and let $d_0,d_1\colon D\to E$ be increasing injections that agree
+on $F$. For every sufficiently large integer $N\ge 2$, with $s=2N$, there are a
+finite linearly ordered set $Z$, an increasing injection $e\colon E\to Z$ and
+increasing injections $a_0,\dots,a_s\colon D\to Z$ with the following
+properties. Put $Z_0=e(E)$ and $Z_i=a_i(D)$ for $0<i<s$; these are the
+\emph{pieces}, and their indices are read modulo $s$.
+\begin{enumerate}
+\item[\textup{(i)}] $Z=\bigcup_iZ_i$; $a_0=ed_0$ and $a_s=ed_1$;
+ $a_{2j}|_B=a_{2j+1}|_B$ and $a_{2j+1}|_C=a_{2j+2}|_C$ for $0\le j<N$.
+\item[\textup{(ii)}] For $x\in F$ the point $a_i(x)$ does not depend on $i$; these
+ \emph{$F$-points} lie in every piece. Every other point of $Z$ lies in at
+ most three pieces. If it lies in two pieces, these are consecutive, or they
+ are $Z_1$ and $Z_{s-1}$, and then the point lies in $Z_0$ as well.
+\item[\textup{(iii)}] For $0\le i<s$ we have $Z_i\cap Z_{i+1}=a_i(B)=a_{i+1}(B)$ if
+ $i$ is even and $Z_i\cap Z_{i+1}=a_i(C)=a_{i+1}(C)$ if $i$ is odd.
+\item[\textup{(iv)}] For every index $r$ there are a finite set $L$, a
+ surjection $q\colon L\to Z$ and subsets $T_0,\dots,T_{s-1}$ covering $L$ such
+ that $q$ maps $T_k$ bijectively onto $Z_{r+k}$, with these properties: every
+ point of $L$ lies in $T_k$ for a set of consecutive values of $k$, with at
+ most three elements unless the point lies over an $F$-point;
+ $q(T_{k-1}\cap T_k)=Z_{r+k-1}\cap Z_{r+k}$ for $0<k<s$; every $F$-point has
+ one preimage under $q$; and $q$ is injective except that at most
+ $\max(|B|,|C|)$ points of $Z$ have two preimages.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Let $\widehat Z$ be the disjoint union of $E$ and of copies $D_1,\dots,D_{s-1}$
+of $D$; write $x_i$ for the copy of $x\in D$ in $D_i$. We call $E$ the
+\emph{piece} $0$ and $D_i$ the piece $i$. Consider the following \emph{links}
+between points of consecutive pieces: $d_0(x)$ and $x_1$, for $x\in B$; $x_i$
+and $x_{i+1}$, for $0<i<s-1$ and $x\in B$ if $i$ is even, $x\in C$ if $i$ is
+odd; $x_{s-1}$ and $d_1(x)$, for $x\in C$. Let $Z$ be the quotient of
+$\widehat Z$ by the equivalence relation generated by the links, $e$ the
+restriction of the quotient map to $E$, $a_i(x)$ the class of $x_i$ for
+$0<i<s$, and $a_0=ed_0$, $a_s=ed_1$. Then (i) holds.
+
+A point has at most one link to the next piece and at most one to the
+preceding piece, because $d_0$ and $d_1$ are injective. For $x\in F$ the
+points $d_0(x)=d_1(x),x_1,\dots,x_{s-1}$ form a class, with one point in each
+piece. For $x\in B\setminus C$ the links at copies of $x$ join $x_i$ to
+$x_{i+1}$ for $i$ even, $0<i<s-1$, and $d_0(x)$ to $x_1$; for
+$x\in C\setminus B$ they join $x_i$ to $x_{i+1}$ for $i$ odd, $0<i<s-1$, and
+$x_{s-1}$ to $d_1(x)$; for $x\notin B\cup C$ there are none. A point of $E$ that
+is not of the form $d_0(x)$, $x\in F$, has at most two links, to some $x_1$
+with $x\in B\setminus C$ and to some $y_{s-1}$ with $y\in C\setminus B$. Hence a
+class that does not come from $F$ is a single point, or a pair
+$\{x_i,x_{i+1}\}$, or is contained in a set $\{y_{s-1},d,x_1\}$ with $d\in E$.
+So every class has at most one point in each piece, which shows that $e$ and
+the $a_i$ are injective, and (ii) and (iii) follow by inspection; here
+$N\ge 2$ is used.
+
+For (iv), let $L$ be the quotient of $\widehat Z$ by the relation generated
+by the links other than those between the pieces $r-1$ and $r$, let $T_k$ be
+the image of the piece $r+k$, and $q$ the quotient map. A class of $Z$ is the
+union of at most two classes of $L$, and of two only if it contains a link
+between the pieces $r-1$ and $r$ and does not come from $F$; there are at
+most $\max(|B|,|C|)$ such links. The remaining assertions follow from the
+description of the classes.
+
+\emph{The order.} Choose an increasing injection $\varepsilon\colon E\to\R$
+and put $p_t=(1-t)\,\varepsilon d_0+t\,\varepsilon d_1\colon D\to\R$ for
+$0\le t\le 1$. Each $p_t$ is strictly increasing, and $p_t(x)$ does not
+depend on $t$ for $x\in F$. Let $\Delta>0$ be a lower bound for
+$p_t(x')-p_t(x)$ over all $t$ and all $x<x'$ in $D$, and let
+$M_0=\max_x|\varepsilon d_1(x)-\varepsilon d_0(x)|$; assume $2M_0<N\Delta$.
+Define $b_i\colon D\to\R$ for $0\le i\le s$ by
+\[
+ b_{2j}=p_{j/N},\qquad
+ b_{2j+1}(x)=\begin{cases}p_{j/N}(x),&x\in B,\\ p_{(j+1)/N}(x),&x\notin B.\end{cases}
+\]
+Each value of $b_{2j+1}$ differs from the corresponding value of $p_{(j+1)/N}$
+by at most $M_0/N$, so $b_{2j+1}(x')-b_{2j+1}(x)\ge\Delta-2M_0/N>0$ for
+$x<x'$: all $b_i$ are strictly increasing. Moreover $b_0=\varepsilon d_0$,
+$b_s=\varepsilon d_1$, $b_{2j}$ and $b_{2j+1}$ agree on $B$, and $b_{2j+1}$
+and $b_{2j+2}$ agree on $C$ (on $C\setminus B$ by definition, on $F$ because
+$p_t$ is constant there). So the function on $\widehat Z$ that is
+$\varepsilon$ on $E$ and $b_i$ on $D_i$ takes the same value at the two ends
+of every link, and induces a function $\beta\colon Z\to\R$ that is injective
+and increasing on every piece. Any linear order on $Z$ in which $z<z'$
+whenever $\beta(z)<\beta(z')$ makes $e$ and all $a_i$ increasing.
+\end{proof}
+% ---- end sec3_reduction.tex ----
+% ---- begin sec4_cdelta.tex (inlined for the deposit) ----
+\section{A total category whose colimits are not exact}\label{sec:cdelta}
+
+\subsection{The category $\Cd$}
+
+A \emph{hypergraph} is a finite set $X$ (of vertices) with a set $E_X$ of
+three-element subsets of $X$ (the hyperedges). A subset $U\subseteq X$
+carries the induced hypergraph, with hyperedges
+$E_X(U)=\{h\in E_X: h\subseteq U\}$. Put
+\[
+ \delta_X(U)=2\,|U|-3\,|E_X(U)| .
+\]
+We write $\delta(U)$ when $X$ is understood; $\delta(U)$ depends only on the
+induced hypergraph on $U$. The hypergraph $X$ is \emph{positive} if
+$\delta(U)>0$ for every non-empty $U\subseteq X$. For $A\subseteq B\subseteq X$
+we say that $A$ is \emph{closed in} $B$, and write $A\cle B$, if
+\[
+ \delta(U)>\delta(A)\qquad\text{for every } U \text{ with } A\subsetneq U\subseteq B .
+\]
+Thus $X$ is positive if and only if $\varnothing\cle X$. An \emph{ordered}
+hypergraph carries in addition a linear order on its vertices. An
+\emph{embedding} $f\colon X\to Y$ of ordered hypergraphs is an increasing
+injection such that a three-element subset $h$ of $X$ is a hyperedge of $X$
+exactly when $f(h)$ is a hyperedge of $Y$; it is a \emph{closed embedding} if
+$f(X)\cle Y$.
+
+\begin{definition}\label{def:cdelta}
+The objects of $\Cd$ are the positive ordered hypergraphs with vertex set
+$[n]=\{1<\dots<n\}$, $n\ge 1$. Its arrows are the closed embeddings, composed as
+maps.
+\end{definition}
+
+Composites of closed embeddings are closed by Lemma~\ref{lem:calc}(c) below, so
+$\Cd$ is a category; it is small, and every non-empty positive ordered
+hypergraph is isomorphic to exactly one object. We write $V$ for the object
+with one vertex and $W$ for the object $([3],\{\{1,2,3\}\})$. The latter is
+positive: its subsets with one, two and three elements have
+$\delta=2,4,3$. The same numbers show that the three maps
+$v_1,v_2,v_3\colon V\to W$, $v_i(1)=i$, are closed embeddings.
+
+\begin{lemma}[closure calculus]\label{lem:calc}
+Let $X$ be a hypergraph.
+\begin{enumerate}
+\item[\textup{(a)}] $\delta(U)+\delta(U')\ge\delta(U\cup U')+\delta(U\cap U')$ for all
+ $U,U'\subseteq X$.
+\item[\textup{(b)}] If $A\cle B$ and $Y\subseteq B$, then $A\cap Y\cle Y$.
+\item[\textup{(c)}] If $A\cle B$ and $B\cle C$, then $A\cle C$.
+\item[\textup{(d)}] Let $X=B\cup C$ and $A=B\cap C$, and suppose that
+ $E_X=E_X(B)\cup E_X(C)$ \textup{(}we then call $X$ the \emph{free amalgam} of $B$
+ and $C$ over $A$\textup{)}. Then for every $U\subseteq X$
+ \begin{equation}\label{eq:amalgam}
+  \delta(U)=\delta(U\cap B)+\delta(U\cap C)-\delta(U\cap A).
+ \end{equation}
+ If moreover $B$ and $C$ are positive, $A\cle B$ and $A\cle C$, then $X$ is
+ positive, $B\cle X$ and $C\cle X$. Here $A$ may be empty.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) The number of vertices is modular. For the hyperedges,
+$E(U)\cup E(U')\subseteq E(U\cup U')$ and $E(U)\cap E(U')=E(U\cap U')$, so
+$|E(U)|+|E(U')|\le|E(U\cup U')|+|E(U\cap U')|$.
+
+(b) Let $A\cap Y\subsetneq U\subseteq Y$. Then $U\cap A=A\cap Y$ and
+$U\cup A\supsetneq A$, so by (a)
+$\delta(U)-\delta(A\cap Y)\ge\delta(U\cup A)-\delta(A)>0$.
+
+(c) Let $A\subsetneq U\subseteq C$. If $U\subseteq B$ there is nothing to prove.
+Otherwise $U\cap B\subsetneq U$ and $U\cap B\cle U$ by (b), so
+$\delta(U)>\delta(U\cap B)\ge\delta(A)$, the last inequality because
+$A\subseteq U\cap B\subseteq B$ and $A\cle B$.
+
+(d) A hyperedge of $X$ lies in $B$ or in $C$, and those lying in both are the
+hyperedges contained in $A$; this gives \eqref{eq:amalgam}. Let $U$ be
+non-empty. If $U\subseteq B$ then $\delta(U)>0$. Otherwise
+$U\cap A\subsetneq U\cap C$, and $U\cap A\cle U\cap C$ by (b), so
+$\delta(U\cap C)-\delta(U\cap A)>0$, while $\delta(U\cap B)\ge 0$; hence
+$\delta(U)>0$. If $B\subsetneq U\subseteq X$, then $U\cap B=B$, $U\cap A=A$ and
+$U\cap C\supsetneq A$, so
+$\delta(U)-\delta(B)=\delta(U\cap C)-\delta(A)>0$. Thus $B\cle X$, and
+$C\cle X$ by symmetry.
+\end{proof}
+
+If, in (d), $B$ and $C$ are ordered and their orders agree on $A$, the free
+amalgam carries linear orders extending both. We call \emph{the ordered free
+amalgam with $B$ first} the one in which, for $b\in B\setminus A$ and
+$c\in C\setminus A$, we have $b<c$ exactly when every element of $A$ below $b$
+is below $c$.
+
+\subsection{The generic structure and its automorphism group}
+
+For an ordered hypergraph $M$ with countably many vertices, all of whose finite
+subsets are positive, and a finite $B\subseteq M$, we write $B\cle M$ if
+$B\cle U$ for every finite $U$ with $B\subseteq U\subseteq M$. Parts (b) and
+(c) of Lemma~\ref{lem:calc} remain true with $M$ in the place of the largest
+set.
+
+\begin{proposition}\label{prop:generic}
+There is a countable ordered hypergraph $M$, all of whose finite subsets are
+positive, with the following properties.
+\begin{enumerate}
+\item[\textup{(M1)}] Every finite subset of $M$ is contained in a finite subset
+ $B$ with $B\cle M$.
+\item[\textup{(M2)}] If $B\cle M$ is finite and $f\colon B\to C$ is a closed
+ embedding into a finite positive ordered hypergraph, there is an embedding
+ $h\colon C\to M$ with $h(C)\cle M$ and $hf=\id_B$.
+\item[\textup{(M3)}] Every isomorphism between two finite closed subsets of $M$
+ extends to an automorphism of $M$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+A \emph{task} is a triple $(k,B,f)$ where $k\ge 0$ and $f\colon B\to C$ is a
+closed embedding of a subset $B$ of the $k$-th stage, closed in that stage,
+into a finite positive ordered hypergraph. Up to isomorphism of $C$ under $B$
+there are countably many tasks at each stage, so the tasks of all stages can
+be enumerated in such a way that every task is met at a later stage. Starting
+with $M_0=V$, let $M_{l+1}$ be an ordered free amalgam of $M_l$ and $C$ over
+$B$, where $(k,B,f)$ is the task met at stage $l\ge k$. Here $B\cle M_k\cle M_l$
+by induction and Lemma~\ref{lem:calc}(c), so by Lemma~\ref{lem:calc}(d) the
+amalgam is positive, $M_l\cle M_{l+1}$, and the image of $C$ is closed in
+$M_{l+1}$. Let $M=\bigcup_l M_l$. By transitivity $M_l\cle M_{l'}$ for
+$l\le l'$, hence $M_l\cle M$; this gives (M1). For (M2), choose $k$ with
+$B\subseteq M_k$; then $B\cle M_k$, the task
+$(k,B,f)$ is met at some stage $l$, and the resulting copy of $C$ is closed in
+$M_{l+1}\cle M$, hence in $M$. For (M3) one extends a given isomorphism
+$\varphi\colon B\to B'$ of finite closed subsets step by step: for $x\in M$
+choose by (M1) a finite closed $C\supseteq B\cup\{x\}$; by (M2), applied to
+$B'$ and to $\varphi^{-1}\colon B'\to B\subseteq C$, the map $\varphi$ extends to
+an isomorphism of $C$ onto a closed subset of $M$. Alternating between
+$\varphi$ and $\varphi^{-1}$ along an enumeration of $M$ gives an automorphism.
+\end{proof}
+
+The existence of such limits for classes with a notion of strong
+substructure is standard; see
+\cite[Theorem~2.6]{EHN}. We fix $M$ as in Proposition~\ref{prop:generic} and put
+\[
+ G=\Aut(M),\qquad \K=\{B\subseteq M:\ B \text{ finite},\ B\cle M\},
+\]
+where automorphisms preserve the order and the hyperedges. Positivity gives
+$\varnothing\in\K$. We use the notation of Section~\ref{sec:reduction}:
+$G_B$ is the pointwise stabilizer of $B$, and $\mathcal A=\mathcal A(M,G,\K)$.
+
+\begin{lemma}\label{lem:AMequiv}
+The triple $(M,G,\K)$ satisfies \textup{(K1)}. For $B,C\in\K$ the arrows
+$B\to C$ of $\mathcal A$ are exactly the closed embeddings $B\to C$, and
+$\mathcal A$ is equivalent to $\Cd$.
+\end{lemma}
+
+\begin{proof}
+(K1) follows from (M1) and from the invariance of $\cle$ under automorphisms.
+If $g\in G$ and $gB\subseteq C$, then $gB\cle M$, so $gB\cle C$ by
+Lemma~\ref{lem:calc}(b), and $g|_B$ is a closed embedding. Conversely, if
+$f\colon B\to C$ is a closed embedding, then $f(B)\cle C\cle M$, so
+$f(B)\in\K$ by Lemma~\ref{lem:calc}(c), and $f\colon B\to f(B)$ extends to an
+element of $G$ by (M3). Finally every object of $\Cd$ is isomorphic to a member
+of $\K$ by (M2) with $B=\varnothing$, so the functor that sends a non-empty
+$B\in\K$ to the object of $\Cd$ isomorphic to it is an equivalence.
+\end{proof}
+
+\begin{lemma}\label{lem:K2delta}
+$(M,G,\K)$ satisfies \textup{(K2)}: $\Fix_M(G_B)=B$ for every $B\in\K$.
+\end{lemma}
+
+\begin{proof}
+Let $x\in M\setminus B$ and choose $D\in\K$ containing $B\cup\{x\}$. Let $D'$ be a
+second copy of $D$, with $D\cap D'=B$, and form an ordered free amalgam of $D$
+and $D'$ over $B$; note that $B\cle D$ by Lemma~\ref{lem:calc}(b). By
+Lemma~\ref{lem:calc}(d) the inclusion of $D$ into it is a closed embedding, so
+by (M2) the amalgam embeds into $M$ over $D$, with closed image; the image of
+$D'$ is then closed in $M$. The isomorphism of $D$ onto this image that is the
+identity on $B$ extends by (M3) to some $g\in G_B$, and $gx\ne x$.
+\end{proof}
+
+\begin{lemma}\label{lem:SCdelta}
+The category $\mathcal A$ satisfies \textup{(SC)}, and $B\mathcal A$ is weakly
+contractible.
+\end{lemma}
+
+\begin{proof}
+Both properties are invariant under equivalence, so we may replace $\mathcal A$
+by the following category $\mathcal C$. Fix an infinite set $\Omega$ and
+injections $\lambda,\rho\colon\Omega\to\Omega$ with disjoint images. The objects
+of $\mathcal C$ are the non-empty positive ordered hypergraphs whose vertex set
+is a finite subset of $\Omega$, and its arrows are the closed embeddings; by
+Lemma~\ref{lem:AMequiv} it is equivalent to $\mathcal A$.
+
+Let $P$ be an object of $\mathcal C$, let $\mathcal U$ be a non-empty full
+cosieve of $P\backslash\mathcal C$, and fix an object $(Z,z\colon P\to Z)$ of
+$\mathcal U$. For an object $(X,x\colon P\to X)$ of $P\backslash\mathcal C$ let
+$T(X)$ be the hypergraph on $\lambda(X)\cup\rho(Z\setminus z(P))$ that is the free
+amalgam of the copy $\lambda(X)$ of $X$ and of the copy
+$\lambda(x(P))\cup\rho(Z\setminus z(P))$ of $Z$ over $\lambda(x(P))$, ordered
+with $\lambda(X)$ first. The base is closed in both copies because $x$ and
+$z$ are closed embeddings, so by Lemma~\ref{lem:calc}(d) $T(X)$ is positive and
+the maps
+\[
+ \eta_X\colon X\to T(X),\ u\mapsto\lambda(u),\qquad
+ \gamma_X\colon Z\to T(X),\ z(p)\mapsto\lambda(x(p)),\ w\mapsto\rho(w)\ \
+ (w\notin z(P)),
+\]
+are closed embeddings; they are arrows under $P$. For an arrow
+$f\colon X\to X'$ of $P\backslash\mathcal C$ let
+$T(f)=\lambda f\lambda^{-1}$ on $\lambda(X)$ and the identity on
+$\rho(Z\setminus z(P))$. It is increasing, because $f$ is increasing and
+commutes with the maps from $P$, so that it preserves the gap of $P$ in which a
+vertex lies. It is an embedding, since a hyperedge of $T(X')$ lies in one of
+the two copies and $f$ is an embedding. Its image is closed, because $T(X')$
+is the free amalgam of $\lambda(X')$ and of the image of $T(X)$ over
+$\lambda(f(X))$, and $f(X)\cle X'$. So $T$ is an endofunctor of
+$P\backslash\mathcal C$, and $\eta\colon\id\to T$ and
+$\gamma\colon\mathrm{const}_{(Z,z)}\to T$ are natural transformations. Since
+$\mathcal U$ is a cosieve containing $(Z,z)$, the arrows $\gamma_X$ show that
+$T$ maps $P\backslash\mathcal C$ into $\mathcal U$. The restrictions of $\eta$
+and $\gamma$ to $\mathcal U$ connect the identity of $\mathcal U$ to a constant
+functor, so $B\mathcal U$ is contractible \cite[IV.3.2]{Kbook}.
+
+The same construction with the empty set in the place of $P$ (so that
+$T(X)=\lambda(X)\cup\rho(Z)$ is a disjoint union, with $\lambda(X)$ first)
+gives, for a fixed object $Z$, an endofunctor $T$ of $\mathcal C$ with natural
+transformations $\id\to T\leftarrow\mathrm{const}_Z$. Hence $B\mathcal C$ is
+contractible.
+\end{proof}
+
+\subsection{Open subgroups}
+
+\begin{lemma}[the bridge]\label{lem:bridgedelta}
+Let $D$ and $E$ be positive ordered hypergraphs, let $B\cle D$ and $C\cle D$,
+put $F=B\cap C$, and let $d_0,d_1\colon D\to E$ be closed embeddings that agree
+on $F$. Then there are a positive ordered hypergraph $Z$, a closed embedding
+$e\colon E\to Z$ and closed embeddings $a_0,\dots,a_{2N}\colon D\to Z$ with
+\[
+ a_0=ed_0,\quad a_{2N}=ed_1,\quad a_{2j}|_B=a_{2j+1}|_B,\quad
+ a_{2j+1}|_C=a_{2j+2}|_C\qquad(0\le j<N).
+\]
+\end{lemma}
+
+\begin{proof}
+Put $m=\max(|B|,|C|)$ and take $N$ so large that Lemma~\ref{lem:bridgeset}
+applies and
+\begin{equation}\label{eq:Nbound}
+ s:=2N>3\,\bigl(\delta(E)+2m\bigr),\qquad N\ge 2 .
+\end{equation}
+Let $Z$, $e$, $a_i$ and the pieces $Z_0,\dots,Z_{s-1}$ be as in
+Lemma~\ref{lem:bridgeset}; the indices of pieces are read modulo $s$. Every
+piece is a copy of $E$ or of $D$; let the hyperedges of $Z$ be the images of
+the hyperedges of the pieces. It remains to prove that every piece is an
+induced subhypergraph of $Z$, that $Z$ is positive, and that every piece is
+closed in $Z$.
+
+\emph{Pieces are induced.} For two consecutive pieces the intersection
+$Z_i\cap Z_{i+1}$ is the common image of $B$ or of $C$ (Lemma~\ref{lem:bridgeset}(iii)), and the two pieces induce
+the same hypergraph on it, because $d_0$ and $d_1$ are embeddings. Call this
+fact $(\ast)$. Let $h$ be a hyperedge of the piece $Z_j$ whose three vertices lie in
+$Z_i$, $i\ne j$. If all three are $F$-points, $h$ is the image of a hyperedge
+of $D$ contained in $F$, hence a hyperedge of every piece. Otherwise one of
+them lies in at most three cyclically consecutive pieces, among them $Z_i$ and
+$Z_j$. If $i$ and $j$ are consecutive, $h$ is a hyperedge of $Z_i$ by $(\ast)$.
+If not, then $\{i,j\}=\{1,s-1\}$ by Lemma~\ref{lem:bridgeset}(ii), and every
+point of $Z_1\cap Z_{s-1}$ lies in $Z_0$; applying $(\ast)$ to $(Z_j,Z_0)$ and
+then to $(Z_0,Z_i)$ shows again that $h$ is a hyperedge of $Z_i$.
+
+\emph{The cut.} Fix an index $r$. Let $L$ be obtained from the disjoint union
+of the pieces by making all the identifications of Lemma~\ref{lem:bridgeset}
+except those between the pieces $r-1$ and $r$, with hyperedges the images of
+the hyperedges of the pieces, and let $q\colon L\to Z$ be the quotient map.
+Write $T_0,\dots,T_{s-1}$ for the images in $L$ of the pieces
+$r,r+1,\dots,r-1$, in this order. By Lemma~\ref{lem:bridgeset}(iv) a point of
+$L$ lies in $T_k$ for a set of consecutive values of $k$. Hence
+$T_k\cap(T_0\cup\dots\cup T_{k-1})=T_k\cap T_{k-1}=:A_k$. Applying $(\ast)$ along
+the consecutive pieces between two pieces that contain the vertices of a
+hyperedge shows, as in the first step, that every $T_k$ is an induced
+subhypergraph of $L$. So $L_k=T_0\cup\dots\cup T_k$ is the free amalgam of
+$L_{k-1}$ and $T_k$ over $A_k$. The set $A_k$ is a copy of $B$ or of $C$; it is closed in $T_k$ and in
+$T_{k-1}$, by hypothesis and, for a piece that is a copy of $E$, by
+Lemma~\ref{lem:calc}(c). By induction on $k$ and Lemma~\ref{lem:calc}(c),(d),
+$L_k$ is positive and each of $T_0,\dots,T_k$ is closed in $L_k$. So $L$ is
+positive and every $T_k$ is closed in $L$. By Lemma~\ref{lem:bridgeset}(iv) the
+map $q$ identifies at most $m$ pairs of points, and every hyperedge of $Z$ is
+the image of a hyperedge of $L$. Hence, for $U\subseteq Z$ and $\widetilde U=q^{-1}(U)$,
+\begin{equation}\label{eq:cutloss}
+ \delta_Z(U)\ \ge\ \delta_L(\widetilde U)-2m .
+\end{equation}
+
+\emph{Positivity and closedness.} Let $U\subseteq Z$ be non-empty.
+
+\emph{Case 1: some piece $Z_r$ contains no point of $U$ other than
+$F$-points.} Cut between $r-1$ and $r$. No point of $U$ is then the image of
+two points of $L$, so $q$ maps $\widetilde U$ bijectively onto $U$ and
+$E_L(\widetilde U)$ bijectively onto $E_Z(U)$. Hence
+$\delta_Z(U)=\delta_L(\widetilde U)>0$. If $U$ properly contains a piece $Z_i$,
+then $\widetilde U$ properly contains the corresponding $T_k$, and
+$\delta_Z(U)=\delta_L(\widetilde U)>\delta_L(T_k)=\delta_Z(Z_i)$.
+
+\emph{Case 2: every piece contains a point of $U$ that is not an $F$-point.} Cut
+between $s-1$ and $0$, and put $\widetilde U_k=\widetilde U\cap T_k$. Applying
+\eqref{eq:amalgam} to $L_k=L_{k-1}\cup T_k$ for $k=1,\dots,s-1$ gives
+\[
+ \delta_L(\widetilde U)=\delta(\widetilde U_0)
+ +\sum_{k=1}^{s-1}\bigl(\delta(\widetilde U_k)-\delta(\widetilde U_k\cap A_k)\bigr).
+\]
+By Lemma~\ref{lem:calc}(b), $\widetilde U_k\cap A_k\cle\widetilde U_k$, so the
+$k$-th summand is non-negative, and it is at least $1$ when
+$\widetilde U_k\not\subseteq A_k$; also $\delta(\widetilde U_0)\ge 1$ when
+$\widetilde U_0\ne\varnothing$. Let $J$ be the set of those $k$ for which
+$\widetilde U_k$ contains a point that is not an $F$-point and does not lie in
+$T_{k-1}$ (no condition on $T_{k-1}$ for $k=0$). Each $k\in J$ contributes at
+least $1$, so $\delta_L(\widetilde U)\ge|J|$. Let $0\le k'<s$. By assumption
+$T_{k'}$ contains a point $u\in\widetilde U$ that is not an $F$-point; the set
+of $k$ with $u\in T_k$ consists of at most three consecutive values, and its
+least element $k$ belongs to $J$, with $k\le k'\le k+2$. Hence $3|J|\ge s$, and
+by \eqref{eq:cutloss} and \eqref{eq:Nbound}
+\[
+ \delta_Z(U)\ \ge\ \frac s3-2m\ >\ \delta(E)\ \ge\ \delta(D)\ >\ 0 ,
+\]
+where $\delta(E)\ge\delta(D)$ because $d_0(D)\cle E$. In particular
+$\delta_Z(U)>\delta_Z(Z_i)$ for every piece $Z_i$.
+
+In both cases $\delta_Z(U)>0$, and $\delta_Z(U)>\delta_Z(Z_i)$ whenever $U$
+properly contains the piece $Z_i$. So $Z$ is positive and every piece is closed
+in $Z$; with the first step, $e$ and all $a_i$ are closed embeddings.
+\end{proof}
+
+\begin{proposition}\label{prop:stabdelta}
+For all $B,C\in\K$ we have $\langle G_B,G_C\rangle=G_{B\cap C}$.
+\end{proposition}
+
+\begin{proof}
+One inclusion is clear. Let $g\in G_{B\cap C}$. Choose $D\in\K$ containing
+$B\cup C$ and $E\in\K$ containing $D\cup gD$. Then $B\cle D$ and $C\cle D$ by
+Lemma~\ref{lem:calc}(b), and the inclusion $d_0\colon D\to E$ and
+$d_1=g|_D\colon D\to E$ are closed embeddings that agree on $B\cap C$. Let
+$Z$, $e$ and $a_0,\dots,a_{2N}$ be as in Lemma~\ref{lem:bridgedelta}. By (M2)
+there is an embedding $h\colon Z\to M$ with closed image and $he=\id_E$. Each
+$ha_i\colon D\to M$ is an isomorphism onto a closed subset, so by (M3)
+$ha_i=g_i|_D$ for some $g_i\in G$; since $ha_0=d_0$ and $ha_{2N}=d_1$ we may take
+$g_0=1$ and $g_{2N}=g$. The relations between consecutive $a_i$ say that
+$g_i^{-1}g_{i+1}$ lies in $G_B$ for $i$ even and in $G_C$ for $i$ odd. Hence
+$g=\prod_{i=0}^{2N-1}g_i^{-1}g_{i+1}\in\langle G_B,G_C\rangle$.
+\end{proof}
+
+\begin{corollary}\label{cor:opendelta}
+$(M,G,\K)$ satisfies \textup{(K3)}: every open subgroup of $G$ is $G_F$ for some
+$F\in\K$.
+\end{corollary}
+
+\begin{proof}
+Let $U$ be an open subgroup. By (K1) it contains $G_B$ for some $B\in\K$;
+choose such a $B$ of least cardinality. For $g\in U$ we have
+$G_{gB}=gG_Bg^{-1}\le U$, so $G_{B\cap gB}\le U$ by
+Proposition~\ref{prop:stabdelta}; here $B\cap gB\in\K$ by
+Lemma~\ref{lem:calc}(b),(c). By minimality $gB=B$, and an increasing bijection
+of a finite linearly ordered set is the identity, so $g\in G_B$. Hence $U=G_B$.
+\end{proof}
+
+\subsection{The two properties}
+
+\begin{theorem}\label{thm:total}
+The category $\Cd$ is total: it is non-empty and connected, and for every
+functor $L\colon\Cd\to\Set$ every connected component of $\El(L)$ is weakly
+contractible.
+\end{theorem}
+
+\begin{proof}
+By Lemmas~\ref{lem:AMequiv}, \ref{lem:K2delta}, \ref{lem:SCdelta} and
+Corollary~\ref{cor:opendelta} the triple $(M,G,\K)$ satisfies (K1)--(K4). By
+Proposition~\ref{prop:reduction} every action component of $\mathcal A$ is
+weakly contractible or weakly equivalent to $\mathcal A$, and $B\mathcal A$ is
+weakly contractible by Lemma~\ref{lem:SCdelta}. Since $\mathcal A$ is equivalent
+to $\Cd$, the same holds for $\Cd$, and Proposition~\ref{prop:total} applies.
+\end{proof}
+
+\begin{theorem}\label{thm:notexact}
+Let $R$ be a non-zero ring. For an object $X$ of $\Cd$ let
+$P_X=R[\Cd(X,-)]$, a functor from $\Cd$ to left $R$-modules, and let
+\[
+ \Theta\colon P_W\longrightarrow P_V\oplus P_V,\qquad
+ \Theta(g)=(gv_2-gv_1,\ gv_3-gv_1)\quad(g\colon W\to X).
+\]
+Then $\Theta$ is a monomorphism, and $\colim\Theta\colon R\to R\oplus R$ is zero.
+In particular the functor $\colim$ from $\Cd$-indexed diagrams of $R$-modules to
+$R$-modules is not exact; for $R=\Z$, the category $\Cd$ is not exact.
+\end{theorem}
+
+\begin{proof}
+Let $X$ be an object and let $t=\sum_g c_g\,g$ be a non-zero element of
+$P_W(X)$; let $g_1,\dots,g_r$ be the arrows $W\to X$ with $c_g\ne 0$. An
+increasing map of $W$ is determined by its image, so the images of the $g_k$
+are $r$ distinct hyperedges of $X$. Let $U$ be their union and $v=|U|$. Then
+$0<\delta(U)\le 2v-3r$. The $r$ hyperedges have $3r<2v$ incidences with the $v$
+points of $U$, each of which lies on at least one of them; so some point $u$
+lies on exactly one, say on the image of $g_k$, where $u=g_k(i)$. The arrow
+$g_kv_i\colon V\to X$ has image $\{u\}$, and no other arrow $g_lv_j$ with
+$c_{g_l}\ne 0$ has this image. The coefficient of $g_kv_i$ is therefore
+$c_{g_k}$ in the first component of $\Theta(t)$ if $i=2$, it is $c_{g_k}$ in the
+second component if $i=3$, and it is $-c_{g_k}$ in both if $i=1$. So
+$\Theta(t)\ne 0$.
+
+The colimit of a representable functor $P_X$ is $R$, the canonical map
+$P_X(Y)\to R$ being the augmentation $\sum c_f f\mapsto\sum c_f$. Both
+components of $\Theta(g)$ have augmentation zero, so $\colim\Theta=0$, which is
+not injective because $\colim P_W=R\ne 0$.
+\end{proof}
+% ---- end sec4_cdelta.tex ----
+% ---- begin sec5_twographs.tex (inlined for the deposit) ----
+\section{A quasi-filtered category that is not total}\label{sec:twographs}
+
+\subsection{Ordered two-graphs}
+
+Let $S$ be a finite set. A \emph{graph} on $S$ is a function $b$ from the
+two-element subsets of $S$ to $\F_2$. A \emph{two-graph} on $S$ is a function
+$c$ from the three-element subsets of $S$ to $\F_2$ such that, for every
+four-element subset $Q$ of $S$, the sum of $c$ over the four three-element
+subsets of $Q$ is zero. (The triples with $c=1$ then form a two-graph in the
+usual sense; see \cite{Seidel}.) We write $c(x,y,z)$ for $c(\{x,y,z\})$ and
+put $c(x,y,z)=0$ when two of the entries coincide; similarly for graphs. For
+a graph $b$ let
+\[
+ (\partial b)(x,y,z)=b(x,y)+b(x,z)+b(y,z).
+\]
+This is a two-graph, because in the sum over the four triples of a
+four-element set every pair occurs twice. For a two-graph $c$ on $S$ and
+$p\in S$ let $c_p$ be the graph $c_p(x,y)=c(p,x,y)$. Then
+\begin{equation}\label{eq:anchor}
+ \partial(c_p)=c ;
+\end{equation}
+for a triple that does not contain $p$ this is the condition on the
+four-element set formed with $p$, and for a triple $\{p,y,z\}$ it holds because
+$c_p(p,y)=c_p(p,z)=0$.
+
+An \emph{ordered two-graph} is a finite non-empty linearly ordered set with a
+two-graph. An \emph{embedding} of ordered two-graphs is an increasing
+injection $f\colon X\to Y$ with $c_Y(f(x),f(y),f(z))=c_X(x,y,z)$ for all
+$x,y,z$.
+
+\begin{definition}
+The objects of $\mathcal T$ are the ordered two-graphs with underlying ordered
+set $[n]$, $n\ge1$; its arrows are the embeddings.
+\end{definition}
+
+\begin{lemma}[anchored amalgams]\label{lem:anchored}
+Let $S=S_1\cup S_2$ and let $c_i$ be a two-graph on $S_i$, $i=1,2$, such that
+$c_1$ and $c_2$ agree on the triples contained in $S_1\cap S_2$. Choose
+$p_i\in S_i$, with $p_1=p_2\in S_1\cap S_2$ if this set is non-empty, and let
+$b$ be the graph on $S$ that equals $(c_i)_{p_i}$ on the pairs contained in
+$S_i$ and is zero on all other pairs. Then $\partial b$ is a two-graph on $S$
+that restricts to $c_i$ on $S_i$.
+\end{lemma}
+
+\begin{proof}
+The graph $b$ is well defined, because $(c_1)_p$ and $(c_2)_p$ agree on the
+pairs contained in $S_1\cap S_2$ when $p$ lies in this set. On triples
+contained in $S_i$ we have $\partial b=\partial((c_i)_{p_i})=c_i$ by
+\eqref{eq:anchor}.
+\end{proof}
+
+We call $\partial b$ the amalgam \emph{anchored at} $p_1,p_2$. In particular
+any two objects of $\mathcal T$ embed into a third, so $\mathcal T$ is
+connected.
+
+\subsection{The generic ordered two-graph}
+
+\begin{proposition}\label{prop:generic2}
+There is an ordered two-graph structure on a countably infinite set $M$
+\textup{(}a linear order and a function $c$ on three-element subsets that is a
+two-graph on every finite subset\textup{)} such that:
+\begin{enumerate}
+\item[\textup{(N2)}] if $Y\subseteq M$ is finite and $f\colon Y\to C$ is an
+ embedding into an ordered two-graph, there is an embedding $h\colon C\to M$
+ with $hf=\id_Y$ \textup{(}here $Y$ may be empty\textup{)};
+\item[\textup{(N3)}] every isomorphism between finite subsets of $M$ extends to an
+ automorphism of $M$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+As for Proposition~\ref{prop:generic}, with every finite subset in the role
+of a closed subset and with the anchored amalgams of Lemma~\ref{lem:anchored},
+ordered by any linear order extending the two given ones, in the role of the
+free amalgams.
+\end{proof}
+
+Fix such an $M$, let $G=\Aut(M)$ and let $\K$ be the set of all finite subsets
+of $M$. By (N3) the arrows of $\mathcal A=\mathcal A(M,G,\K)$ are the embeddings
+between finite non-empty subsets of $M$, and by (N2) with $Y=\varnothing$ the
+category $\mathcal A$ is equivalent to $\mathcal T$. Condition (K1) is clear.
+By (N2) the order of $M$ has no greatest element.
+
+\begin{lemma}\label{lem:K24two}
+$(M,G,\K)$ satisfies \textup{(K2)} and \textup{(K4)}.
+\end{lemma}
+
+\begin{proof}
+(K2). Let $B\subseteq M$ be finite and $x\in M\setminus B$. Let
+$C=B\cup\{x,x'\}$ carry an amalgam of $B\cup\{x\}$ and of a second copy
+$B\cup\{x'\}$ of it over $B$ (Lemma~\ref{lem:anchored}), ordered with $x'$
+immediately after $x$. By (N2) it embeds into $M$ over $B\cup\{x\}$, and by
+(N3) the isomorphism $B\cup\{x\}\to B\cup\{x'\}$ extends to some $g\in G_B$
+with $gx\ne x$.
+
+(K4). We argue as for Lemma~\ref{lem:SCdelta}. Let $\mathcal C$ be the
+category of ordered two-graphs whose underlying set is a finite subset of
+$\Omega$, with the embeddings as arrows; it is equivalent to $\mathcal A$. Let
+$P$ be an object, $p_0$ its least element, $\mathcal U$ a non-empty cosieve of
+$P\backslash\mathcal C$ and $(Z,z)$ an object of $\mathcal U$. For an object
+$(X,x)$ let $T(X)$ be the set $\lambda(X)\cup\rho(Z\setminus z(P))$, ordered
+as in Lemma~\ref{lem:SCdelta}, with the amalgam of the copies of $X$ and of
+$Z$ anchored at $\lambda(x(p_0))$. For an arrow $f\colon X\to X'$ under $P$,
+the map $T(f)$ defined as before is increasing. It carries the anchor to the
+anchor and the pairs contained in one of the two copies to such pairs,
+preserving the values of the graph $b$ of Lemma~\ref{lem:anchored}, and it
+carries the remaining pairs, on which $b=0$, to such pairs. Hence it
+preserves $\partial b$ and is an embedding. As before we obtain an
+endofunctor $T$ of $P\backslash\mathcal C$ and natural transformations
+$\id\to T\leftarrow\mathrm{const}_{(Z,z)}$, and $B\mathcal U$ is contractible.
+\end{proof}
+
+\subsection{Open subgroups}
+
+\begin{lemma}\label{lem:stab2a}
+Let $B,C\subseteq M$ be finite with $B\cap C\ne\varnothing$. Then
+$\langle G_B,G_C\rangle=G_{B\cap C}$.
+\end{lemma}
+
+\begin{proof}
+Let $g\in G_{B\cap C}$. Put $D=B\cup C$, $E=D\cup gD$, $F=B\cap C$, and let
+$d_0\colon D\to E$ be the inclusion and $d_1=g|_D$. Let $Z$, $e$,
+$a_0,\dots,a_s$ and the pieces $Z_i$ be as in Lemma~\ref{lem:bridgeset}. Each
+piece is a copy of $E$ or of $D$ and carries the corresponding two-graph.
+Two consecutive pieces induce the same two-graph on their intersection, which
+is the common image of $B$ or of $C$, because $d_0$ and $d_1$ are embeddings;
+call this $(\ast)$. Fix $p\in F$ and let $\hat p$ be the corresponding
+$F$-point of $Z$. Let $b$ be the graph on $Z$ with
+$b(u,u')=c_{Z_i}(\hat p,u,u')$ if $u$ and $u'$ lie in a common piece $Z_i$, and
+$b(u,u')=0$ if they lie in no common piece. This is well defined. Indeed, let
+$u,u'\in Z_i\cap Z_j$. If $i$ and $j$ are consecutive, apply $(\ast)$. If not,
+and $u$, $u'$ are both $F$-points, note that all pieces induce the same
+two-graph on the set of $F$-points. Otherwise $\{i,j\}=\{1,s-1\}$ and
+$u,u'\in Z_0$ by Lemma~\ref{lem:bridgeset}(ii), and we apply $(\ast)$ to
+$(Z_j,Z_0)$ and to $(Z_0,Z_i)$. Give $Z$ the two-graph $\partial b$. On a
+triple contained in a piece $Z_i$ it equals $\partial((c_{Z_i})_{\hat p})=c_{Z_i}$
+by \eqref{eq:anchor}. So $e$ and all $a_i$ are embeddings of ordered
+two-graphs.
+
+By (N2) there is an embedding $h\colon Z\to M$ with $he=\id_E$, and by (N3)
+$ha_i=g_i|_D$ with $g_i\in G$, $g_0=1$, $g_s=g$. By
+Lemma~\ref{lem:bridgeset}(i), $g_i^{-1}g_{i+1}$ lies in $G_B$ for $i$ even and
+in $G_C$ for $i$ odd, so $g\in\langle G_B,G_C\rangle$.
+\end{proof}
+
+\begin{lemma}\label{lem:stab2b}
+For distinct points $x,y$ of $M$ we have $\langle G_{\{x\}},G_{\{y\}}\rangle=G$.
+\end{lemma}
+
+\begin{proof}
+Let $H$ be the subgroup on the left, and suppose $x<y$. A two-graph on a set
+with at most two elements is empty, so by (N3) the group $G$ is transitive on
+$M$, and $G_{\{w\}}$ is transitive on $\{u:u<w\}$ and on $\{u:u>w\}$ for every
+$w\in M$. Note that $H$ contains $G_{\{hx\}}$ and $G_{\{hy\}}$ for every
+$h\in H$. Let $u\in M$ and choose $w$ greater than $u$ and $y$. Then
+$w\in G_{\{x\}}\,y$, so $G_{\{w\}}\le H$, and $u\in G_{\{w\}}\,x$. Hence $H$
+is transitive on $M$. For $g\in G$ choose $h\in H$ with $hx=gx$; then
+$h^{-1}g\in G_{\{x\}}\le H$, so $g\in H$.
+\end{proof}
+
+\begin{proposition}\label{prop:open2}
+For all finite $B,C\subseteq M$ we have $\langle G_B,G_C\rangle=G_{B\cap C}$, and
+$(M,G,\K)$ satisfies \textup{(K3)}.
+\end{proposition}
+
+\begin{proof}
+If $B\cap C\ne\varnothing$ this is Lemma~\ref{lem:stab2a}. Otherwise choose
+distinct points $x,y$ outside $B\cup C$. By Lemma~\ref{lem:stab2a},
+$\langle G_B,G_C\rangle$ contains
+$\langle G_{B\cup\{x\}},G_{C\cup\{x\}}\rangle=G_{\{x\}}$, and likewise
+$G_{\{y\}}$; so it is $G$ by Lemma~\ref{lem:stab2b}. Condition (K3) follows as
+in Corollary~\ref{cor:opendelta}.
+\end{proof}
+
+\subsection{The classifying space}
+
+\begin{lemma}\label{lem:pi1}
+$B\mathcal T$ is simply connected.
+\end{lemma}
+
+\begin{proof}
+$\mathcal T$ is connected, so by the correspondence between covering spaces
+and functors that invert all arrows (Section~\ref{sec:classes}) it
+suffices to show that every functor $\Psi\colon\mathcal T\to\Set$ that sends
+all arrows to bijections is isomorphic to a constant functor. Let $P$ and
+$Q$ be the objects with one and with two points (there are no others with at
+most two points), and $d^1,d^0\colon P\to Q$ the arrows onto the first and the
+second point. Let $X$ be an object with three points and
+$e_{ij}\colon Q\to X$ the embedding onto $\{i,j\}$. Then
+\[
+ e_{12}d^1=e_{13}d^1,\qquad e_{13}d^0=e_{23}d^0,\qquad e_{12}d^0=e_{23}d^1 .
+\]
+Since $\Psi$ takes values in bijections, the first two equations give
+$\Psi(e_{12})=\Psi(e_{13})=\Psi(e_{23})$, and then the third gives
+$\Psi(d^0)=\Psi(d^1)$. For an object $Y$ and $u\in Y$ let $i_u\colon P\to Y$ be
+the arrow with image $\{u\}$. If $u<u'$ and $\epsilon\colon Q\to Y$ is the
+embedding onto $\{u,u'\}$, then $i_u=\epsilon d^1$ and $i_{u'}=\epsilon d^0$, so
+$\Psi(i_u)=\Psi(i_{u'})$. Thus $\theta_Y=\Psi(i_u)\colon\Psi(P)\to\Psi(Y)$ does
+not depend on $u$. For an arrow $f\colon Y\to Y'$ we have $fi_u=i_{f(u)}$,
+hence $\Psi(f)\theta_Y=\theta_{Y'}$. So $\theta$ is a natural isomorphism from
+the constant functor with value $\Psi(P)$ to $\Psi$.
+\end{proof}
+
+\begin{lemma}\label{lem:H2}
+$H_2(B\mathcal T;\F_2)\ne 0$.
+\end{lemma}
+
+\begin{proof}
+We use the chains of the nerve with coefficients in $\F_2$. For a
+$2$-simplex $\sigma=(X_0\xrightarrow{f_1}X_1\xrightarrow{f_2}X_2)$ let
+$m_0\le m_1\le m_2$ be the images in $X_2$ of the greatest elements of $X_0$,
+$X_1$, $X_2$, and put $\Phi(\sigma)=c_{X_2}(m_0,m_1,m_2)$. Then $\Phi$ is a
+cocycle. Indeed, for a $3$-simplex $X_0\to X_1\to X_2\to X_3$ let
+$n_0\le n_1\le n_2\le n_3$ be the images in $X_3$ of the greatest elements.
+Since $X_2\to X_3$ is an embedding, the values of $\Phi$ on the four faces are
+the values of $c_{X_3}$ on the four triples obtained by omitting one of the
+$n_k$. If the $n_k$ are distinct, their sum is zero by the definition of a
+two-graph. If $n_k=n_{k+1}$ for some $k$, the triples obtained by omitting
+$n_k$ or $n_{k+1}$ give the same value, and the other two contain a
+repetition.
+
+Let $X$ and $X'$ be the two objects with three points, with
+$c_X(1,2,3)=1$ and $c_{X'}(1,2,3)=0$. For $S_0\subset S_1\subset[3]$ with
+$|S_0|=1$, $|S_1|=2$ let $\sigma(S_0,S_1,X)$ be the $2$-simplex
+$P\to Q\to X$ in which the image of $Q$ is $S_1$ and the image of $P$ is
+$S_0$; define $\sigma(S_0,S_1,X')$ likewise. Let $\xi$ be the sum of these
+twelve simplices. It is a cycle: the face $P\to Q$ does not depend on the
+target $X$ or $X'$; the face $Q\to X$ depends only on $S_1$ and so occurs
+twice, and the face $P\to X$ depends only on $S_0$ and occurs twice; similarly
+for $X'$. By definition $\Phi(\sigma(S_0,S_1,X))=c_X(\max S_0,\max S_1,3)$,
+which is non-zero only for $S_0=\{1\}$, $S_1=\{1,2\}$, and $\Phi$ vanishes on
+the simplices with target $X'$. So $\Phi(\xi)=1$, and $\xi$ is not a boundary.
+\end{proof}
+
+\begin{theorem}\label{thm:twographs}
+Every action component of $\mathcal T$ is weakly contractible or weakly
+equivalent to $\mathcal T$. Consequently $\mathcal T$ is quasi-filtered, and
+it is not total.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:K24two} and Proposition~\ref{prop:open2} the triple
+$(M,G,\K)$ satisfies (K1)--(K4), so the first assertion holds for $\mathcal A$
+by Proposition~\ref{prop:reduction}, and hence for the equivalent category
+$\mathcal T$. By Lemma~\ref{lem:pi1} all action components of $\mathcal T$ are
+simply connected (each is weakly contractible or weakly equivalent to
+$\mathcal T$), so $\mathcal T$ is quasi-filtered by
+Proposition~\ref{prop:qf}. The category of elements of the functor with value
+a point is $\mathcal T$ itself, which is not weakly contractible by
+Lemma~\ref{lem:H2}; so $\mathcal T$ is not total by
+Proposition~\ref{prop:total}.
+\end{proof}
+
+\begin{remark}\label{rem:tower}
+The run from which this example is taken identifies $B\mathcal T$ with an
+Eilenberg--Mac~Lane space $K(\F_2,2)$, and treats $n$-cocycles in the same way
+for every $n\ge2$; see Section~\ref{sec:provenance}. Those statements are not
+used and not claimed here.
+\end{remark}
+% ---- end sec5_twographs.tex ----
+% ---- begin sec6_manuscript.tex (inlined for the deposit) ----
+\section{The passage of \emph{Les D\'erivateurs}}\label{sec:manuscript}
+
+In Chapter~II of \cite{Der} (manuscript pages 34--36ter; the last of these is
+on the printed page 23, page 25 of the PDF, of the edition's file for that
+chapter), Grothendieck shows that filtered categories are \emph{totalement
+$W$-asph\'eriques} (Corollaire~2.17; for a functor $f\colon X\to Y$ the
+condition is on the category of elements of the presheaf
+$y\mapsto\pi_0(y\backslash X)$, which is the condition of
+Definition~\ref{def:classes}(c)). He then asks for the converse, for the
+class $W_\infty$ of weak equivalences: ``cela implique-t-il que $X$ soit
+filtrante~? \c{C}a ne m'\'etonnerait pas'' (ms.~p.~36). His Proposition~2.19
+answers in the negative: it asserts that $X$ is totally $W_\infty$-aspherical
+whenever the diagonal $X\to X\times X$ is final (\emph{cofinal}, in his
+terminology), that is, whenever $X$ is sifted; and a corollary states that
+the opposite $\boldsymbol\Delta^{\circ}$ of the category of simplices is
+totally $W_\infty$-aspherical and not filtered. In his Contre-exemple~2.20
+(ms.~pp.~36bis--36ter) he derives from Proposition~2.19 that every connected
+simplicial set would be weakly contractible, and concludes: ``Cela me fait
+soup\c{c}onner que la conjecture
+$X$ totalement $W_\infty$-asph\'erique $\Longrightarrow$ $X$ filtrante
+pourrait \^etre valable.''
+
+The results above give the following answers.
+\begin{enumerate}
+\item The conjecture is false. The category $\Delta_{\mathrm{inj}}$ is exact
+ by the theorems of Isbell and Mitchell \cite[Theorems~1 and~3]{IM73}, hence total
+ by Proposition~\ref{prop:incl}, and it is not filtered. The category $\Cd$
+ is a second example, which is not even exact.
+\item In the edition, Proposition~2.19 is marked false (footnote~43, and
+ footnote~45 at the step of its proof that fails), and Grothendieck wrote his
+ Contre-exemple~2.20 ``\`a la proposition fausse 2.19'' against it; the corollary falls with it, and indeed
+ $\boldsymbol\Delta^{\circ}$ is not total. This follows from
+ Proposition~\ref{prop:total}, since the action components of
+ $\boldsymbol\Delta^{\circ}$ are the opposites of the categories of simplices
+ of connected simplicial sets; it also follows from
+ Proposition~\ref{prop:sifted}, since $\boldsymbol\Delta^{\circ}$ is sifted
+ and not filtered. More generally, by Proposition~\ref{prop:sifted} a sifted
+ category is total only if it is filtered. (His Contre-exemple~2.20 uses
+ Chapter~XII, Th\'eor\`eme~4, Corollaire~4, which does not hold for
+ $W_\infty$: where it concludes that a category is weakly contractible, only
+ the vanishing of its reduced integral homology follows. His conclusion
+ stands, and the two arguments above do not use that step.)
+\item The conjecture holds for sifted categories
+ (Proposition~\ref{prop:sifted}), and it holds for categories with a weakly
+ terminal object: there even quasi-filtered categories are filtered, by a
+ theorem of Isbell and Mitchell \cite[Corollary~4.4]{IM76}.
+\end{enumerate}
+% ---- end sec6_manuscript.tex ----
+% ---- begin sec7_provenance.tex (inlined for the deposit) ----
+\section{Provenance and checks}\label{sec:provenance}
+
+This paper is AI-produced. No human has proved, written or checked any part
+of it.
+
+\paragraph{Sources.} The mathematics was found in four runs of GPT-6 Astra
+(OpenAI, ChatGPT Pro mode), in November 2026. The run TOTAL\_ASPHERICITY proved
+Proposition~\ref{prop:total} (its statement C.5) and
+Proposition~\ref{prop:incl}. The run PRESHEAF\_TOTALITY proved
+Proposition~\ref{prop:sifted} (its statement F.3). The run TOTAL\_EXACT\_2
+found the category $\Cd$ and proved Theorem~\ref{thm:A} (its statements A.1,
+A.3, with the proofs A.21, A.24, A.30--A.34), and stated
+Theorem~\ref{thm:C} (D.1, D.2) with another third example, a modification of
+a construction of \cite{AKR}, whose proof is long and is not reproduced or
+used here. The run DER\_FOLLOWUP found the cocycle categories, of which
+$\mathcal T$ is the first, and proved Theorem~\ref{thm:B} (its statements
+A.3--A.8), for cocycles of every degree $n\ge 2$.
+
+\paragraph{The text.} The present text was written by Claude Fable~5.2 at
+effort max. The proofs of Sections~\ref{sec:cdelta} and~\ref{sec:reduction}
+follow those of the runs, reorganized: the reduction is stated once
+(Proposition~\ref{prop:reduction}) and the bridge is split into a statement
+on ordered sets (Lemma~\ref{lem:bridgeset}) and its two uses. The following
+arguments are the writer's and differ from the runs': the proofs of
+Propositions~\ref{prop:qf} and~\ref{prop:sifted} in the form given; the
+reduction of Proposition~\ref{prop:open2} to the case of a non-empty
+intersection, with Lemmas~\ref{lem:stab2a} and~\ref{lem:stab2b}; and
+Lemmas~\ref{lem:pi1} and~\ref{lem:H2}.
+
+\paragraph{Checks.} The proofs of the run TOTAL\_EXACT\_2 used here were
+followed in full by two readers before this text was written (Claude
+Fable~5.2 at effort high, and Claude Fable~5.2 at effort max, 13 November
+2026), and those of DER\_FOLLOWUP by one (Claude Fable~5.2 at effort max, 17
+November 2026). Every proof in this text was derived again by the writer
+while writing. A program independent of the runs searched all objects of
+$\Cd$ with at most seven vertices for an integral, rational or mod-$p$
+($p=2,3,5$) affine equalizer of $v_1,v_2,v_3$ and found none, as
+Theorem~\ref{thm:notexact} predicts. The finished text was then checked
+independently by Claude Opus~5.5 at effort max (25 November 2026): every
+statement and every proof was found correct, the fact that $\mathcal T$ is not
+total was proved again by another route, and eight repairs of wording and
+citation were made, none of which changes a statement. So the proofs taken
+from the runs have been checked by models of a family other than the one
+that found them, and the arguments that are the writer's own have been
+checked by one other model, of the writer's family. Nothing is formalized.
+The record of every check, with model, effort and date, is in the file
+\texttt{CHECK\_EVENTS.tsv} that accompanies this paper in its workbench, reached
+from \url{https://github.com/KokunoYumeto/mathematics-workbenches};
+\texttt{PROVENANCE.md} lists every contributor and says in which copy each
+citation was confirmed, and which citations are given only at the level of
+a table of contents.
+% ---- end sec7_provenance.tex ----
+
+\begin{thebibliography}{99}
+\bibitem{AKR} J.~Ad\'amek, V.~Koubek and J.~Reiterman, Embeddings into
+ categories with fixed points in representations, Czechoslovak Math.\ J.\
+ 31(106) (1981), no.~3, 368--389.
+\bibitem{AR} J.~Ad\'amek and J.~Rosick\'y, On sifted colimits and generalized
+ varieties, Theory Appl.\ Categ.\ 8 (2001), no.~3, 33--53.
+\bibitem{BK} A.~K.~Bousfield and D.~M.~Kan, \emph{Homotopy limits,
+ completions and localizations}, Lecture Notes in Math.\ 304, Springer, 1972.
+\bibitem{EHN} D.~M.~Evans, J.~Hubi\v{c}ka and J.~Ne\v{s}et\v{r}il,
+ Automorphism groups and Ramsey properties of sparse graphs, Proc.\ London
+ Math.\ Soc.\ 119 (2019), 515--546; arXiv:1801.01165.
+\bibitem{GJ} P.~G.~Goerss and J.~F.~Jardine, \emph{Simplicial homotopy
+ theory}, Progress in Math.\ 174, Birkh\"auser, 1999.
+\bibitem{Der} A.~Grothendieck, \emph{Les D\'erivateurs}, manuscript,
+ 1990--1991; edited by M.~K\"unzer, J.~Malgoire and G.~Maltsiniotis,
+ \url{https://webusers.imj-prg.fr/~georges.maltsiniotis/groth/Derivateurs.html}.
+\bibitem{IM73} J.~Isbell and B.~Mitchell, Exact colimits, Bull.\ Amer.\
+ Math.\ Soc.\ 79 (1973), 994--996.
+\bibitem{IM76} J.~Isbell and B.~Mitchell, Exact colimits and fixed points,
+ Trans.\ Amer.\ Math.\ Soc.\ 220 (1976), 289--298.
+\bibitem{JardineL8} J.~F.~Jardine, Lecture 08: Bisimplicial sets, homotopy
+ limits and colimits, lecture notes on homotopy theory, on the author's page,
+ \url{https://math.sci.uwo.ca/~jardine/HomTh/lecture008a.pdf}.
+\bibitem{CWM} S.~Mac~Lane, \emph{Categories for the working mathematician},
+ second edition, Graduate Texts in Math.\ 5, Springer, 1998.
+\bibitem{Quillen} D.~Quillen, Higher algebraic $K$-theory~I, in
+ \emph{Algebraic $K$-theory~I}, Lecture Notes in Math.\ 341, Springer, 1973,
+ 85--147.
+\bibitem{Rosicky} J.~Rosick\'y, On homotopy varieties, Adv.\ Math.\ 214
+ (2007), 525--550; Corrigendum, Adv.\ Math.\ 259 (2014), 841--842;
+ arXiv:math/0509655v2 (the corrected version, whose numbering is used here).
+\bibitem{Seidel} J.~J.~Seidel, A survey of two-graphs, in \emph{Colloquio
+ Internazionale sulle Teorie Combinatorie (Roma, 1973)}, Tomo~I, Atti dei
+ Convegni Lincei 17, Accad.\ Naz.\ Lincei, 1976, 481--511.
+\bibitem{Weibel} C.~A.~Weibel, \emph{An introduction to homological
+ algebra}, Cambridge Studies in Advanced Math.\ 38, Cambridge University
+ Press, 1994.
+\bibitem{Kbook} C.~A.~Weibel, \emph{The $K$-book: an introduction to
+ algebraic $K$-theory}, Graduate Studies in Math.\ 145, Amer.\ Math.\ Soc.,
+ 2013; Chapter~IV is cited from the version on the author's page,
+ \url{https://sites.math.rutgers.edu/~weibel/Kbook/Kbook.IV.pdf}.
+\end{thebibliography}
+\end{document}

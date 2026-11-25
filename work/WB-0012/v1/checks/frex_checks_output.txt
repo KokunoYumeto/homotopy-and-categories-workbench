@@ -1,0 +1,4 @@
+weights: 4474 partial orders on at most 5 labelled points, 102085 restriction equations, totals all 1
+example: antichain {x<y}: {(0, 1): 0, (1, 0): 1} | with z above x: {(0, 1, 2): -1, (1, 0, 2): 1, (0, 2, 1): 1}
+F_2: 28728 maps g of F_2^3 give sum 0 mod 2; 7092 ordered embeddings of F_2^2 give sum 1 mod 2
+ALL CHECKS PASSED

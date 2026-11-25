@@ -1,0 +1,9 @@
+{
+ "format": 1,
+ "name": "homotopy-and-categories-workbench",
+ "title": "Homotopy and categories",
+ "scope": "Models for homotopy types, stacks, derivators, derived functors and homotopical algebra.",
+ "msc": "18N40; 55U35; 18G10",
+ "index": "https://github.com/KokunoYumeto/mathematics-workbenches",
+ "licence": "CC0-1.0"
+}
